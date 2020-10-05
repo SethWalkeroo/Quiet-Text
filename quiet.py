@@ -51,7 +51,7 @@ class Menubar:
         menubar.add_command(label='Quiet Mode')
 
     def open_color_picker(self):
-        return colorchooser.askcolor()[1]
+        return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
 
     def about_message(self):
         box_title = 'About QuietTxt'
@@ -231,6 +231,10 @@ class QuietTxt:
 
 if __name__ == '__main__':
     master = tk.Tk()
+    master.tk_setPalette(background='#261e1b',
+                         foreground='white',
+                         activeForeground='white',
+                         activeBackground='#9c8383',)
     with open('settings.json') as settings_json:
         settings = json.load(settings_json)
     pt = QuietTxt(master, settings)
