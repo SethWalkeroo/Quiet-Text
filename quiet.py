@@ -86,7 +86,6 @@ class QuietTxt:
     def __init__(self, master, settings):
         master.title('untitled - QuietTxt')
         master.geometry('1200x700')
-        font_specs = ('YaHei Consolas Hybrid', 18)
         self.text_font = settings['text_font']
         self.bg_color = settings['bg_color']
         self.text_color = settings['text_color']
@@ -94,7 +93,7 @@ class QuietTxt:
         self.master = master
         self.filename = None
         
-        self.textarea = tk.Text(master, font=font_specs)
+        self.textarea = tk.Text(master, font=text_font)
         self.scroll = tk.Scrollbar(master, command=self.textarea.yview)
 
         self.textarea.configure(yscrollcommand=self.scroll.set,
