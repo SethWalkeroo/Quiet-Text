@@ -16,13 +16,10 @@ Below you will find the process and workflow used to review and merge your chang
 ## Step 2 : Fork the Project
 - Fork this Repository. This will create a Local Copy of this Repository on your Github Profile. Keep a reference to the original project in `upstream` remote.
 ```
-$ git clone https://github.com/<your-username>/Amazing-Python-Scripts
-$ cd Amazing-Python-Scripts
-$ git remote add upstream https://github.com/avinashkranjan/Amazing-Python-Scripts
+$ git clone https://github.com/<your-username>/Quiet-Text
+$ cd QuietTxt
+$ git remote add upstream https://github.com/sethwalkeroo/Quiet-Text
 ```
-![Screenshot (191)](https://user-images.githubusercontent.com/55796944/92216605-23c72880-eeb4-11ea-9b89-e15e0a1f254d.jpg)
-
-
 - If you have already forked the project, update your copy before working.
 ```
 $ git remote update
