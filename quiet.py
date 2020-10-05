@@ -116,7 +116,7 @@ class QuietTxt:
                                 highlightcolor='#332b2b',
                                 highlightbackground='#4a3a39',
                                 wrap='word', spacing1=1,
-                                spacing3=1, selectbackground='#9c8383',
+                                spacing3=1, selectbackground='#3d3430',
                                 insertbackground='white', bd=0,
                                 insertofftime=0, font=self.text_font,
                                 undo=True, autoseparators=True, maxundo=-1)
