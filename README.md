@@ -1,5 +1,5 @@
 # Quiet-Text
-A simple/minimalistic Python text editor for programming and note taking. 
+A simple/minimal Python text editor for programming and note taking. 
 
 <img src="images/picture_of_app.png" alt="there should be an image here...">
 
