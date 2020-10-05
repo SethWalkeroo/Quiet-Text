@@ -44,18 +44,25 @@ class Menubar:
                                    command=self.release_notes)
         about_dropdown.add_command(label='About',
                                    command=self.about_message)
+
+        settings_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        settings_dropdown.add_command(label='Edit Settings',
+                                      command=parent.open_settings_file)
+        settings_dropdown.add_command(label='Reset Settings to Default',
+                                      command=parent.reset_settings_file)
+
         
         menubar.add_cascade(label='File', menu=file_dropdown)
-        menubar.add_command(label='Settings', command=parent.open_settings_file)
+        menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='About', menu=about_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
 
     def open_color_picker(self):
-        return colorchooser.askcolor()[1]
+        return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
 
     def enter_quiet_mode(self):
-        self._parent.enter_zen_mode()
+        self._parent.enter_zen_mode()Status
 
     def hide_menu(self):
         empty_menu = tk.Menu(self._parent.master)
@@ -79,7 +86,8 @@ class Statusbar:
 
     def __init__(self, parent):
         self._parent = parent
-        font_specs = ('Droid Sans Fallback', 12)
+
+        font_specs = ('Droid Sans Fallback', 10)
 
         self.status = tk.StringVar()
         self.status.set('QuietTxt - v0.1 Loud')
@@ -91,7 +99,7 @@ class Statusbar:
 
     def update_status(self, *args):
         if args[0] == 'saved':
-            self.status.set('Your file has been saved!')
+            self.status.set('Your changes have been saved')
         elif args[0] == 'no file':
             self.status.set('Cannot run! No file selected.')
         else:
@@ -105,9 +113,17 @@ class Statusbar:
 
 class QuietTxt:
     
-    def __init__(self, master, settings):
+    def __init__(self, master):
         master.title('untitled - QuietTxt')
         master.geometry('1200x700')
+
+        master.tk_setPalette(background='#261e1b',
+                     foreground='#c9bebb',
+                     activeForeground='white',
+                     activeBackground='#9c8383',)
+        with open('settings.json') as settings_json:
+            settings = json.load(settings_json)
+
         self.text_font = settings['text_font']
         self.bg_color = settings['bg_color']
         self.text_color = settings['text_color']
@@ -126,7 +142,7 @@ class QuietTxt:
                                 highlightcolor='#332b2b',
                                 highlightbackground='#4a3a39',
                                 wrap='word', spacing1=1,
-                                spacing3=1, selectbackground='#9c8383',
+                                spacing3=1, selectbackground='#3d3430',
                                 insertbackground='white', bd=0,
                                 insertofftime=0, font=self.text_font,
                                 undo=True, autoseparators=True, maxundo=-1)
@@ -138,6 +154,26 @@ class QuietTxt:
         self.statusbar = Statusbar(self)
 
         self.bind_shortcuts()
+    
+    def reconfigure_settings(self, settings_path, overwrite=False):
+            with open(settings_path, 'r') as settings_json:
+                settings = json.load(settings_json)
+            text_font = settings['text_font']
+            bg_color = settings['bg_color']
+            text_color = settings['text_color']
+            self.textarea.configure(font=text_font, bg=bg_color,
+                                    fg=text_color)
+            if overwrite:
+                MsgBox = tk.messagebox.askquestion('Reset Settings?',
+                                                   'Are you sure you want to reset the editor settings to their default value?',
+                                                   icon='warning')
+                if MsgBox == 'yes':
+                    with open('settings.json', 'w') as user_settings:
+                        json.dump(settings, user_settings)
+                else:
+                    self.save('settings.json')
+
+
 
     def enter_zen_mode(self, *args):
         self.statusbar.hide_status_bar()
@@ -182,13 +218,7 @@ class QuietTxt:
                     f.write(textarea_content)
                 self.statusbar.update_status('saved')
                 if self.filename == 'settings.json':
-                    with open(self.filename, 'r') as settings_json:
-                        settings = json.load(settings_json)
-                        text_font = settings['text_font']
-                        bg_color = settings['bg_color']
-                        text_color = settings['text_color']
-                        self.textarea.configure(font=text_font, bg=bg_color,
-                                                fg=text_color)
+                    self.reconfigure_settings(self.filename)
             except Exception as e:
                 print(e)
         else:
@@ -228,6 +258,10 @@ class QuietTxt:
             self.textarea.insert(1.0, f.read())
         self.set_window_title(name=self.filename)
 
+    def reset_settings_file(self):
+        self.reconfigure_settings('settings-default.json', overwrite=True)
+
+
     def select_all_text(self, *args):
         self.textarea.tag_add(tk.SEL, '1.0', tk.END)
         self.textarea.mark_set(tk.INSERT, '1.0')
@@ -256,10 +290,12 @@ class QuietTxt:
         self.textarea.bind('<Escape>', self.leave_zen_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
 
+    def python_syntax_highlighting(self):
+        pass
+
 
 if __name__ == '__main__':
     master = tk.Tk()
-    with open('settings.json') as settings_json:
-        settings = json.load(settings_json)
-    pt = QuietTxt(master, settings)
+    pt = QuietTxt(master)
     master.mainloop()
+
