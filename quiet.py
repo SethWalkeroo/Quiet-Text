@@ -87,9 +87,15 @@ class Statusbar:
 
 class QuietTxt:
     
-    def __init__(self, master, settings):
+    def __init__(self, master):
         master.title('untitled - QuietTxt')
         master.geometry('1200x700')
+        master.tk_setPalette(background='#261e1b',
+                     foreground='white',
+                     activeForeground='white',
+                     activeBackground='#9c8383',)
+        with open('settings.json') as settings_json:
+            settings = json.load(settings_json)
         self.text_font = settings['text_font']
         self.bg_color = settings['bg_color']
         self.text_color = settings['text_color']
@@ -231,11 +237,5 @@ class QuietTxt:
 
 if __name__ == '__main__':
     master = tk.Tk()
-    master.tk_setPalette(background='#261e1b',
-                         foreground='white',
-                         activeForeground='white',
-                         activeBackground='#9c8383',)
-    with open('settings.json') as settings_json:
-        settings = json.load(settings_json)
-    pt = QuietTxt(master, settings)
+    pt = QuietTxt(master)
     master.mainloop()
