@@ -26,3 +26,5 @@ A simple/minimal Python text editor for programming and note taking.
 * All PRs must be made from a Branch. Create a separate branch for every Issue you are working upon and once found fit, make a PR.
 
 * Please make sure your code works before you submit it :)
+
+#### check CONTRIBUTING.md for guidlines on how to make a pull request.
