@@ -236,6 +236,9 @@ class QuietTxt:
         self.textarea.bind('<Control-h>', self.apply_hex_color)
         self.textarea.bind('<Key>', self.statusbar.update_status)
 
+    def python_syntax_highlighting(self):
+        pass
+
 
 if __name__ == '__main__':
     master = tk.Tk()
