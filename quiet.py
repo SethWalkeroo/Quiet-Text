@@ -93,8 +93,11 @@ class QuietTxt:
         self.master = master
         self.filename = None
         
-        self.textarea = tk.Text(master, font=text_font)
-        self.scroll = tk.Scrollbar(master, command=self.textarea.yview)
+        self.textarea = tk.Text(master, font=self.text_font)
+        self.scroll = tk.Scrollbar(master, command=self.textarea.yview,
+                                   bg='#383030',troughcolor='#2e2724',
+                                   bd=0, widt=8, highlightthickness=0,
+                                   activebackground='#8a7575')
 
         self.textarea.configure(yscrollcommand=self.scroll.set,
                                 bg=self.bg_color, fg=self.text_color,
