@@ -1,4 +1,4 @@
 # Quiet-Text
 A simple Python text editor for programming and note taking. 
 
-![] (images/picture.png)
+[link] (images/picture.png)
