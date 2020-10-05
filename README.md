@@ -1,7 +1,5 @@
 # Quiet-Text
-A simple/minimal Python text editor for programming and note taking.
-This project is made in tkinter and currently requires no outside packages.
-Just download the project and launch quiet.py in your terminal to use the editor.
+A simple/minimal Python text editor for programming and note taking. This project is made in tkinter and currently requires no outside packages. Just download the project and launch quiet.py in your terminal to use the editor.
 
 <img src="images/picture_of_app.png" alt="there should be an image here...">
 
