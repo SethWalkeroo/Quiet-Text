@@ -12,7 +12,8 @@ A simple/minimal Python text editor for programming and note taking.
 - [ ] Allow full customization of the editor's theme and colors.
 - [ ] Add helpful features for programming like autoclosing brackets and parenthesis.
 
-### suggestions are welcome!
+#### suggestions are welcome!
+
 
 # Contributing Guidelines
 
@@ -24,4 +25,4 @@ A simple/minimal Python text editor for programming and note taking.
 
 * All PRs must be made from a Branch. Create a separate branch for every Issue you are working upon and once found fit, make a PR.
 
-* Please make sure your codew works before you submit it :)
+* Please make sure your code works before you submit it :)
