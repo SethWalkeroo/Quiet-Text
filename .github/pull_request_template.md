@@ -12,7 +12,7 @@ Please include a summary of the change and which issue is fixed. List any depend
 
 Replace `issue_no` with the issue number which is fixed in this PR
 
-## Have you read the [Contributing Guidelines on Pull Requests](https://github.com/SethWalkeroo/Quiet-Text/CONTRIBUTING.md)?
+## Have you read the [Contributing Guidelines on Pull Requests](https://https://github.com/SethWalkeroo/Quiet-Text/CONTRIBUTING.md)?
 
 - [ ] Yes
 - [ ] No
