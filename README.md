@@ -12,4 +12,4 @@ A simple/minimal Python text editor for programming and note taking.
 - [ ] Allow full customization of the editor's theme and colors.
 - [ ] Add helpful features for programming like autoclosing brackets and parenthesis.
 
-## And hopefully more to come!
+### suggestions are welcome!
