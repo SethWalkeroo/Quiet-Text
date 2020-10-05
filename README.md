@@ -5,6 +5,7 @@ A simple Python text editor for programming and note taking.
 
 # Goals
 
+- [x] Create a visually pleasing text editor! ;)
 - [ ] Add syntax highlighting for Python.
 - [ ] Allow user's to launch the terminal and run their scripts from any platform.
 - [ ] Add special markdown for making lists and notetaking.
