@@ -9,6 +9,7 @@ from tkinter import colorchooser
 class Menubar:
     
     def __init__(self, parent):
+        self._parent = parent
         font_specs = ('Droid Sans Fallback', 12)
 
         menubar = tk.Menu(parent.master, font=font_specs,
@@ -46,8 +47,11 @@ class Menubar:
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_command(label='Settings', command=parent.open_settings_file)
         menubar.add_cascade(label='About', menu=about_dropdown)
-        menubar.add_command(label='Hex Colors')
+        menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode')
+
+    def open_color_picker(self):
+        return colorchooser.askcolor()[1]
 
     def about_message(self):
         box_title = 'About QuietTxt'
@@ -204,6 +208,16 @@ class QuietTxt:
         self.textarea.see(tk.INSERT)
         return 'break'
 
+    def apply_hex_color(self, key_event):
+        new_color = self.menubar.open_color_picker()
+        try:
+            sel_start = self.textarea.index(tk.SEL_FIRST)
+            sel_end = self.textarea.index(tk.SEL_LAST)
+            self.textarea.delete(sel_start, sel_end)
+            self.textarea.insert(sel_start, new_color)
+        except tk.TclError:
+            pass
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
@@ -211,6 +225,7 @@ class QuietTxt:
         self.textarea.bind('<Control-S>', self.save_as)
         self.textarea.bind('<Control-b>', self.run)
         self.textarea.bind('<Control-a>', self.select_all_text)
+        self.textarea.bind('<Control-h>', self.apply_hex_color)
         self.textarea.bind('<Key>', self.statusbar.update_status)
 
 
