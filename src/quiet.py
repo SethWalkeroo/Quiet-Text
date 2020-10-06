@@ -73,13 +73,13 @@ class Menubar:
         self._parent.master.config(menu=self._menubar)
 
     def about_message(self):
-        box_title = 'About QuietTxt'
+        box_title = 'About Quiet Text'
         box_message = 'A simple text editor for your Python needs.'
         messagebox.showinfo(box_title, box_message)
 
     def release_notes(self):
         box_title = 'Release Notes'
-        box_message = 'Version 0.1 - Loud - this is the first version of QuietTxt'
+        box_message = 'Version 0.1 - Loud - this is the first version of Quiet Text'
         messagebox.showinfo(box_title, box_message)
 
 
@@ -91,7 +91,7 @@ class Statusbar:
         font_specs = ('Droid Sans Fallback', 10)
 
         self.status = tk.StringVar()
-        self.status.set('QuietTxt - v0.1 Loud')
+        self.status.set('Quiet Text (v0.1)')
 
         label = tk.Label(parent.textarea, textvariable=self.status, fg='#c9bebb',
                          bg='#2e2724', anchor='sw', font=font_specs)
@@ -100,11 +100,11 @@ class Statusbar:
 
     def update_status(self, *args):
         if args[0] == 'saved':
-            self.status.set('Your changes have been saved')
+            self.status.set('changes saved')
         elif args[0] == 'no file':
             self.status.set('Cannot run! No file selected.')
         else:
-            self.status.set('QuietTxt - v0.1 Loud')
+            self.status.set('Quiet Text (v0.1)')
 
     def hide_status_bar(self):
         self._label.pack_forget()
@@ -112,10 +112,10 @@ class Statusbar:
     def show_status_bar(self):
         self._label.pack(side=tk.BOTTOM, fill=tk.BOTH)
 
-class QuietTxt:
+class QuietText:
     
     def __init__(self, master):
-        master.title('untitled - QuietTxt')
+        master.title('untitled - Quiet Text')
         master.geometry('1200x700')
 
         master.tk_setPalette(background='#261e1b',
@@ -128,6 +128,7 @@ class QuietTxt:
         self.text_font = settings['text_font']
         self.bg_color = settings['bg_color']
         self.text_color = settings['text_color']
+        self.tab_size = settings['tab_size']
         
         self.master = master
         self.filename = None
@@ -142,7 +143,7 @@ class QuietTxt:
                                 bg=self.bg_color, fg=self.text_color,
                                 highlightcolor='#332b2b',
                                 highlightbackground='#4a3a39',
-                                wrap='word', spacing1=1,
+                                wrap='word', spacing1=1, tabs=self.tab_size,
                                 spacing3=1, selectbackground='#3d3430',
                                 insertbackground='white', bd=0,
                                 insertofftime=0, font=self.text_font,
@@ -174,8 +175,9 @@ class QuietTxt:
             text_font = settings['text_font']
             bg_color = settings['bg_color']
             text_color = settings['text_color']
+            tab_size = settings['tab_size']
             self.textarea.configure(font=text_font, bg=bg_color,
-                                    fg=text_color)
+                                    fg=text_color, tabs=tab_size)
             if overwrite:
                 MsgBox = tk.messagebox.askquestion('Reset Settings?',
                                                    'Are you sure you want to reset the editor settings to their default value?',
@@ -185,8 +187,6 @@ class QuietTxt:
                         json.dump(settings, user_settings)
                 else:
                     self.save('settings.json')
-
-
 
     def enter_zen_mode(self, *args):
         self.statusbar.hide_status_bar()
@@ -198,9 +198,9 @@ class QuietTxt:
 
     def set_window_title(self, name=None):
         if name:
-            self.master.title(f'{name} - QuietTxt')
+            self.master.title(f'{name} - QuietText')
         else:
-            self.master.title('Untitled - QuietTxt')
+            self.master.title('Untitled - QuietText')
     
     def new_file(self, *args):
         self.textarea.delete(1.0, tk.END)
@@ -316,6 +316,6 @@ class QuietTxt:
 
 if __name__ == '__main__':
     master = tk.Tk()
-    pt = QuietTxt(master)
+    pt = QuietText(master)
     master.mainloop()
 
