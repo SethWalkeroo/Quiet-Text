@@ -14,6 +14,34 @@ A simple/minimal Python text editor for programming and note taking. This projec
 
 #### suggestions are welcome!
 
+# Installation
+
+This project requires a Python3 interpreter with Tkinter support.
+You can test it using
+
+```sh
+python3 -m tkinter
+```
+
+In case your (GNU/Linux) machine does not support tkinter, there's a way to run it inside Docker (whereas you can also use another base image than `ubuntu`):
+
+```
+FROM ubuntu
+RUN apt update && apt install -y python3-tk x11-apps
+RUN mkdir /code
+WORKDIR /code
+ADD . /code
+CMD ["/usr/bin/python3", "-m", "quiet"]
+```
+
+Now, expose an environment variable to allow access to your host system `XAUTH="$HOME/.Xauthority"` and build the image using `docker build -t quiet .`.
+You can start a container using
+
+```sh
+docker run --network=host --rm -e DISPLAY=$DISPLAY -v $XAUTH:/root/.Xauthority quiet
+```
+
+Be aware, that the Docker container has full access to your machine! So you better trust the executed code.
 
 # Contributing Guidelines
 
