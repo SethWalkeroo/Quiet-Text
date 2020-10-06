@@ -17,6 +17,7 @@ class Menubar:
                           activebackground='#9c8383',
                           bd=0)
         parent.master.config(menu=menubar)
+        self._menubar = menubar
 
         file_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         file_dropdown.add_command(label='New File',
@@ -55,10 +56,20 @@ class Menubar:
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='About', menu=about_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
-        menubar.add_command(label='Quiet Mode')
+        menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
 
     def open_color_picker(self):
         return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
+
+    def enter_quiet_mode(self):
+        self._parent.enter_zen_mode()Status
+
+    def hide_menu(self):
+        empty_menu = tk.Menu(self._parent.master)
+        self._parent.master.config(menu=empty_menu)
+
+    def show_menu(self):
+        self._parent.master.config(menu=self._menubar)
 
     def about_message(self):
         box_title = 'About QuietTxt'
@@ -74,6 +85,7 @@ class Menubar:
 class Statusbar:
 
     def __init__(self, parent):
+        self._parent = parent
 
         font_specs = ('Droid Sans Fallback', 10)
 
@@ -83,6 +95,7 @@ class Statusbar:
         label = tk.Label(parent.textarea, textvariable=self.status, fg='#c9bebb',
                          bg='#2e2724', anchor='sw', font=font_specs)
         label.pack(side=tk.BOTTOM, fill=tk.BOTH)
+        self._label = label
 
     def update_status(self, *args):
         if args[0] == 'saved':
@@ -91,6 +104,12 @@ class Statusbar:
             self.status.set('Cannot run! No file selected.')
         else:
             self.status.set('QuietTxt - v0.1 Loud')
+
+    def hide_status_bar(self):
+        self._label.pack_forget()
+
+    def show_status_bar(self):
+        self._label.pack(side=tk.BOTTOM, fill=tk.BOTH)
 
 class QuietTxt:
     
@@ -155,6 +174,14 @@ class QuietTxt:
                     self.save('settings.json')
 
 
+
+    def enter_zen_mode(self, *args):
+        self.statusbar.hide_status_bar()
+        self.menubar.hide_menu()
+
+    def leave_zen_mode(self, *args):
+        self.statusbar.show_status_bar()
+        self.menubar.show_menu()
 
     def set_window_title(self, name=None):
         if name:
@@ -259,6 +286,8 @@ class QuietTxt:
         self.textarea.bind('<Control-b>', self.run)
         self.textarea.bind('<Control-a>', self.select_all_text)
         self.textarea.bind('<Control-h>', self.apply_hex_color)
+        self.textarea.bind('<Control-Z>', self.enter_zen_mode)
+        self.textarea.bind('<Escape>', self.leave_zen_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
 
     def python_syntax_highlighting(self):
