@@ -1,8 +1,8 @@
 {
 	"text_font": "monospace",
-	"bg_color":	"#261e1b",
+	"font_size": "20",
+	"bg_color": "#261e1b",
 	"text_color": "white",
 	"tab_size": "1.1c",
-	"text_height": "20",
 	"menu_bg": "#000"
 }
