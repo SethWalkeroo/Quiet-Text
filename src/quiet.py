@@ -16,7 +16,6 @@ class Menu(tk.Menu):
 
 class Menubar:
     def __init__(self, parent):
-        self.menu_fields = []
         self._parent = parent
         font_specs = ('Droid Sans Fallback', 12)
 
@@ -65,16 +64,14 @@ class Menubar:
         menubar.add_cascade(label='About', menu=about_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
-        for field in (file_dropdown, about_dropdown, settings_dropdown):
-            self.menu_fields.append(field)
+        
+        self.menu_fields = [field for field in (file_dropdown, about_dropdown, settings_dropdown)]
 
     def reconfigure_settings(self):
         with open('settings.json', 'r') as settings_json:
             settings = json.load(settings_json)
         for field in self.menu_fields:
             field.configure(bg=settings['menu_bg'])
-
-
 
     def open_color_picker(self):
         return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
@@ -146,7 +143,7 @@ class QuietText:
         self.bg_color = settings['bg_color']
         self.text_color = settings['text_color']
         self.tab_size = settings['tab_size']
-        self.font_style = tk_font.Font(family=self.text_font, size=settings['text_height'])
+        self.font_style = tk_font.Font(family=self.text_font, size=settings['font_size'])
         
         self.master = master
         self.filename = None
@@ -194,7 +191,7 @@ class QuietText:
             bg_color = settings['bg_color']
             text_color = settings['text_color']
             tab_size = settings['tab_size']
-            font_style = tk_font.Font(family=text_font, size=settings['text_height'])
+            font_style = tk_font.Font(family=text_font, size=settings['font_size'])
             self.textarea.configure(font=font_style, bg=bg_color,
                                     fg=text_color, tabs=tab_size)
             if overwrite:
