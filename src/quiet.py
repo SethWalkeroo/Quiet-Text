@@ -11,8 +11,11 @@ class Menu(tk.Menu):
     def __init__(self, *args, **kwargs):
         with open('settings.json', 'r') as settings_json:
             settings = json.load(settings_json)
-        super().__init__(bg=settings["menu_bg"], *args, **kwargs)
-
+        super().__init__(bg=settings["menu_bg"],
+                         activeforeground=settings['menu_active_fg'],
+                         activebackground=settings['menu_active_bg'],
+                         activeborderwidth=0,
+                         *args, **kwargs)
 
 class Menubar:
     def __init__(self, parent):
@@ -71,13 +74,15 @@ class Menubar:
         with open('settings.json', 'r') as settings_json:
             settings = json.load(settings_json)
         for field in self.menu_fields:
-            field.configure(bg=settings['menu_bg'])
+            field.configure(bg=settings['menu_bg'],
+                            activeforeground=settings['menu_active_fg'],
+                            activebackground=settings['menu_active_bg'],)
 
     def open_color_picker(self):
         return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
 
     def enter_quiet_mode(self):
-        self._parent.enter_zen_mode()
+        self._parent.enter_quiet_mode()
 
     def hide_menu(self):
         empty_menu = tk.Menu(self._parent.master)
@@ -151,16 +156,15 @@ class QuietText:
         self.textarea = tk.Text(master, font=self.text_font)
         self.scroll = tk.Scrollbar(master, command=self.textarea.yview,
                                    bg='#383030',troughcolor='#2e2724',
-                                   bd=0, widt=8, highlightthickness=0,
+                                   bd=0, width=8, highlightthickness=0,
                                    activebackground='#8a7575')
 
         self.textarea.configure(yscrollcommand=self.scroll.set,
                                 bg=self.bg_color, fg=self.text_color,
-                                highlightcolor='#332b2b',
-                                highlightbackground='#4a3a39',
                                 wrap='word', spacing1=1, tabs=self.tab_size,
                                 spacing3=1, selectbackground='#3d3430',
                                 insertbackground='white', bd=0,
+                                highlightthickness=0,
                                 insertofftime=0, font=self.font_style,
                                 undo=True, autoseparators=True, maxundo=-1)
 
@@ -204,11 +208,11 @@ class QuietText:
                 else:
                     self.save('settings.json')
 
-    def enter_zen_mode(self, *args):
+    def enter_quiet_mode(self, *args):
         self.statusbar.hide_status_bar()
         self.menubar.hide_menu()
 
-    def leave_zen_mode(self, *args):
+    def leave_quiet_mode(self, *args):
         self.statusbar.show_status_bar()
         self.menubar.show_menu()
 
@@ -315,6 +319,7 @@ class QuietText:
             self.right_click_menu.grab_release()
 
 
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
@@ -323,16 +328,14 @@ class QuietText:
         self.textarea.bind('<Control-b>', self.run)
         self.textarea.bind('<Control-a>', self.select_all_text)
         self.textarea.bind('<Control-h>', self.apply_hex_color)
-        self.textarea.bind('<Control-Z>', self.enter_zen_mode)
-        self.textarea.bind('<Escape>', self.leave_zen_mode)
+        self.textarea.bind('<Control-q>', self.enter_quiet_mode)
+        self.textarea.bind('<Escape>', self.leave_quiet_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
         self.textarea.bind('<Button-3>', self.show_click_menu)
 
 
-
-
 if __name__ == '__main__':
     master = tk.Tk()
-    pt = QuietText(master)
+    qt = QuietText(master)
     master.mainloop()
 

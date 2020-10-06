@@ -4,5 +4,8 @@
 	"bg_color": "#261e1b",
 	"text_color": "white",
 	"tab_size": "1.1c",
-	"menu_bg": "#000"
+	"menu_bg": "#2e2724",
+	"menu_active_fg": "#fff",
+	"menu_active_bg": "#9c8383"
 }
+
