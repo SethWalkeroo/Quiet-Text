@@ -109,7 +109,7 @@ class Statusbar:
         self._label.pack_forget()
 
     def show_status_bar(self):
-        self._label.pack(side=tk.BOTTOM)
+        self._label.pack(side=tk.BOTTOM, fill=tk.BOTH)
 
 class QuietTxt:
     
@@ -286,7 +286,7 @@ class QuietTxt:
         self.textarea.bind('<Control-b>', self.run)
         self.textarea.bind('<Control-a>', self.select_all_text)
         self.textarea.bind('<Control-h>', self.apply_hex_color)
-        self.textarea.bind('<Control-z>', self.enter_zen_mode)
+        self.textarea.bind('<Control-Z>', self.enter_zen_mode)
         self.textarea.bind('<Escape>', self.leave_zen_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
 
