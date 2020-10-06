@@ -16,6 +16,7 @@ class Menubar:
                           fg='#c9bebb', bg='#2e2724',
                           activebackground='#9c8383',
                           bd=0)
+
         parent.master.config(menu=menubar)
         self._menubar = menubar
 
@@ -50,13 +51,13 @@ class Menubar:
                                       command=parent.open_settings_file)
         settings_dropdown.add_command(label='Reset Settings to Default',
                                       command=parent.reset_settings_file)
-
         
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='About', menu=about_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
+
 
     def open_color_picker(self):
         return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
@@ -153,6 +154,18 @@ class QuietTxt:
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
 
+        self.right_click_menu = tk.Menu(master, font=self.text_font,
+                                        fg='#c9bebb', bg='#2e2724',
+                                        activebackground='#9c8383',
+                                        bd=0, tearoff=0)
+
+        self.right_click_menu.add_command(label='Cut',
+                                          accelerator='Ctrl+X')
+        self.right_click_menu.add_command(label='Copy',
+                                          accelerator='Ctrl+C')
+        self.right_click_menu.add_command(label='Paste',
+                                          accelerator='Ctrl+V')
+
         self.bind_shortcuts()
     
     def reconfigure_settings(self, settings_path, overwrite=False):
@@ -247,7 +260,7 @@ class QuietTxt:
 
     def run(self, *args):
         if self.filename:
-            os.system(f"gnome-terminal -- bash -c python3 {self.filename}; exec bash")
+            os.system(f"gnome-terminal -- python3.8 {self.filename}")
         else:
             self.statusbar.update_status('no file')
 
@@ -278,6 +291,13 @@ class QuietTxt:
         except tk.TclError:
             pass
 
+    def show_click_menu(self, key_event):
+        try:
+            self.right_click_menu.tk_popup(key_event.x_root, key_event.y_root)
+        finally:
+            self.right_click_menu.grab_release()
+
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
@@ -289,9 +309,9 @@ class QuietTxt:
         self.textarea.bind('<Control-Z>', self.enter_zen_mode)
         self.textarea.bind('<Escape>', self.leave_zen_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
+        self.textarea.bind('<Button-3>', self.show_click_menu)
 
-    def python_syntax_highlighting(self):
-        pass
+
 
 
 if __name__ == '__main__':
