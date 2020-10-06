@@ -62,7 +62,7 @@ class Menubar:
         return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
 
     def enter_quiet_mode(self):
-        self._parent.enter_zen_mode()Status
+        self._parent.enter_zen_mode()
 
     def hide_menu(self):
         empty_menu = tk.Menu(self._parent.master)
