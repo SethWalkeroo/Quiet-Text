@@ -1,13 +1,20 @@
 import os
 import tkinter as tk 
+import tkinter.font as tk_font
 import json
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import colorchooser
 
 
+class Menu(tk.Menu):
+    def __init__(self, *args, **kwargs):
+        with open('settings.json', 'r') as settings_json:
+            settings = json.load(settings_json)
+        super().__init__(bg=settings["menu_bg"], *args, **kwargs)
+
+
 class Menubar:
-    
     def __init__(self, parent):
         self._parent = parent
         font_specs = ('Droid Sans Fallback', 12)
@@ -20,7 +27,7 @@ class Menubar:
         parent.master.config(menu=menubar)
         self._menubar = menubar
 
-        file_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        file_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         file_dropdown.add_command(label='New File',
                                    accelerator='Ctrl+N',
                                    command=parent.new_file)
@@ -40,13 +47,13 @@ class Menubar:
         file_dropdown.add_command(label='Exit',
                                   command=parent.master.destroy)
         
-        about_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         about_dropdown.add_command(label='Release Notes',
                                    command=self.release_notes)
         about_dropdown.add_command(label='About',
                                    command=self.about_message)
 
-        settings_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        settings_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         settings_dropdown.add_command(label='Edit Settings',
                                       command=parent.open_settings_file)
         settings_dropdown.add_command(label='Reset Settings to Default',
@@ -57,7 +64,14 @@ class Menubar:
         menubar.add_cascade(label='About', menu=about_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
+        
+        self.menu_fields = [field for field in (file_dropdown, about_dropdown, settings_dropdown)]
 
+    def reconfigure_settings(self):
+        with open('settings.json', 'r') as settings_json:
+            settings = json.load(settings_json)
+        for field in self.menu_fields:
+            field.configure(bg=settings['menu_bg'])
 
     def open_color_picker(self):
         return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
@@ -129,6 +143,7 @@ class QuietText:
         self.bg_color = settings['bg_color']
         self.text_color = settings['text_color']
         self.tab_size = settings['tab_size']
+        self.font_style = tk_font.Font(family=self.text_font, size=settings['font_size'])
         
         self.master = master
         self.filename = None
@@ -146,7 +161,7 @@ class QuietText:
                                 wrap='word', spacing1=1, tabs=self.tab_size,
                                 spacing3=1, selectbackground='#3d3430',
                                 insertbackground='white', bd=0,
-                                insertofftime=0, font=self.text_font,
+                                insertofftime=0, font=self.font_style,
                                 undo=True, autoseparators=True, maxundo=-1)
 
         self.textarea.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -176,7 +191,8 @@ class QuietText:
             bg_color = settings['bg_color']
             text_color = settings['text_color']
             tab_size = settings['tab_size']
-            self.textarea.configure(font=text_font, bg=bg_color,
+            font_style = tk_font.Font(family=text_font, size=settings['font_size'])
+            self.textarea.configure(font=font_style, bg=bg_color,
                                     fg=text_color, tabs=tab_size)
             if overwrite:
                 MsgBox = tk.messagebox.askquestion('Reset Settings?',
@@ -232,6 +248,7 @@ class QuietText:
                 self.statusbar.update_status('saved')
                 if self.filename == 'settings.json':
                     self.reconfigure_settings(self.filename)
+                    self.menubar.reconfigure_settings()
             except Exception as e:
                 print(e)
         else:
