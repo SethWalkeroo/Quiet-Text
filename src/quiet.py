@@ -180,11 +180,14 @@ class QuietText:
                                         bd=0, tearoff=0)
 
         self.right_click_menu.add_command(label='Cut',
-                                          accelerator='Ctrl+X')
+                                          accelerator='Ctrl+X',
+                                          command=self.cut)
         self.right_click_menu.add_command(label='Copy',
-                                          accelerator='Ctrl+C')
+                                          accelerator='Ctrl+C',
+                                          command=self.copy)
         self.right_click_menu.add_command(label='Paste',
-                                          accelerator='Ctrl+V')
+                                          accelerator='Ctrl+V',
+                                          command=self.paste)
 
         self.bind_shortcuts()
     
@@ -318,7 +321,18 @@ class QuietText:
         finally:
             self.right_click_menu.grab_release()
 
+    def copy(self, event=None):
+        self.textarea.clipboard_clear()
+        text=self.textarea.get("sel.first", "sel.last")
+        self.textarea.clipboard_append(text)
 
+    def cut(self,event=None):
+        self.copy()
+        self.textarea.delete("sel.first", "sel.last")
+
+    def paste(self, event=None):
+        text = self.textarea.selection_get(selection='CLIPBOARD')
+        self.textarea.insert('insert',text)
 
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
