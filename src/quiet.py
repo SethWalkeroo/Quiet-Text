@@ -142,7 +142,7 @@ class TextLineNumbers(tk.Canvas):
     def redraw(self, *args):
         '''redraw line numbers'''
         self.delete("all")
-        self.config(width=(self._parent.font_size * 2))
+        self.config(width=(self._parent.font_size * 3))
 
         i = self.textwidget.index("@0,0")
         while True :
