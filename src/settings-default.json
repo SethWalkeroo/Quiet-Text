@@ -1,18 +1,17 @@
 {
-	"text_font": "monospace",
-	
-	"font_size": "14",
+   "text_font": "monospace",
 
-	"bg_color": "#261e1b",
+   "font_size": "14",
 
-	"text_color": "white",
+   "bg_color": "#38342b",
 
-	"tab_size": "1.1c",
+   "text_color": "white",
 
-	"menu_bg": "#2e2724",
+   "tab_size": "1.1c",
 
-	"menu_active_fg": "#fff",
+   "menu_bg": "#181816",
 
-	"menu_active_bg": "#9c8383"
+   "menu_active_fg": "#fff",
+
+   "menu_active_bg": "#38342b"
 }
-

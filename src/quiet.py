@@ -21,8 +21,8 @@ class Menubar:
         font_specs = ('Droid Sans Fallback', 12)
 
         menubar = tk.Menu(parent.master, font=font_specs,
-                          fg='#c9bebb', bg='#2e2724',
-                          activebackground='#9c8383',
+                          fg='#c9bebb', bg='#181816',
+                          activebackground='#38342b',
                           bd=0)
 
         parent.master.config(menu=menubar)
@@ -91,12 +91,12 @@ class Menubar:
 
     def about_message(self):
         box_title = 'About Quiet Text'
-        box_message = 'A simple text editor for your Python needs.'
+        box_message = 'A simple text editor for your Python and notetaking needs.'
         messagebox.showinfo(box_title, box_message)
 
     def release_notes(self):
         box_title = 'Release Notes'
-        box_message = 'Version 0.1 - Loud - this is the first version of Quiet Text'
+        box_message = 'Version 0.1'
         messagebox.showinfo(box_title, box_message)
 
 
@@ -110,7 +110,7 @@ class Statusbar:
         self.status.set('Quiet Text (v0.1)')
 
         label = tk.Label(parent.textarea, textvariable=self.status, fg='#c9bebb',
-                         bg='#2e2724', anchor='sw', font=font_specs)
+                         bg='#38342b', anchor='se', font=font_specs)
         label.pack(side=BOTTOM, fill=BOTH)
         self._label = label
 
@@ -195,7 +195,7 @@ class QuietText(tk.Frame):
         master.title('untitled - Quiet Text')
         master.geometry('1200x700')
 
-        master.tk_setPalette(background='#2e2724')
+        master.tk_setPalette(background='#181816')
 
         with open('settings.json') as settings_json:
             self.settings = json.load(settings_json)
@@ -226,7 +226,7 @@ class QuietText(tk.Frame):
                                 xscrollcommand=self.scrollx.set,
                                 bg=self.bg_color, fg=self.text_color,
                                 wrap='none', spacing1=1, tabs=self.tab_size,
-                                spacing3=1, selectbackground='#3d3430',
+                                spacing3=1, selectbackground='#7a7666',
                                 insertbackground='white', bd=0, insertofftime=0,
                                 highlightthickness=0, font=self.font_style,
                                 undo=True, autoseparators=True, maxundo=-1)
