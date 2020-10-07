@@ -1,6 +1,5 @@
 import os
 import json
-import re
 import tkinter as tk 
 import tkinter.font as tk_font
 from tkinter import filedialog, messagebox, colorchooser, END, BOTH, LEFT, RIGHT, BOTTOM, CENTER, Y
