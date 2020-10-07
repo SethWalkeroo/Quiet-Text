@@ -427,7 +427,6 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Control-q>', self.enter_quiet_mode)
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
-        # self.textarea.bind('<Key>', self.syntax_highlighting)
         self.textarea.bind('<<Change>>', self._on_change)
         self.textarea.bind('<Configure>', self._on_change)
         self.textarea.bind('<Button-3>', self.show_click_menu)
@@ -435,6 +434,11 @@ class QuietText(tk.Frame):
 
 if __name__ == '__main__':
     master = tk.Tk()
+    try:
+        p1 = tk.PhotoImage(file='../images/q.png')
+        master.iconphoto(False, p1)
+    except Exception as e:
+        print(e)
     qt = QuietText(master).pack(side='top', fill='both', expand=True)
     master.mainloop()
 
