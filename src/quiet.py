@@ -142,6 +142,7 @@ class TextLineNumbers(tk.Canvas):
     def redraw(self, *args):
         '''redraw line numbers'''
         self.delete("all")
+        self.config(width=(self._parent.font_size * 2))
 
         i = self.textwidget.index("@0,0")
         while True :
@@ -151,7 +152,7 @@ class TextLineNumbers(tk.Canvas):
             linenum = str(i).split(".")[0]
             self.create_text(2, y, anchor="nw",
                              text=linenum,
-                             font=self._text_font,
+                             font=(self._text_font, self._parent.font_size),
                              fill='#c9bebb')
             i = self.textwidget.index("%s+1line" % i)
 
@@ -203,6 +204,7 @@ class QuietText(tk.Frame):
         self.bg_color = self.settings['bg_color']
         self.text_color = self.settings['text_color']
         self.tab_size = self.settings['tab_size']
+        self.font_size = int(self.settings['font_size'])
         self.font_style = tk_font.Font(family=self.text_font,
                                        size=self.settings['font_size'])
         
@@ -232,7 +234,7 @@ class QuietText(tk.Frame):
 
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
-        self.linenumbers = TextLineNumbers(self, width=35)
+        self.linenumbers = TextLineNumbers(self)
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=RIGHT, fill=Y)
@@ -260,7 +262,8 @@ class QuietText(tk.Frame):
         
         #calling function to bind hotkeys.
         self.bind_shortcuts()
-    
+        self.control_key = False
+
     #function used to reload settings after the user changes in settings.json
     def reconfigure_settings(self, settings_path, overwrite=False):
             with open(settings_path, 'r') as settings_json:
@@ -416,6 +419,39 @@ class QuietText(tk.Frame):
     def _on_change(self, key_event):
         self.linenumbers.redraw()
 
+    def _on_mousewheel(self, event):
+        if self.control_key:
+            self.change_font_size(1 if event.delta > 0 else -1)
+
+    def _on_linux_scroll_up(self, _):
+        if self.control_key:
+            self.change_font_size(1)
+
+    def _on_linux_scroll_down(self, _):
+        if self.control_key:
+            self.change_font_size(-1)
+
+    def change_font_size(self, delta):
+        self.font_size = self.font_size + delta
+        min_font_size = 6
+        self.font_size = min_font_size if self.font_size < min_font_size else self.font_size
+        self.font_style = tk_font.Font(family=self.text_font,
+                                       size=self.font_size)
+        self.textarea.configure(font=self.font_style)
+
+    # control_l = 37
+    # control_r = 109
+    # mac_control = 262401 #control key in mac keyboard
+    # mac_control_l = 270336 #left control key in mac os with normal keyboard
+    # mac_control_r = 262145 #right control key in mac os with normal keyboard
+    def _on_keydown(self, event):
+        if event.keycode in [37, 109, 262401, 270336, 262145]:
+            self.control_key = True
+
+    def _on_keyup(self, event):
+        if event.keycode in [37, 109, 262401, 270336, 262145]:
+            self.control_key = False
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
@@ -430,6 +466,11 @@ class QuietText(tk.Frame):
         self.textarea.bind('<<Change>>', self._on_change)
         self.textarea.bind('<Configure>', self._on_change)
         self.textarea.bind('<Button-3>', self.show_click_menu)
+        self.textarea.bind('<MouseWheel>', self._on_mousewheel)
+        self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
+        self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
+        self.textarea.bind('<KeyPress>', self._on_keydown)
+        self.textarea.bind('<KeyRelease>', self._on_keyup)
 
 
 if __name__ == '__main__':
