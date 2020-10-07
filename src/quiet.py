@@ -12,6 +12,7 @@ class Menu(tk.Menu):
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
+                         foreground='white',
                          activeborderwidth=0,
                          *args, **kwargs)
 
@@ -22,6 +23,7 @@ class Menubar:
 
         menubar = tk.Menu(parent.master, font=font_specs,
                           fg='#c9bebb', bg='#181816',
+                          activeforeground='white',
                           activebackground='#38342b',
                           bd=0)
 
@@ -195,7 +197,7 @@ class QuietText(tk.Frame):
         master.title('untitled - Quiet Text')
         master.geometry('1200x700')
 
-        master.tk_setPalette(background='#181816')
+        master.tk_setPalette(background='#181816', foreground='black')
 
         with open('settings.json') as settings_json:
             self.settings = json.load(settings_json)
@@ -482,6 +484,7 @@ if __name__ == '__main__':
         print(e)
     qt = QuietText(master).pack(side='top', fill='both', expand=True)
     master.mainloop()
+
 
 
 
