@@ -167,8 +167,11 @@ class CustomText(tk.Text):
 
     def _proxy(self, *args):
         # let the actual widget perform the requested action
-        cmd = (self._orig,) + args
-        result = self.tk.call(cmd)
+        try:
+            cmd = (self._orig,) + args
+            result = self.tk.call(cmd)
+        except tk.TclError:
+            result = ''
 
         # generate an event if something was added or deleted,
         # or the cursor position changed
