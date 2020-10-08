@@ -22,7 +22,7 @@
 
 
 ## Table of contents
-- [About] (#about)
+- [About](#about)
 - [Installation/Setup](#installation)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Contributing](#contributing)
