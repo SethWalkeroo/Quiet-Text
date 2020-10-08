@@ -1,0 +1,13 @@
+bg_color: '#38342b'
+bottom_spacing: '1'
+font_size: 14
+font_style: monospace
+insertion_blink: 'true'
+menu_active_bg: '#38342b'
+menu_active_fg: '#fff'
+menu_bg: '#181816'
+padding_x: '5'
+padding_y: '5'
+tab_size: '4'
+text_color: white
+top_spacing: '1'

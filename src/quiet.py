@@ -1,5 +1,5 @@
 import os
-import json
+import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
 from tkinter import (filedialog, messagebox, colorchooser, END,
@@ -7,10 +7,10 @@ from tkinter import (filedialog, messagebox, colorchooser, END,
 
 
 class Menu(tk.Menu):
-    # menu method and its initializatipn from settings.json
+    # menu method and its initializatipn from settings.yaml
     def __init__(self, *args, **kwargs):
-        with open('settings.json', 'r') as settings_json:
-            settings = json.load(settings_json)
+        with open('settings.yaml', 'r') as settings_yaml:
+            settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
@@ -90,8 +90,8 @@ class Menubar:
 
     # Settings reconfiguration function
     def reconfigure_settings(self):
-        with open('settings.json', 'r') as settings_json:
-            settings = json.load(settings_json)
+        with open('settings.yaml', 'r') as settings_yaml:
+            settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
         for field in self.menu_fields:
             field.configure(bg=settings['menu_bg'],
                             activeforeground=settings['menu_active_fg'],
@@ -239,9 +239,9 @@ class QuietText(tk.Frame):
                              activeForeground='white',
                              activeBackground='#9c8383',)
 
-        # start editor according to defined settings in settings.json
-        with open('settings.json') as settings_json:
-            self.settings = json.load(settings_json)
+        # start editor according to defined settings in settings.yaml
+        with open('settings.yaml') as settings_yaml:
+            self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
 
         master.tk_setPalette(background='#181816', foreground='black')
 
@@ -355,13 +355,18 @@ class QuietText(tk.Frame):
 
     def load_settings_data(self, settings_path):
         settings_path = settings_path
-        with open(settings_path, 'r') as settings_json:
-            _settings = json.load(settings_json)
+        with open(settings_path, 'r') as settings_yaml:
+            _settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
             return _settings
 
     def store_settings_data(self, information):
-        with open('settings.json', 'w') as user_settings:
-            json.dump(information, user_settings)
+        with open('settings.yaml', 'w') as user_settings:
+            yaml.dump(information, user_settings)
+
+    def clear_and_replace_textarea(self):
+            self.textarea.delete(1.0, END)
+            with open(self.filename, 'r') as f:
+                self.textarea.insert(1.0, f.read())
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
@@ -374,7 +379,7 @@ class QuietText(tk.Frame):
         self.textarea.config(tabs=(_tab_width,))
 
     # editor basic settings can be altered here
-    #function used to reload settings after the user changes in settings.json
+    #function used to reload settings after the user changes in settings.yaml
     def reconfigure_settings(self, settings_path, overwrite=False):
             _settings = self.load_settings_data(settings_path)
             font_style = _settings['font_style']
@@ -411,7 +416,7 @@ class QuietText(tk.Frame):
                 if MsgBox == 'yes':
                     self.store_settings_data(_settings)
                 else:
-                    self.save('settings.json')
+                    self.save('settings.yaml')
 
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
@@ -456,9 +461,7 @@ class QuietText(tk.Frame):
                        ('CSS Documents', '*.css')])
 
         if self.filename:
-            self.textarea.delete(1.0, END)
-            with open(self.filename, 'r') as f:
-                self.textarea.insert(1.0, f.read())
+            self.clear_and_replace_textarea()
             self.set_window_title(name=self.filename)
 
     # saving changes made in the file
@@ -469,7 +472,7 @@ class QuietText(tk.Frame):
                 with open(self.filename, 'w') as f:
                     f.write(textarea_content)
                 self.statusbar.update_status('saved')
-                if self.filename == 'settings.json':
+                if self.filename == 'settings.yaml':
                     self.reconfigure_settings(self.filename)
                     self.menubar.reconfigure_settings()
             except Exception as e:
@@ -509,7 +512,7 @@ class QuietText(tk.Frame):
 
     # opens the main setting file of the editor
     def open_settings_file(self):
-        self.filename = 'settings.json'
+        self.filename = 'settings.yaml'
         self.textarea.delete(1.0, END)
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
@@ -517,7 +520,8 @@ class QuietText(tk.Frame):
 
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
-        self.reconfigure_settings('settings-default.json', overwrite=True)
+        self.reconfigure_settings('settings-default.yaml', overwrite=True)
+        self.clear_and_replace_textarea()
 
     # select all written text in the editor
     def select_all_text(self, *args):
@@ -586,10 +590,14 @@ class QuietText(tk.Frame):
         self.font_style = tk_font.Font(family=self.font_style,
                                        size=self.font_size)
         self.textarea.configure(font=self.font_style)
+
         self.set_new_tab_width()
-        # _settings = self.load_settings_data('settings.json')
-        # _settings['font_size'] = self.font_size
-        # self.store_settings_data(_settings)
+        _settings = self.load_settings_data('settings.yaml')
+        _settings['font_size'] = self.font_size
+        self.store_settings_data(_settings)
+
+        if self.filename == 'settings.yaml':
+            self.clear_and_replace_textarea()
 
 
     # control_l = 37
