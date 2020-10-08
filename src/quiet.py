@@ -4,7 +4,7 @@ import tkinter as tk
 import tkinter.font as tk_font
 from tkinter import (filedialog, messagebox, colorchooser, END,
                     BOTH, LEFT, RIGHT, BOTTOM, CENTER, Y, ttk)
-
+from tkinter import *
 
 class Menu(tk.Menu):
     # menu method and its initializatipn from settings.yaml
@@ -62,7 +62,7 @@ class Menubar:
         # exit feature
         file_dropdown.add_separator()
         file_dropdown.add_command(label='Exit',
-                                  command=parent.master.destroy)
+                                  command=parent.quit_msg)
         # adding featues to about dropdown in menubar
         about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         about_dropdown.add_command(label='Release Notes',
@@ -506,6 +506,28 @@ class QuietText(tk.Frame):
         except Exception as e:
             print(e)
 
+    def quit_save(self):
+        try:
+            os.path.isfile(self.filename)
+            self.save()
+        except:
+            self.save_as()
+        quit()
+
+    def quit_msg(self):
+        qw = Tk()
+        frame1 = Frame(qw, highlightbackground="green", highlightcolor="green", highlightthickness=1, bd=0)
+        frame1.pack()
+        qw.overrideredirect(1)
+        qw.geometry("200x70+650+400")
+        lbl = Label(frame1, text="Do You want to Save before quitting")
+        lbl.pack()
+        yes_btn = Button(frame1, text="Yes", bg="light blue", fg="red", command=self.quit_save, width=10)
+        yes_btn.pack(padx=10, pady=10, side=LEFT)
+        no_btn = Button(frame1, text="No", bg="light blue", fg="red", command=quit, width=10)
+        no_btn.pack(padx=10, pady=10, side=LEFT)
+
+        qw.mainloop()
     # running the python file
     def run(self, *args):
         if self.filename:
