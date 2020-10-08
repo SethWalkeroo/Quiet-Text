@@ -1,9 +1,36 @@
-# Quiet-Text
-Quiet Text is a simple, minimalist text editor made with Python's Tkinter GUI library. Quiet Text aims to create a calming and distraction free text environment for writing code and taking notes.
+<p align="center">
+    <img src="/images/q.png" alt="Quiet Text logo" width="72" height="72">
+  </a>
+</p>
 
-<img src="images/picture_of_app.png" alt="there should be an image here...">
+<h2 align="center">Quiet Text</h2>
 
-# Keyboard Shortcuts
+<p align="center">
+  Quiet Text is a simple, minimalist text editor made with Python's Tkinter GUI library. Quiet Text aims to create a calming and distraction   free text environment for writing code and taking notes.
+</p>
+
+
+# Preview
+
+<p>
+  <img src="images/picture_of_app.png" alt="there should be an image here...">
+</p>
+
+
+
+
+
+
+## Table of contents
+- [Installation/Setup](#installation)
+- [Keyboard Shortcuts](#keyboard-shortcuts)
+- [Contributing](#contributing)
+
+
+
+
+
+## Keyboard Shortcuts
 Quiet Text has shortcuts for most commonly performed actions. The list of all the shortcuts is presented bellow:
 
 | Command | KeyBinding | Description |
@@ -19,18 +46,9 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | Save | <kbd>ctrl</kbd>+<kbd>s</kbd> | Save the currently active file |
 | Save As | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>s</kbd> | Save the currently active file under a different name |
 
-# Goals
 
-- [x] Create a visually pleasing text editor! ;)
-- [ ] Add syntax highlighting for Python.
-- [ ] Allow user's to launch the terminal and run their scripts from any platform.
-- [ ] Add special markdown for making lists and notetaking.
-- [ ] Allow full customization of the editor's theme and colors.
-- [ ] Add helpful features for programming like autoclosing brackets and parenthesis.
 
-#### suggestions are welcome!
-
-# Installation
+## Installation
 
 This project requires a Python3 interpreter with Tkinter support.
 You can test it using
@@ -59,7 +77,13 @@ docker run --network=host --rm -e DISPLAY=$DISPLAY -v $XAUTH:/root/.Xauthority q
 
 Be aware, that the Docker container has full access to your machine! So you better trust the executed code.
 
-# Contributing Guidelines
+
+
+
+
+
+
+## Contributing 
 
 * Issues are open to anyone and everyone, but you must comment on the issue first and communicate to me that you are working on it. If you are confident in your ability, I will assign you to the issue. 
 
@@ -72,3 +96,22 @@ Be aware, that the Docker container has full access to your machine! So you bett
 * Please make sure your code works before you submit it :)
 
 #### check CONTRIBUTING.md for guidlines on how to make a pull request.
+
+
+
+
+
+
+## Goals
+
+- [x] Create a visually pleasing text editor! ;)
+- [ ] Add syntax highlighting for Python.
+- [ ] Allow user's to launch the terminal and run their scripts from any platform.
+- [ ] Add special markdown for making lists and notetaking.
+- [ ] Allow full customization of the editor's theme and colors.
+- [ ] Add helpful features for programming like autoclosing brackets and parenthesis.
+
+#### suggestions are welcome!
+
+
+
