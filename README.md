@@ -66,6 +66,7 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 
 | Command | KeyBinding | Description |
 | ------- | ---------- | ----------- |
+| Change Font Size | <kbd>ctrl</kbd>+<kbd>mousewheel</kbd> | Increases or decrease font size |
 | Copy | <kbd>ctrl</kbd>+<kbd>c</kbd> | Copy selected text |
 | Cut | <kbd>ctrl</kbd>+<kbd>x</kbd> | Cut selected text |
 | Paste | <kbd>ctrl</kbd>+<kbd>v</kbd> | Paste text from the clipboard |
