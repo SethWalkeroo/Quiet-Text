@@ -79,12 +79,19 @@ class Menubar:
         settings_dropdown.add_command(label='Reset Settings to Default',
                                       command=parent.reset_settings_file)
 
+        view_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        view_dropdown.add_command(label='Hide Menu Bar',
+                                  command=self.hide_menu)
+        view_dropdown.add_command(label='Hide Status Bar',
+                                  command=parent.hide_status_bar)
+
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
-        menubar.add_cascade(label='About', menu=about_dropdown)
+        menubar.add_cascade(label='View', menu=view_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
+        menubar.add_cascade(label='About', menu=about_dropdown)
         
         self.menu_fields = [field for field in (file_dropdown, about_dropdown, settings_dropdown)]
 
@@ -368,8 +375,11 @@ class QuietText(tk.Frame):
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, END)
-            with open(self.filename, 'r') as f:
-                self.textarea.insert(1.0, f.read())
+            try:
+                with open(self.filename, 'r') as f:
+                    self.textarea.insert(1.0, f.read())
+            except TypeError:
+                pass
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
@@ -434,6 +444,11 @@ class QuietText(tk.Frame):
         self.menubar.show_menu()
         self.scrollx.configure(width=8)
         self.scrolly.configure(width=8)
+
+    #hide status bar for text class so it can be used in menu class
+    def hide_status_bar(self, *args):
+        self.statusbar.hide_status_bar()
+
 
     # setting up the editor title
     #Renames the window title bar to the name of the current file.
