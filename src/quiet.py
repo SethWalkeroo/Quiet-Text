@@ -206,6 +206,7 @@ class CustomText(tk.Text):
         tk.Text.__init__(self, *args, **kwargs)
 
         # create a proxy for the underlying widget
+        self.isControlPressed = False
         self._orig = self._w + '_orig'
         self.tk.call('rename', self._w, self._orig)
         self.tk.createcommand(self._w, self._proxy)
@@ -214,7 +215,14 @@ class CustomText(tk.Text):
         # let the actual widget perform the requested action
         try:
             cmd = (self._orig,) + args
-            result = self.tk.call(cmd)
+            result = ''
+            if not self.isControlPressed:
+                # if command is not present, execute the event
+                result = self.tk.call(cmd)
+            else:
+                # Suppress y-scroll and x-scroll when control is pressed
+                if args[0:2] not in [('yview', 'scroll'), ('xview', 'scroll')]:
+                    result = self.tk.call(cmd)
         except tk.TclError:
             result = ''
 
@@ -664,11 +672,13 @@ class QuietText(tk.Frame):
     def _on_keydown(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
+            self.textarea.isControlPressed = True
             self.textarea.configure()
 
     def _on_keyup(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = False
+            self.textarea.isControlPressed = False
 
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
