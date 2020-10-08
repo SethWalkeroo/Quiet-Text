@@ -57,7 +57,7 @@ class Menubar:
                                    command=parent.save_as)
         # run file feature
         file_dropdown.add_command(label='Run File',
-                                   accelerator='Ctrl+b',
+                                   accelerator='Ctrl+R',
                                    command=parent.run)
         # exit feature
         file_dropdown.add_separator()
@@ -344,6 +344,12 @@ class QuietText(tk.Frame):
         self.right_click_menu.add_command(label='Paste',
                                           accelerator='Ctrl+V',
                                           command=self.paste)
+        self.right_click_menu.add_command(label='Bold',
+                                          accelerator='Ctrl+B',
+                                          command=self.bold)
+        self.right_click_menu.add_command(label='Highlight',
+                                          accelerator='Ctrl+G',
+                                          command=self.hightlight)
 
         # self.tabs = ttk.Notebook(self.master)
         # self.tabs.pack(side=BOTTOM)
@@ -570,6 +576,38 @@ class QuietText(tk.Frame):
             self.textarea.insert('insert',text)
         except tk.TclError:
             pass
+
+    # Setting the selected text to be bold
+    def bold(self, event=None):
+        try:
+            if(os.path.splitext(self.filename)[1][1:] == "txt"):
+                current_tags = self.textarea.tag_names("sel.first")
+                bold_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
+                bold_font.configure(weight = "bold")
+                self.textarea.tag_configure("bold", font = bold_font)
+                if "bold" in current_tags:
+                    self.textarea.tag_remove("bold", "sel.first", "sel.last")
+                else:
+                    self.textarea.tag_add("bold", "sel.first", "sel.last")
+            else: pass
+        except tk.TclError:
+            pass
+
+    def hightlight(self, event=None):
+        try:
+            if(os.path.splitext(self.filename)[1][1:] == "txt"):
+                new_color = colorchooser.askcolor()
+                current_tags = self.textarea.tag_names("sel.first")
+                highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
+                self.textarea.tag_configure("highlight", font = highlight_font, background = new_color)
+                if "highlight" in current_tags:
+                    self.textarea.tag_remove("highlight", "sel.first", "sel.last")
+                else:
+                    self.textarea.tag_add("highlight", "sel.first", "sel.last")
+            else: pass
+        except tk.TclError:
+            pass
+        
           
     def _on_change(self, key_event):
         self.linenumbers.redraw()
@@ -622,9 +660,11 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Control-o>', self.open_file)
         self.textarea.bind('<Control-s>', self.save)
         self.textarea.bind('<Control-S>', self.save_as)
-        self.textarea.bind('<Control-b>', self.run)
+        self.textarea.bind('<Control-b>', self.bold)
+        self.textarea.bind('<Control-g>', self.hightlight)
         self.textarea.bind('<Control-a>', self.select_all_text)
         self.textarea.bind('<Control-h>', self.apply_hex_color)
+        self.textarea.bind('<Control-r>', self.run)
         self.textarea.bind('<Control-q>', self.enter_quiet_mode)
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
