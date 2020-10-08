@@ -84,7 +84,7 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 
 
 
-## <a href="contributing.md">Contributing</a>
+## <a href="CONTRIBUTING.md">Contributing</a>
 
 * Issues are open to anyone and everyone, but you must comment on the issue first and communicate to me that you are working on it. If you are confident in your ability, I will assign you to the issue. 
 
