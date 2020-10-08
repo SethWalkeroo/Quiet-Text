@@ -361,7 +361,7 @@ class QuietText(tk.Frame):
 
     def store_settings_data(self, information):
         with open('settings.json', 'w') as user_settings:
-            json.dump(_settings, user_settings)
+            json.dump(information, user_settings)
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
