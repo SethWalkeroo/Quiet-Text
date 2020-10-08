@@ -169,7 +169,7 @@ class Statusbar:
 class TextLineNumbers(tk.Canvas):
     def __init__(self, parent, *args, **kwargs):
         tk.Canvas.__init__(self, *args, **kwargs)
-        self._text_font = parent.settings['font_style']
+        self._text_font = parent.settings['font_family']
         self._parent = parent
         self.textwidget = parent.textarea
 
@@ -245,7 +245,7 @@ class QuietText(tk.Frame):
 
         master.tk_setPalette(background='#181816', foreground='black')
 
-        self.font_style = self.settings['font_style']
+        self.font_family = self.settings['font_family']
         self.bg_color = self.settings['bg_color']
         self.text_color = self.settings['text_color']
         self.tab_size = self.settings['tab_size']
@@ -256,7 +256,10 @@ class QuietText(tk.Frame):
         self.padding_y = self.settings['padding_y']
         self.insertion_blink_bool = self.settings['insertion_blink']
         self.tab_size_spaces = self.settings['tab_size']
-        
+
+        self.font_style = tk_font.Font(family=self.font_family,
+                                       size=self.settings['font_size'])
+
         self.master = master
         self.filename = None
                                 
@@ -294,7 +297,7 @@ class QuietText(tk.Frame):
                                 insertbackground='white',
                                 bd=0,
                                 highlightthickness=0,
-                                font=self.font_style,
+                                font=self.font_family,
                                 undo=True,
                                 autoseparators=True,
                                 maxundo=-1,
@@ -308,7 +311,7 @@ class QuietText(tk.Frame):
 
         #retrieving the font from the text area and setting a tab width
         self._font = tk_font.Font(font=self.textarea['font'])
-        self._tab_width = self._font.measure(' ' * int(self.tab_size_spaces))
+        self._tab_width = self._font.measure(' ' * self.tab_size_spaces)
         self.textarea.config(tabs=(self._tab_width,))
 
         self.menubar = Menubar(self)
@@ -323,7 +326,7 @@ class QuietText(tk.Frame):
 
         # setting right click menu bar
         self.right_click_menu = tk.Menu(master,
-                                        font=self.font_style,
+                                        font=self.font_family,
                                         fg='#c9bebb',
                                         bg='#2e2724',
                                         activebackground='#9c8383',
@@ -382,7 +385,7 @@ class QuietText(tk.Frame):
     #function used to reload settings after the user changes in settings.yaml
     def reconfigure_settings(self, settings_path, overwrite=False):
             _settings = self.load_settings_data(settings_path)
-            font_style = _settings['font_style']
+            font_family = _settings['font_family']
             bg_color = _settings['bg_color']
             text_color = _settings['text_color']
             top_spacing = _settings['top_spacing']
@@ -392,7 +395,7 @@ class QuietText(tk.Frame):
             padding_x = _settings['padding_x']
             padding_y = _settings['padding_y']
 
-            font_style = tk_font.Font(family=font_style,
+            font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
 
             self.textarea.configure(font=font_style,
