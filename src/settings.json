@@ -1,5 +1,5 @@
 {
-   "text_font": "monospace",
+   "font_style": "monospace",
 
    "font_size": "14",
 
@@ -15,6 +15,10 @@
 
    "menu_active_bg": "#38342b"
 }
+
+
+
+
 
 
 

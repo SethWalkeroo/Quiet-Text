@@ -2,7 +2,8 @@ import os
 import json
 import tkinter as tk 
 import tkinter.font as tk_font
-from tkinter import filedialog, messagebox, colorchooser, END, BOTH, LEFT, RIGHT, BOTTOM, CENTER, Y
+from tkinter import (filedialog, messagebox, colorchooser, END,
+                    BOTH, LEFT, RIGHT, BOTTOM, CENTER, Y, ttk)
 
 
 class Menu(tk.Menu):
@@ -157,12 +158,11 @@ class Statusbar:
     def show_status_bar(self):
         self._label.pack(side=BOTTOM, fill=BOTH)
 
-
-      
+   
 class TextLineNumbers(tk.Canvas):
     def __init__(self, parent, *args, **kwargs):
         tk.Canvas.__init__(self, *args, **kwargs)
-        self._text_font = parent.settings['text_font']
+        self._text_font = parent.settings['font_style']
         self._parent = parent
         self.textwidget = parent.textarea
 
@@ -185,7 +185,6 @@ class TextLineNumbers(tk.Canvas):
                              font=(self._text_font, self._parent.font_size),
                              fill='#c9bebb')
             i = self.textwidget.index('%s+1line' % i)
-
 
 class CustomText(tk.Text):
     def __init__(self, *args, **kwargs):
@@ -233,34 +232,21 @@ class QuietText(tk.Frame):
                      activeBackground='#9c8383',)
         # start editor according to defined settings in settings.json
         with open('settings.json') as settings_json:
-            settings = json.load(settings_json)
+            self.settings = json.load(settings_json)
 
         master.tk_setPalette(background='#181816', foreground='black')
 
-        with open('settings.json') as settings_json:
-            self.settings = json.load(settings_json)
-
-        self.text_font = self.settings['text_font']
+        self.font_style = self.settings['font_style']
         self.bg_color = self.settings['bg_color']
         self.text_color = self.settings['text_color']
         self.tab_size = self.settings['tab_size']
         self.font_size = int(self.settings['font_size'])
-        self.font_style = tk_font.Font(family=self.text_font,
-                                       size=self.settings['font_size'])
         
         self.master = master
         self.filename = None
-
-        self.textarea = tk.Text(master, font=self.text_font)
-        # defined editor scrollba
-        self.scroll = tk.Scrollbar(master, command=self.textarea.yview,
-                                   bg='#383030',troughcolor='#2e2724',
-                                   bd=0, width=8, highlightthickness=0,
-                                   activebackground='#8a7575')
-        # configuring of the editor after scrolling
                                 
-        
         self.textarea = CustomText(self)
+
         self.scrolly = tk.Scrollbar(master, command=self.textarea.yview,
                                    bg='#383030',troughcolor='#2e2724',
                                    bd=0, width=8, highlightthickness=0,
@@ -284,8 +270,6 @@ class QuietText(tk.Frame):
 
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
-
-
         self.linenumbers = TextLineNumbers(self)
 
         self.linenumbers.attach(self.textarea)
@@ -295,7 +279,7 @@ class QuietText(tk.Frame):
         self.textarea.pack(side=RIGHT, fill=BOTH, expand=True)
 
         # setting right click menu bar
-        self.right_click_menu = tk.Menu(master, font=self.text_font,
+        self.right_click_menu = tk.Menu(master, font=self.font_style,
                                         fg='#c9bebb', bg='#2e2724',
                                         activebackground='#9c8383',
                                         bd=0, tearoff=0)
@@ -310,7 +294,10 @@ class QuietText(tk.Frame):
                                           accelerator='Ctrl+V',
                                           command=self.paste)
 
-        #loading in characters for the python syntax then setting their colors.
+        # self.tabs = ttk.Notebook(self.master)
+        # self.tabs.pack(side=BOTTOM)
+        # f1 = tk.Frame(self.tabs)
+        # self.tabs.add(f1, text='working?')
 
         
         #calling function to bind hotkeys.
@@ -319,17 +306,23 @@ class QuietText(tk.Frame):
 
 
     # editor basic settings can be altered here
-                             
+
+
+    def reset_layout(self):
+        self.scrolly.pack(side=RIGHT, fill=Y)
+        self.scrollx.pack(side=BOTTOM, fill=BOTH)
+        self.linenumbers.pack(side=LEFT, fill=Y)
+        self.textarea.pack(side=RIGHT, fill=BOTH, expand=True)     
 
     #function used to reload settings after the user changes in settings.json
     def reconfigure_settings(self, settings_path, overwrite=False):
             with open(settings_path, 'r') as settings_json:
                 _settings = json.load(settings_json)
-            text_font = _settings['text_font']
+            font_style = _settings['font_style']
             bg_color = _settings['bg_color']
             text_color = _settings['text_color']
             tab_size = _settings['tab_size']
-            font_style = tk_font.Font(family=text_font, size=_settings['font_size'])
+            font_style = tk_font.Font(family=font_style, size=_settings['font_size'])
             self.textarea.configure(font=font_style, bg=bg_color,
                                     fg=text_color, tabs=tab_size)
             if overwrite:
@@ -341,7 +334,6 @@ class QuietText(tk.Frame):
                     self.save('settings.json')
 
         
-
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
         self.statusbar.hide_status_bar()
@@ -515,7 +507,7 @@ class QuietText(tk.Frame):
         self.font_size = self.font_size + delta
         min_font_size = 6
         self.font_size = min_font_size if self.font_size < min_font_size else self.font_size
-        self.font_style = tk_font.Font(family=self.text_font,
+        self.font_style = tk_font.Font(family=self.font_style,
                                        size=self.font_size)
         self.textarea.configure(font=self.font_style)
 
@@ -527,10 +519,13 @@ class QuietText(tk.Frame):
     def _on_keydown(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
+            # self.scrolly.pack_forget()
 
     def _on_keyup(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = False
+            self.scrolly.pack(side=RIGHT, fill=Y)
+
 
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
