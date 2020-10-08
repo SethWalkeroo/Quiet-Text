@@ -22,10 +22,15 @@
 
 
 ## Table of contents
+- [About] (#about)
 - [Installation/Setup](#installation)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Contributing](#contributing)
 
+
+## About
+
+Quiet Text aims to give you a **clean and simple** text editor experience. Everything is right in front of you and all completely customizable to your preferences. Although we do plan on adding more features to increase functionality, the goal is to create a **calm, focused, and distraction free** programming and notetaking environment. 
 
 
 
