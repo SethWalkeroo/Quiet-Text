@@ -596,10 +596,10 @@ class QuietText(tk.Frame):
     def hightlight(self, event=None):
         try:
             if(os.path.splitext(self.filename)[1][1:] == "txt"):
-                new_color = colorchooser.askcolor()
+                new_color = self.menubar.open_color_picker()
                 current_tags = self.textarea.tag_names("sel.first")
                 highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
-                self.textarea.tag_configure("highlight", font = highlight_font, background = new_color)
+                self.textarea.tag_configure("highlight", font = highlight_font, foreground = "black", background = new_color)
                 if "highlight" in current_tags:
                     self.textarea.tag_remove("highlight", "sel.first", "sel.last")
                 else:
