@@ -6,6 +6,11 @@
 <h2 align="center">Quiet Text</h2>
 
 <p align="center">
+   <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/sethwalkeroo/Quiet-Text">
+   <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/sethwalkeroo/Quiet-Text">
+</p>
+
+<p align="center">
   Quiet Text is a simple, minimalist text editor made with Python's Tkinter GUI library. Quiet Text aims to create a calming and distraction   free text environment for writing code and taking notes.
 </p>
 
