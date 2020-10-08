@@ -617,6 +617,25 @@ class QuietText(tk.Frame):
         if self.filename == 'settings.yaml':
             self.clear_and_replace_textarea()
 
+    # This is the new function to change the font size using ctrl+mousewheel
+    def scroll_font_size(self,event,*args):
+        with open('settings.yaml', 'r') as settings_json:
+            settings = yaml.load(settings_json)
+        fontSize = settings['font_size']
+        font_family = settings['font_family']
+        if event.delta == 120:
+            fontSize = str(int(fontSize)+2)
+        if event.delta == -120:
+            fontSize = str(int(fontSize)-2)
+            
+        settings['font_size'] = fontSize
+        font_style = tk_font.Font(family=font_family,size=fontSize)
+        # text_font = settings['text_font']
+        # font_style = tk_font.Font(family=text_font, size=fontSize)
+        self.textarea.configure(font=font_style)
+        with open("settings.yaml", "w") as settings_json:
+            yaml.dump(settings, settings_json)
+
 
     # control_l = 37
     # control_r = 109
@@ -646,11 +665,12 @@ class QuietText(tk.Frame):
         self.textarea.bind('<<Change>>', self._on_change)
         self.textarea.bind('<Configure>', self._on_change)
         self.textarea.bind('<Button-3>', self.show_click_menu)
-        self.textarea.bind('<MouseWheel>', self._on_mousewheel)
+        # self.textarea.bind('<MouseWheel>', self._on_mousewheel)
         self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
         self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
         self.textarea.bind('<KeyPress>', self._on_keydown)
         self.textarea.bind('<KeyRelease>', self._on_keyup)
+        self.textarea.bind('<Control-MouseWheel>', self.scroll_font_size)
 
 
 if __name__ == '__main__':

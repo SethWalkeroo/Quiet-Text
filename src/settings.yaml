@@ -1,7 +1,7 @@
 bg_color: '#38342b'
 bottom_spacing: '1'
 font_family: monospace
-font_size: 12
+font_size: '24'
 insertion_blink: 'false'
 menu_active_bg: '#38342b'
 menu_active_fg: '#fff'
@@ -11,4 +11,3 @@ padding_y: '5'
 tab_size: 4
 text_color: white
 top_spacing: '1'
-
