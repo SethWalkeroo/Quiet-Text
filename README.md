@@ -12,6 +12,8 @@
 
 # Preview
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/751435bda6a445dd880710ed758ef4ae)](https://app.codacy.com/gh/SethWalkeroo/Quiet-Text?utm_source=github.com&utm_medium=referral&utm_content=SethWalkeroo/Quiet-Text&utm_campaign=Badge_Grade)
+
 <p>
   <img src="images/picture_of_app.png" alt="there should be an image here...">
 </p>
