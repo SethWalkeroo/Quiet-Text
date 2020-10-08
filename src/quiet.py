@@ -57,7 +57,7 @@ class Menubar:
                                    command=parent.save_as)
         # run file feature
         file_dropdown.add_command(label='Run File',
-                                   accelerator='Ctrl+b',
+                                   accelerator='Ctrl+R',
                                    command=parent.run)
         # exit feature
         file_dropdown.add_separator()
@@ -79,12 +79,19 @@ class Menubar:
         settings_dropdown.add_command(label='Reset Settings to Default',
                                       command=parent.reset_settings_file)
 
+        view_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        view_dropdown.add_command(label='Hide Menu Bar',
+                                  command=self.hide_menu)
+        view_dropdown.add_command(label='Hide Status Bar',
+                                  command=parent.hide_status_bar)
+
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
-        menubar.add_cascade(label='About', menu=about_dropdown)
+        menubar.add_cascade(label='View', menu=view_dropdown)
         menubar.add_command(label='Hex Colors', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
+        menubar.add_cascade(label='About', menu=about_dropdown)
         
         self.menu_fields = [field for field in (file_dropdown, about_dropdown, settings_dropdown)]
 
@@ -352,6 +359,12 @@ class QuietText(tk.Frame):
         self.right_click_menu.add_command(label='Paste',
                                           accelerator='Ctrl+V',
                                           command=self.paste)
+        self.right_click_menu.add_command(label='Bold',
+                                          accelerator='Ctrl+B',
+                                          command=self.bold)
+        self.right_click_menu.add_command(label='Highlight',
+                                          accelerator='Ctrl+G',
+                                          command=self.hightlight)
 
         # self.tabs = ttk.Notebook(self.master)
         # self.tabs.pack(side=BOTTOM)
@@ -376,8 +389,11 @@ class QuietText(tk.Frame):
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, END)
-            with open(self.filename, 'r') as f:
-                self.textarea.insert(1.0, f.read())
+            try:
+                with open(self.filename, 'r') as f:
+                    self.textarea.insert(1.0, f.read())
+            except TypeError:
+                pass
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
@@ -442,6 +458,11 @@ class QuietText(tk.Frame):
         self.menubar.show_menu()
         self.scrollx.configure(width=8)
         self.scrolly.configure(width=8)
+
+    #hide status bar for text class so it can be used in menu class
+    def hide_status_bar(self, *args):
+        self.statusbar.hide_status_bar()
+
 
     # setting up the editor title
     #Renames the window title bar to the name of the current file.
@@ -578,6 +599,38 @@ class QuietText(tk.Frame):
             self.textarea.insert('insert',text)
         except tk.TclError:
             pass
+
+    # Setting the selected text to be bold
+    def bold(self, event=None):
+        try:
+            if(os.path.splitext(self.filename)[1][1:] == "txt"):
+                current_tags = self.textarea.tag_names("sel.first")
+                bold_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
+                bold_font.configure(weight = "bold")
+                self.textarea.tag_configure("bold", font = bold_font)
+                if "bold" in current_tags:
+                    self.textarea.tag_remove("bold", "sel.first", "sel.last")
+                else:
+                    self.textarea.tag_add("bold", "sel.first", "sel.last")
+            else: pass
+        except tk.TclError:
+            pass
+
+    def hightlight(self, event=None):
+        try:
+            if(os.path.splitext(self.filename)[1][1:] == "txt"):
+                new_color = self.menubar.open_color_picker()
+                current_tags = self.textarea.tag_names("sel.first")
+                highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
+                self.textarea.tag_configure("highlight", font = highlight_font, foreground = "black", background = new_color)
+                if "highlight" in current_tags:
+                    self.textarea.tag_remove("highlight", "sel.first", "sel.last")
+                else:
+                    self.textarea.tag_add("highlight", "sel.first", "sel.last")
+            else: pass
+        except tk.TclError:
+            pass
+        
           
     def _on_change(self, key_event):
         self.linenumbers.redraw()
@@ -632,9 +685,11 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Control-o>', self.open_file)
         self.textarea.bind('<Control-s>', self.save)
         self.textarea.bind('<Control-S>', self.save_as)
-        self.textarea.bind('<Control-b>', self.run)
+        self.textarea.bind('<Control-b>', self.bold)
+        self.textarea.bind('<Control-g>', self.hightlight)
         self.textarea.bind('<Control-a>', self.select_all_text)
         self.textarea.bind('<Control-h>', self.apply_hex_color)
+        self.textarea.bind('<Control-r>', self.run)
         self.textarea.bind('<Control-q>', self.enter_quiet_mode)
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
         self.textarea.bind('<Key>', self.statusbar.update_status)
