@@ -306,14 +306,6 @@ class QuietText(tk.Frame):
 
 
     # editor basic settings can be altered here
-
-
-    def reset_layout(self):
-        self.scrolly.pack(side=RIGHT, fill=Y)
-        self.scrollx.pack(side=BOTTOM, fill=BOTH)
-        self.linenumbers.pack(side=LEFT, fill=Y)
-        self.textarea.pack(side=RIGHT, fill=BOTH, expand=True)     
-
     #function used to reload settings after the user changes in settings.json
     def reconfigure_settings(self, settings_path, overwrite=False):
             with open(settings_path, 'r') as settings_json:
@@ -333,7 +325,6 @@ class QuietText(tk.Frame):
                 else:
                     self.save('settings.json')
 
-        
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
         self.statusbar.hide_status_bar()
@@ -356,14 +347,12 @@ class QuietText(tk.Frame):
         else:
             self.master.title('Untitled - QuietText')
 
-
     # new file creating in the editor feature
     #Deletes all of the text in the current area and sets window title to default.
     def new_file(self, *args):
         self.textarea.delete(1.0, END)
         self.filename = None
         self.set_window_title()
-
 
     # opening an existing file in the editor
     def open_file(self, *args):
@@ -519,13 +508,10 @@ class QuietText(tk.Frame):
     def _on_keydown(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
-            # self.scrolly.pack_forget()
 
     def _on_keyup(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = False
-            self.scrolly.pack(side=RIGHT, fill=Y)
-
 
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
