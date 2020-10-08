@@ -27,8 +27,10 @@ class Menubar:
         font_specs = ('Droid Sans Fallback', 12)
 
         # setting up basic features in menubar
-        menubar = tk.Menu(parent.master, font=font_specs,
-                          fg='#c9bebb', bg='#181816',
+        menubar = tk.Menu(parent.master,
+                          font=font_specs,
+                          fg='#c9bebb',
+                          bg='#181816',
                           activeforeground='white',
                           activebackground='#38342b',
                           bd=0)
@@ -136,8 +138,13 @@ class Statusbar:
         self.status = tk.StringVar()
         self.status.set('Quiet Text (v0.1)')
 
-        label = tk.Label(parent.textarea, textvariable=self.status, fg='#c9bebb',
-                         bg='#38342b', anchor='se', font=font_specs)
+        label = tk.Label(parent.textarea,
+                         textvariable=self.status,
+                         fg='#c9bebb',
+                         bg='#38342b',
+                         anchor='se',
+                         font=font_specs)
+
         label.pack(side=BOTTOM, fill=BOTH)
         self._label = label
 
@@ -186,6 +193,7 @@ class TextLineNumbers(tk.Canvas):
                              fill='#c9bebb')
             i = self.textwidget.index('%s+1line' % i)
 
+
 class CustomText(tk.Text):
     def __init__(self, *args, **kwargs):
         tk.Text.__init__(self, *args, **kwargs)
@@ -227,9 +235,10 @@ class QuietText(tk.Frame):
 
         # defined editor basic bakground and looking
         master.tk_setPalette(background='#261e1b',
-                     foreground='#c9bebb',
-                     activeForeground='white',
-                     activeBackground='#9c8383',)
+                             foreground='#c9bebb',
+                             activeForeground='white',
+                             activeBackground='#9c8383',)
+
         # start editor according to defined settings in settings.json
         with open('settings.json') as settings_json:
             self.settings = json.load(settings_json)
@@ -241,32 +250,66 @@ class QuietText(tk.Frame):
         self.text_color = self.settings['text_color']
         self.tab_size = self.settings['tab_size']
         self.font_size = int(self.settings['font_size'])
+        self.top_spacing = self.settings['top_spacing']
+        self.bottom_spacing = self.settings['bottom_spacing']
+        self.padding_x = self.settings['padding_x']
+        self.padding_y = self.settings['padding_y']
+        self.insertion_blink_bool = self.settings['insertion_blink']
+        self.tab_size_spaces = self.settings['tab_size']
         
         self.master = master
         self.filename = None
                                 
         self.textarea = CustomText(self)
 
-        self.scrolly = tk.Scrollbar(master, command=self.textarea.yview,
-                                   bg='#383030',troughcolor='#2e2724',
-                                   bd=0, width=8, highlightthickness=0,
-                                   activebackground='#8a7575', orient='vertical')
+        self.scrolly = tk.Scrollbar(master,
+                                    command=self.textarea.yview,
+                                    bg='#383030',
+                                    troughcolor='#2e2724',
+                                    bd=0,
+                                    width=8,
+                                    highlightthickness=0,
+                                    activebackground='#8a7575',
+                                    orient='vertical')
 
-        self.scrollx = tk.Scrollbar(master, command=self.textarea.xview,
-                           bg='#383030',troughcolor='#2e2724',
-                           bd=0, width=8, highlightthickness=0,
-                           activebackground='#8a7575', orient='horizontal')
+        self.scrollx = tk.Scrollbar(master,
+                                    command=self.textarea.xview,
+                                    bg='#383030',
+                                    troughcolor='#2e2724',
+                                    bd=0,
+                                    width=8,
+                                    highlightthickness=0,
+                                    activebackground='#8a7575',
+                                    orient='horizontal')
 
         # configuring of the editor after scrolling
         self.textarea.configure(yscrollcommand=self.scrolly.set,
                                 xscrollcommand=self.scrollx.set,
-                                bg=self.bg_color, fg=self.text_color,
-                                wrap='none', spacing1=1, tabs=self.tab_size,
-                                spacing3=1, selectbackground='#7a7666',
-                                insertbackground='white', bd=0, insertofftime=0,
-                                highlightthickness=0, font=self.font_style,
-                                undo=True, autoseparators=True, maxundo=-1)
+                                bg=self.bg_color,
+                                fg=self.text_color,
+                                wrap='none',
+                                spacing1=self.top_spacing, 
+                                spacing3=self.bottom_spacing,
+                                selectbackground='#7a7666',
+                                insertbackground='white',
+                                bd=0,
+                                highlightthickness=0,
+                                font=self.font_style,
+                                undo=True,
+                                autoseparators=True,
+                                maxundo=-1,
+                                padx=self.padding_x,
+                                pady=self.padding_y)
 
+        if self.insertion_blink_bool == 'true':
+            self.textarea.configure(insertofftime=300)
+        else:
+            self.textarea.configure(insrtofftime=0)
+
+        #retrieving the font from the text area and setting a tab width
+        self._font = tk_font.Font(font=self.textarea['font'])
+        self._tab_width = self._font.measure(' ' * int(self.tab_size_spaces))
+        self.textarea.config(tabs=(self._tab_width,))
 
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
@@ -279,17 +322,22 @@ class QuietText(tk.Frame):
         self.textarea.pack(side=RIGHT, fill=BOTH, expand=True)
 
         # setting right click menu bar
-        self.right_click_menu = tk.Menu(master, font=self.font_style,
-                                        fg='#c9bebb', bg='#2e2724',
+        self.right_click_menu = tk.Menu(master,
+                                        font=self.font_style,
+                                        fg='#c9bebb',
+                                        bg='#2e2724',
                                         activebackground='#9c8383',
-                                        bd=0, tearoff=0)
+                                        bd=0,
+                                        tearoff=0)
 
         self.right_click_menu.add_command(label='Cut',
                                           accelerator='Ctrl+X',
                                           command=self.cut)
+
         self.right_click_menu.add_command(label='Copy',
                                           accelerator='Ctrl+C',
                                           command=self.copy)
+
         self.right_click_menu.add_command(label='Paste',
                                           accelerator='Ctrl+V',
                                           command=self.paste)
@@ -305,23 +353,63 @@ class QuietText(tk.Frame):
         self.control_key = False
 
 
+    def load_settings_data(self, settings_path):
+        settings_path = settings_path
+        with open(settings_path, 'r') as settings_json:
+            _settings = json.load(settings_json)
+            return _settings
+
+    def store_settings_data(self, information):
+        with open('settings.json', 'w') as user_settings:
+            json.dump(_settings, user_settings)
+
+    #reconfigure the tab_width depending on changes.
+    def set_new_tab_width(self, tab_spaces = 'default'):
+        if tab_spaces == 'default':
+            space_count = self.tab_size_spaces
+        else:
+            space_count = tab_spaces
+        _font = tk_font.Font(font=self.textarea['font'])
+        _tab_width = _font.measure(' ' * int(space_count))
+        self.textarea.config(tabs=(_tab_width,))
+
     # editor basic settings can be altered here
     #function used to reload settings after the user changes in settings.json
     def reconfigure_settings(self, settings_path, overwrite=False):
-            with open(settings_path, 'r') as settings_json:
-                _settings = json.load(settings_json)
+            _settings = self.load_settings_data(settings_path)
             font_style = _settings['font_style']
             bg_color = _settings['bg_color']
             text_color = _settings['text_color']
-            tab_size = _settings['tab_size']
-            font_style = tk_font.Font(family=font_style, size=_settings['font_size'])
-            self.textarea.configure(font=font_style, bg=bg_color,
-                                    fg=text_color, tabs=tab_size)
+            top_spacing = _settings['top_spacing']
+            bottom_spacing = _settings['bottom_spacing']
+            insertion_blink_bool = _settings['insertion_blink']
+            tab_size_spaces = _settings['tab_size']
+            padding_x = _settings['padding_x']
+            padding_y = _settings['padding_y']
+
+            font_style = tk_font.Font(family=font_style,
+                                      size=_settings['font_size'])
+
+            self.textarea.configure(font=font_style,
+                                    bg=bg_color,
+                                    pady=padding_y,
+                                    padx=padding_x,
+                                    fg=text_color,
+                                    spacing1=top_spacing,
+                                    spacing3=bottom_spacing)
+
+            if insertion_blink_bool == 'true':
+                self.textarea.configure(insertofftime=300)
+            else:
+                self.textarea.configure(insertofftime=0)
+            self.set_new_tab_width(tab_size_spaces)
+
             if overwrite:
-                MsgBox = tk.messagebox.askquestion('Reset Settings?', 'Are you sure you want to reset the editor settings to their default value?',  icon='warning')
+                MsgBox = tk.messagebox.askquestion('Reset Settings?',
+                                                   'Are you sure you want to reset the editor settings to their default value?',
+                                                    icon='warning')
                 if MsgBox == 'yes':
-                    with open('settings.json', 'w') as user_settings:
-                        json.dump(_settings, user_settings)
+                    self.store_settings_data(_settings)
                 else:
                     self.save('settings.json')
 
@@ -366,6 +454,7 @@ class QuietText(tk.Frame):
                        ('Javascript Files', '*.js'),
                        ('HTML Documents', '*.html'),
                        ('CSS Documents', '*.css')])
+
         if self.filename:
             self.textarea.delete(1.0, END)
             with open(self.filename, 'r') as f:
@@ -400,7 +489,8 @@ class QuietText(tk.Frame):
                            ('Markdown Documents', '*.md'),
                            ('Javascript Files', '*.js'),
                            ('HTML Documents', '*.js'),
-                       ('CSS Documents', '*.css')])
+                           ('CSS Documents', '*.css')])
+
             textarea_content = self.textarea.get(1.0, END)
             with open(new_file, 'w') as f:
                 f.write(textarea_content)
@@ -449,10 +539,7 @@ class QuietText(tk.Frame):
 
     # Render the right click menu on right click
     def show_click_menu(self, key_event):
-        try:
-            self.right_click_menu.tk_popup(key_event.x_root, key_event.y_root)
-        finally:
-            self.right_click_menu.grab_release()
+        self.right_click_menu.tk_popup(key_event.x_root, key_event.y_root)
 
     # shortcut keys that the editor supports
     def copy(self, event=None):
@@ -499,6 +586,11 @@ class QuietText(tk.Frame):
         self.font_style = tk_font.Font(family=self.font_style,
                                        size=self.font_size)
         self.textarea.configure(font=self.font_style)
+        self.set_new_tab_width()
+        # _settings = self.load_settings_data('settings.json')
+        # _settings['font_size'] = self.font_size
+        # self.store_settings_data(_settings)
+
 
     # control_l = 37
     # control_r = 109
@@ -508,6 +600,7 @@ class QuietText(tk.Frame):
     def _on_keydown(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
+            self.textarea.configure()
 
     def _on_keyup(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
@@ -541,7 +634,9 @@ if __name__ == '__main__':
         master.iconphoto(False, p1)
     except Exception as e:
         print(e)
-    qt = QuietText(master).pack(side='top', fill='both', expand=True)
+    qt = QuietText(master).pack(side='top',
+                                fill='both',
+                                expand=True)
     master.mainloop()
 
 
