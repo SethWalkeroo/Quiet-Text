@@ -1,16 +1,19 @@
-"font_family": "monospace"
-"font_size": 12
-"bg_color": "#38342b"
-"text_color": "white"
-"tab_size": 4
-"top_spacing": "1"
-"bottom_spacing": "1"
-"padding_x": "5"
-"padding_y": "5"
-"insertion_blink": "false"
-"menu_bg": "#181816"
-"menu_active_fg": "#fff"
-"menu_active_bg": "#38342b"
+bg_color: '#38342b'
+bottom_spacing: '1'
+font_family: monospace
+font_size: 12
+insertion_blink: False
+insertion_color: '#d5c4a1'
+menu_active_bg: '#38342b'
+menu_active_fg: '#d5c4a1'
+menu_bg: '#181816'
+padding_x: '5'
+padding_y: '5'
+tab_size: 4
+font_color: '#fbf1c7'
+top_spacing: '1'
+
+
 
 #MAKE SURE TO SAVE AFTER EVERY CHANGE.
 #THIS WARNING EXISTS BECAUSE RESIZING THE WINDOW WITH CTRL SCROLL WHEEL RELOADS THE FILE.
