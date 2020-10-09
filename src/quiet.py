@@ -596,7 +596,11 @@ class QuietText(tk.Frame):
     def run(self, *args):
         try:
             if self.filename[-3:] == '.py':
-                os.system(f"gnome-terminal -- python3.8 {self.filename}")
+                #run separate commands for different os
+                if os.name == 'nt':
+                    os.system(f'start cmd.exe @cmd /k "python {self.filename}"')
+                else:
+                    os.system(f"gnome-terminal -- python3.8 {self.filename}")
             else:
                 self.statusbar.update_status('no python')
         except TypeError:
