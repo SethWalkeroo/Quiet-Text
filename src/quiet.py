@@ -4,7 +4,7 @@ import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
 from tkinter import (filedialog, messagebox, colorchooser, END,
-                    BOTH, LEFT, RIGHT, BOTTOM, Y, ttk)
+                     BOTH, LEFT, RIGHT, BOTTOM, Y, ttk, INSERT)
 
 
 class Menu(tk.Menu):
@@ -270,7 +270,7 @@ class CustomText(tk.Text):
             self.event_generate('<<Change>>', when='tail')
 
         # return what the actual widget returned
-        return result   
+        return result
 
 class SyntaxHighlighter:
     def __init__(self, text_widget, syntax_file):
@@ -857,6 +857,16 @@ class QuietText(tk.Frame):
         self.textarea.isControlPressed = False
 
 
+    def autoclose_parantheses(self, event):
+        index = self.textarea.index(INSERT)
+        self.textarea.insert(index, '}')
+        self.textarea.mark_set("insert", index)
+
+    def autoclose_brackets(self, event):
+        index = self.textarea.index(INSERT)
+        self.textarea.insert(index, ')')
+        self.textarea.mark_set("insert", index)
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
@@ -878,6 +888,8 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Key>', self._on_keydown)
         # self.textarea.bind('<KeyRelease>', self._on_keyup)
         self.textarea.bind('<KeyRelease>', self.syntax_highlight)
+        self.textarea.bind('<KeyRelease-{>', self.autoclose_parantheses)
+        self.textarea.bind('<KeyRelease-(>', self.autoclose_brackets)
 
 
 if __name__ == '__main__':
