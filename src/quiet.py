@@ -679,21 +679,24 @@ class QuietText(tk.Frame):
             self.statusbar.update_status('no file')
 
     def hightlight(self, event=None):
-        try:
-            if(os.path.splitext(self.filename)[1][1:] == "txt"):
-                new_color = self.menubar.open_color_picker()
-                current_tags = self.textarea.tag_names("sel.first")
-                highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
-                self.textarea.tag_configure("highlight", font = highlight_font, foreground = "black", background = new_color)
-                if "highlight" in current_tags:
-                    self.textarea.tag_remove("highlight", "sel.first", "sel.last")
+        if self.filename:
+            try:
+                if(os.path.splitext(self.filename)[1][1:] == "txt"):
+                    new_color = self.menubar.open_color_picker()
+                    current_tags = self.textarea.tag_names("sel.first")
+                    highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
+                    self.textarea.tag_configure("highlight", font = highlight_font, foreground = "black", background = new_color)
+                    if "highlight" in current_tags:
+                        self.textarea.tag_remove("highlight", "sel.first", "sel.last")
+                    else:
+                        self.textarea.tag_add("highlight", "sel.first", "sel.last")
                 else:
-                    self.textarea.tag_add("highlight", "sel.first", "sel.last")
-            else:
-                self.statusbar.update('no txt high')
-        except tk.TclError:
-            pass
-        
+                    self.statusbar.update('no txt high')
+            except tk.TclError:
+                pass
+        else:
+            self.statusbar.update_status('no file')
+            
           
     def _on_change(self, key_event):
         self.linenumbers.redraw()
@@ -750,9 +753,9 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Control-s>', self.save)
         self.textarea.bind('<Control-S>', self.save_as)
         self.textarea.bind('<Control-b>', self.bold)
-        self.textarea.bind('<Control-g>', self.hightlight)
+        self.textarea.bind('<Control-h>', self.hightlight)
         self.textarea.bind('<Control-a>', self.select_all_text)
-        self.textarea.bind('<Control-h>', self.apply_hex_color)
+        self.textarea.bind('<Control-m>', self.apply_hex_color)
         self.textarea.bind('<Control-r>', self.run)
         self.textarea.bind('<Control-q>', self.enter_quiet_mode)
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
