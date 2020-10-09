@@ -2,7 +2,7 @@ bg_color: '#272822'
 bottom_spacing: '1'
 font_color: '#fff'
 font_family: YaHeiConsolasHybrid
-font_size: 12
+font_size: 14
 insertion_blink: false
 insertion_color: '#d5c4a1'
 menu_active_bg: '#38342b'

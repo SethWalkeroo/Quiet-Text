@@ -3,364 +3,13 @@ import time
 import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
-from tkinter import (filedialog, messagebox, colorchooser, END,
-                    BOTH, LEFT, RIGHT, BOTTOM, Y, ttk)
+from tkinter import (filedialog, messagebox, ttk)
 
-
-class Menu(tk.Menu):
-    # menu method and its initializatipn from settings.yaml
-    def __init__(self, *args, **kwargs):
-        with open('settings.yaml', 'r') as settings_yaml:
-            settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
-        super().__init__(bg=settings["menu_bg"],
-                         activeforeground=settings['menu_active_fg'],
-                         activebackground=settings['menu_active_bg'],
-                         foreground='#d5c4a1',
-                         activeborderwidth=0,
-                         relief='sunken',
-                         bd=0,
-                         *args, **kwargs)
-
-
-class Menubar:
-
-    # initialising the menu bar of editor
-    def __init__(self, parent):
-        self._parent = parent
-        font_specs = ('Droid Sans Fallback', 12)
-
-        # setting up basic features in menubar
-        menubar = tk.Menu(parent.master,
-                          font=font_specs,
-                          fg='#ebdbb2',
-                          bg='#181816',
-                          activeforeground='#d5c4a1',
-                          activebackground='#38342b',
-                          activeborderwidth=0,
-                          bd=0)
-
-        parent.master.config(menu=menubar)
-        self._menubar = menubar
-        # adding features file dropdown in menubar
-        file_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        # new file creation feature
-        file_dropdown.add_command(label='New File',
-                                   accelerator='Ctrl+N',
-                                   command=parent.new_file)
-        # open file feature
-        file_dropdown.add_command(label='Open File',
-                                   accelerator='Ctrl+O',
-                                   command=parent.open_file)
-        # save file feature
-        file_dropdown.add_command(label='Save',
-                                   accelerator='Ctrl+S',
-                                   command=parent.save)
-        # Save as feature
-        file_dropdown.add_command(label='Save As',
-                                   accelerator='Ctrl+Shift+S',
-                                   command=parent.save_as)
-        # run file feature
-        file_dropdown.add_command(label='Run File',
-                                   accelerator='Ctrl+R',
-                                   command=parent.run)
-        # exit feature
-        file_dropdown.add_separator()
-        file_dropdown.add_command(label='Exit', 
-                                  command=parent.on_closing)
-        # adding featues to about dropdown in menubar
-        about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        about_dropdown.add_command(label='Release Notes',
-                                   command=self.release_notes)
-        # about command added
-        about_dropdown.add_command(label='About',
-                                   command=self.about_message)
-        # adding featues to settings dropdown in menubar
-        # Edit settings feature
-        settings_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        settings_dropdown.add_command(label='Edit Settings',
-                                      command=parent.open_settings_file)
-        # reset settings feature
-        settings_dropdown.add_command(label='Reset Settings to Default',
-                                      command=parent.reset_settings_file)
-
-        view_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        view_dropdown.add_command(label='Hide Menu Bar',
-                                  command=self.hide_menu)
-        view_dropdown.add_command(label='Hide Status Bar',
-                                  command=parent.hide_status_bar)
-
-        # menubar add buttons
-        menubar.add_cascade(label='File', menu=file_dropdown)
-        menubar.add_cascade(label='Settings', menu=settings_dropdown)
-        menubar.add_cascade(label='View', menu=view_dropdown)
-        menubar.add_command(label='Color Menu', command=self.open_color_picker)
-        menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
-        menubar.add_cascade(label='About', menu=about_dropdown)
-        
-        self.menu_fields = [field for field in (file_dropdown, about_dropdown, settings_dropdown)]
-
-    # Settings reconfiguration function
-    def reconfigure_settings(self):
-        with open('settings.yaml', 'r') as settings_yaml:
-            settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
-        for field in self.menu_fields:
-            field.configure(bg=settings['menu_bg'],
-                            activeforeground=settings['menu_active_fg'],
-                            activebackground=settings['menu_active_bg'],)
-
-    # color to different text tye can be set here
-    def open_color_picker(self):
-        return colorchooser.askcolor(title='Color Menu', initialcolor='#d5c4a1')[1]
-
-    # quiet mode is defined here
-    def enter_quiet_mode(self):
-        self._parent.enter_quiet_mode()
-
-    # hiding the menubar
-    def hide_menu(self):
-        empty_menu = tk.Menu(self._parent.master)
-        self._parent.master.config(menu=empty_menu)
-
-    # display the menubar
-    def show_menu(self):
-        self._parent.master.config(menu=self._menubar)
-
-    # what to display on clicking about feature is defined here
-    def about_message(self):
-        box_title = 'About Quiet Text'
-        box_message = 'A simple text editor for your Python and notetaking needs.'
-        messagebox.showinfo(box_title, box_message)
-
-    def release_notes(self):
-        box_title = 'Release Notes'
-        box_message = 'Version 0.1'
-        messagebox.showinfo(box_title, box_message)
-
-
-class Statusbar:
-
-    # initialising the status bar
-    def __init__(self, parent):
-        self._parent = parent
-
-        # setting up the status bar
-        font_specs = ('Droid Sans Fallback', 10)
-
-        self.status = tk.StringVar()
-
-        label = tk.Label(parent.textarea,
-                         textvariable=self.status,
-                         fg='#fbf1c7',
-                         bg='#272822',
-                         anchor='se',
-                         font=font_specs)
-
-        label.pack(side=BOTTOM)
-        self._label = label
-
-    # status update of the status bar
-    def update_status(self, event):
-        if event == 'saved':
-            self.display_status_message('changes saved!', msg_type='save')
-        elif event == 'no file run':
-            self.display_status_message('Cannot run! No Python file selected.')
-        elif event == 'no file':
-            self.display_status_message('No file detected. Create or open a file.')
-        elif event == 'no python':
-            self.display_status_message('You can only run Python files.')
-        elif event == 'no txt bold':
-            self.display_status_message('You can only bold text in text files.')
-        elif event == 'no txt high':
-            self.display_status_message('You can only highlight text in text files.')
-        elif event == 'quiet':
-            self.display_status_message('You can leave quiet mode by pressing "escape"', msg_type='hint')
-        else:
-            self.hide_status_bar()
-
-    def display_status_message(self, message, msg_type='error'):
-        self.show_status_bar()
-        self.status.set(message)
-        if msg_type == 'save':
-            self.save_color()
-        elif msg_type == 'hint':
-            self.hint_color()
-        else:
-            self.error_color()
-
-    def error_color(self):
-        self._label.config(bg='#522628')
-
-    def save_color(self):
-        self._label.config(bg='#47632b')
-
-    def hint_color(self):
-        self._label.config(bg='#38342b', fg='#d5c4a1')
-
-    # hiding the status bar while in quiet mode
-    def hide_status_bar(self):
-        self._label.pack_forget()
-
-    # display of the status bar
-    def show_status_bar(self):
-        self._label.pack(side=BOTTOM)
-
-   
-class TextLineNumbers(tk.Canvas):
-    def __init__(self, parent, *args, **kwargs):
-        tk.Canvas.__init__(self, *args, **kwargs)
-        self._text_font = parent.settings['font_family']
-        self._parent = parent
-        self.textwidget = parent.textarea
-
-    def attach(self, text_widget):
-        self.textwidget = text_widget
-
-    def redraw(self, *args):
-        '''redraw line numbers'''
-        self.delete('all')
-        self.config(width=(self._parent.font_size * 3))
-
-        i = self.textwidget.index('@0,0')
-        while True :
-            dline= self.textwidget.dlineinfo(i)
-            if dline is None: break
-            y = dline[1]
-            linenum = str(i).split('.')[0]
-            self.create_text(2, y, anchor='nw',
-                             text=linenum,
-                             font=(self._text_font, self._parent.font_size),
-                             fill='#d5c4a1')
-            i = self.textwidget.index('%s+1line' % i)
-
-
-class CustomText(tk.Text):
-    def __init__(self, *args, **kwargs):
-        tk.Text.__init__(self, *args, **kwargs)
-
-        # create a proxy for the underlying widget
-        self.isControlPressed = False
-        self._orig = self._w + '_orig'
-        self.tk.call('rename', self._w, self._orig)
-        self.tk.createcommand(self._w, self._proxy)
-
-    def _proxy(self, *args):
-        # let the actual widget perform the requested action
-        try:
-            cmd = (self._orig,) + args
-            result = ''
-            if not self.isControlPressed:
-                # if command is not present, execute the event
-                result = self.tk.call(cmd)
-            else:
-                # Suppress y-scroll and x-scroll when control is pressed
-                if args[0:2] not in [('yview', 'scroll'), ('xview', 'scroll')]:
-                    result = self.tk.call(cmd)
-        except tk.TclError:
-            result = ''
-
-        # generate an event if something was added or deleted,
-        # or the cursor position changed
-        if (args[0] in ('insert', 'replace', 'delete') or 
-            args[0:3] == ('mark', 'set', 'insert') or
-            args[0:2] == ('xview', 'moveto') or
-            args[0:2] == ('xview', 'scroll') or
-            args[0:2] == ('yview', 'moveto') or
-            args[0:2] == ('yview', 'scroll')
-        ):
-            self.event_generate('<<Change>>', when='tail')
-
-        # return what the actual widget returned
-        return result   
-
-class SyntaxHighlighter:
-    def __init__(self, text_widget, syntax_file):
-        self.text_widget = text_widget
-        self.syntax_file = syntax_file
-        self.categories = None
-        self.numbers_color = 'blue'
-        self.strings_color = 'red'
-
-        self.disallowed_previous_chars = ['_', '-', '.']
-
-        self.parse_syntax_file()
-
-        self.text_widget.bind('<KeyRelease>', self.on_key_release)
-
-    def on_key_release(self, event=None):
-        self.highlight()
-
-    def parse_syntax_file(self):
-        with open(self.syntax_file, 'r') as stream:
-            try:
-                config = yaml.load(stream, Loader=yaml.FullLoader)
-            except yaml.YAMLError as error:
-                print(error)
-                return
-        self.categories = config['categories']
-        self.numbers_color = config['numbers']['color']
-        self.strings_color = config['strings']['color']
-        self.configure_tags()
-
-    def configure_tags(self):
-        for category in self.categories.keys():
-            color = self.categories[category]['color']
-            self.text_widget.tag_config(category, foreground=color)
-        self.text_widget.tag_config('number', foreground=self.numbers_color)
-        self.text_widget.tag_config('string', foreground=self.strings_color)
-
-    def highlight(self, event=None):
-        length = tk.IntVar()
-        for category in self.categories:
-            matches = self.categories[category]['matches']
-            for keyword in matches:
-                start = 1.0
-                keyword = keyword + '[^A-Za-z_-]'
-                index = self.text_widget.search(keyword, start, stopindex=END,
-                                                count=length, regexp=True)
-                while index:
-                    char_match_found = int(str(index).split('.')[1])
-                    line_match_found = int(str(index).split('.')[0])
-                    if char_match_found > 0:
-                        previous_char_index = str(line_match_found) + '.' + str(char_match_found - 1)
-                        previous_char = self.text_widget.get(previous_char_index, previous_char_index + '+1c')
-
-                        if previous_char.isalnum() or previous_char in self.disallowed_previous_chars:
-                            end = f'{index}+{length.get() - 1}c'
-                            start = end
-                            index = self.text_widget.search(keyword, start, stopindex=END, regexp=True)
-                        else:
-                            end = f'{index}+{length.get() - 1}c'
-                            self.text_widget.tag_add(category, index, end)
-                            start = end
-                            index = self.text_widget.search(keyword, start, stopindex=END, regexp=True)
-                    else:
-                        end = f"{index}+{length.get() - 1}c"
-                        self.text_widget.tag_add(category, index, end)
-                        start = end
-                        index = self.text_widget.search(keyword, start, stopindex=tk.END, regexp=1)  
-
-            self.highlight_regex(r"(\d)+[.]?(\d)*", "number")
-            self.highlight_regex(r"[\'][^\']*[\']", "string")
-            self.highlight_regex(r"[\"][^\']*[\"]", "string")
-            self.highlight_regex(r"[\"][^\']*[\"]", "comment")
-
-
-    def highlight_regex(self, regex, tag):
-        length = tk.IntVar()
-        start = 1.0
-        index = self.text_widget.search(regex, start, stopindex=END, regexp=1, count=length)
-        while index:
-            end = f'{index}+{length.get()}c'
-            self.text_widget.tag_add(tag, index, end)
-            start = end
-            index = self.text_widget.search(regex, start, stopindex=tk.END, regexp=1, count=length)
-
-    def force_highlight(self):
-        self.highlight()
-
-    def clear_highlight(self):
-        for category in self.categories:
-            self.text_widget.tag_remove(category, 1.0, tk.END)
+from quiet_syntax import SyntaxHighlighter
+from quiet_menubar import Menu, Menubar
+from quiet_statusbar import Statusbar
+from quiet_linenumbers import TextLineNumbers
+from quiet_textarea import CustomText
 
 
 class QuietText(tk.Frame):
@@ -461,12 +110,12 @@ class QuietText(tk.Frame):
         self.syntax_highlighter = SyntaxHighlighter(self.textarea, 'languages/python.yaml')
 
         self.linenumbers.attach(self.textarea)
-        self.scrolly.pack(side=RIGHT, fill=Y)
-        self.scrollx.pack(side=BOTTOM, fill=BOTH)
-        self.linenumbers.pack(side=LEFT, fill=Y)
-        self.textarea.pack(side=RIGHT, fill=BOTH, expand=True)
+        self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)
+        self.scrollx.pack(side=tk.BOTTOM, fill='both')
+        self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
+        self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
 
-        # setting right click menu bar
+        # setting tk.RIGHT click menu bar
         self.right_click_menu = tk.Menu(master,
                                         font=self.font_family,
                                         fg='#d5c4a1',
@@ -510,7 +159,7 @@ class QuietText(tk.Frame):
             yaml.dump(information, user_settings)
 
     def clear_and_replace_textarea(self):
-            self.textarea.delete(1.0, END)
+            self.textarea.delete(1.0, tk.END)
             try:
                 with open(self.filename, 'r') as f:
                     self.syntax_highlighter.on_key_release()
@@ -600,7 +249,7 @@ class QuietText(tk.Frame):
     # new file creating in the editor feature
     #Deletes all of the text in the current area and sets window title to default.
     def new_file(self, *args):
-        self.textarea.delete(1.0, END)
+        self.textarea.delete(1.0, tk.END)
         self.filename = None
         self.set_window_title()
 
@@ -627,7 +276,7 @@ class QuietText(tk.Frame):
     def save(self,*args):
         if self.filename:
             try:
-                textarea_content = self.textarea.get(1.0, END)
+                textarea_content = self.textarea.get(1.0, tk.END)
                 with open(self.filename, 'w') as f:
                     f.write(textarea_content)
                 self.statusbar.update_status('saved')
@@ -653,7 +302,7 @@ class QuietText(tk.Frame):
                            ('HTML Documents', '*.js'),
                            ('CSS Documents', '*.css')])
 
-            textarea_content = self.textarea.get(1.0, END)
+            textarea_content = self.textarea.get(1.0, tk.END)
             with open(new_file, 'w') as f:
                 f.write(textarea_content)
             self.filename = new_file
@@ -674,7 +323,7 @@ class QuietText(tk.Frame):
                         
 
     def on_closing(self):
-        message = messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
+        message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
         if message == True:
             self.quit_save()
         elif message == False:
@@ -699,7 +348,7 @@ class QuietText(tk.Frame):
     # opens the main setting file of the editor
     def open_settings_file(self):
         self.filename = 'settings.yaml'
-        self.textarea.delete(1.0, END)
+        self.textarea.delete(1.0, tk.END)
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
         self.set_window_title(name=self.filename)
@@ -713,7 +362,7 @@ class QuietText(tk.Frame):
 
     # select all written text in the editor
     def select_all_text(self, *args):
-        self.textarea.tag_add(tk.SEL, '1.0', END)
+        self.textarea.tag_add(tk.SEL, '1.0', tk.END)
         self.textarea.mark_set(tk.INSERT, '1.0')
         self.textarea.see(tk.INSERT)
         return 'break'
@@ -729,7 +378,7 @@ class QuietText(tk.Frame):
         except tk.TclError:
             pass
 
-    # Render the right click menu on right click
+    # Render the tk.RIGHT click menu on tk.RIGHT click
     def show_click_menu(self, key_event):
         self.right_click_menu.tk_popup(key_event.x_root, key_event.y_root)
 
@@ -835,8 +484,8 @@ class QuietText(tk.Frame):
     # control_l = 37
     # control_r = 109
     # mac_control = 262401 #control key in mac keyboard
-    # mac_control_l = 270336 #left control key in mac os with normal keyboard
-    # mac_control_r = 262145 #right control key in mac os with normal keyboard
+    # mac_control_l = 270336 #tk.LEFT control key in mac os with normal keyboard
+    # mac_control_r = 262145 #tk.RIGHT control key in mac os with normal keyboard
     def _on_keydown(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
@@ -848,6 +497,7 @@ class QuietText(tk.Frame):
     #     if event.keycode in [37, 109, 262401, 270336, 262145]:
     #         self.control_key = False
     #         self.textarea.isControlPressed = False
+    # self.textarea.bind('<KeyRelease>', self._on_keyup)
 
     def syntax_highlight(self, event):
         if self.filename and self.filename[-3:] == '.py':
@@ -876,7 +526,6 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
         self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
         self.textarea.bind('<Key>', self._on_keydown)
-        # self.textarea.bind('<KeyRelease>', self._on_keyup)
         self.textarea.bind('<KeyRelease>', self.syntax_highlight)
 
 
@@ -891,6 +540,7 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 
