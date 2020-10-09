@@ -3,12 +3,84 @@
   "projectOwner": "SethWalkeroo",
   "repoType": "github",
   "repoHost": "https://github.com",
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "Sid200026",
+      "name": "Siddharth Singha Roy",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/42297087?v=4",
+      "profile": "https://sid200026.github.io/",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "thainapires",
+      "name": "Thainá Pires",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/28638008?v=4",
+      "profile": "https://github.com/thainapires",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Thanarathanam",
+      "name": "Thanarathanam Lakshmanan",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6984902?v=4",
+      "profile": "https://github.com/Thanarathanam",
+      "contributions": [
+        "content",
+        "code"
+      ]
+    },
+    {
+      "login": "punidramesh",
+      "name": "Punid Ramesh",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/47942208?v=4",
+      "profile": "https://punidramesh.tech",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Ryuno",
+      "name": "龍野優也",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6725050?v=4",
+      "profile": "https://github.com/ryuno",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "aish0007",
+      "name": "aish0007",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/45160006?v=4",
+      "profile": "https://github.com/aish0007",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "hrishikesharma",
+      "name": "HRISHIKESH  SARMA",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/72077890?v=4",
+      "profile": "https://github.com/hrishikesharma",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "JuliusChrona",
+      "name": "Kirill Vackevich",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/47902797?v=4",
+      "profile": "https://github.com/JuliusChrona",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
   "files": [
     "README.md"
   ],
-  "imageSize": 100,
-  "commit": true,
-  "commitConvention": "none",
-  "contributors": [],
   "contributorsPerLine": 7
 }
