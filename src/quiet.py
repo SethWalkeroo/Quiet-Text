@@ -733,10 +733,9 @@ if __name__ == '__main__':
         master.iconphoto(False, p1)
     except Exception as e:
         print(e)
-    qt = QuietText(master).pack(side='top',
-                                fill='both',
-                                expand=True)
-   #master.protocol("WM_DELETE_WINDOW", on_closing)
+    qt = QuietText(master)
+    qt.pack(side='top', fill='both', expand=True)
+    master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
 
 
