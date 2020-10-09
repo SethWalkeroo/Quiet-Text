@@ -497,7 +497,7 @@ class QuietText(tk.Frame):
             self.set_window_title(name=self.filename)
 
     # saving changes made in the file
-    def save(self,parent, *args):
+    def save(self,*args):
         if self.filename:
             try:
                 textarea_content = self.textarea.get(1.0, END)
