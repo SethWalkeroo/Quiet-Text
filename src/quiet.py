@@ -57,7 +57,7 @@ class Menubar:
                                    command=parent.save)
         # Save as feature
         file_dropdown.add_command(label='Save As',
-                                   accelerator='Ctrl+Shift+S
+                                   accelerator='Ctrl+Shift+S',
                                    command=parent.save_as)
         # run file feature
         file_dropdown.add_command(label='Run File',
