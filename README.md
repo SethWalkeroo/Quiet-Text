@@ -35,6 +35,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 - [Installation/Setup](#installation)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Contributing](#contributing)
+- [Contributors](#contributors)
 
 
 
@@ -122,9 +123,9 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 
 
 
-## Contributors ✨
+## Contributors
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks goes to these wonderful people!:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
