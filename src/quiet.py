@@ -66,7 +66,7 @@ class Menubar:
         # exit feature
         file_dropdown.add_separator()
         file_dropdown.add_command(label='Exit',
-                                  command=parent.master.destroy)
+                                  command=parent.on_closing)
         # adding featues to about dropdown in menubar
         about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         about_dropdown.add_command(label='Release Notes',
@@ -528,7 +528,7 @@ class QuietText(tk.Frame):
             self.set_window_title(name=self.filename)
 
     # saving changes made in the file
-    def save(self, *args):
+    def save(self,*args):
         if self.filename:
             try:
                 textarea_content = self.textarea.get(1.0, END)
@@ -565,6 +565,29 @@ class QuietText(tk.Frame):
             self.statusbar.update_status('saved')
         except Exception as e:
             print(e)
+            
+    #On exiting the Program
+    def quit_save(self):
+        try:
+            os.path.isfile(self.filename)
+            self.save()          
+            
+        except:
+            self.save_as()
+        quit()
+                        
+
+    def on_closing(self):
+        message = messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
+
+        if message == True:
+            self.quit_save()
+            
+        elif message == False:
+            quit()
+
+        else:
+            return
 
     # running the python file
     def run(self, *args):
@@ -749,9 +772,9 @@ if __name__ == '__main__':
         master.iconphoto(False, p1)
     except Exception as e:
         print(e)
-    qt = QuietText(master).pack(side='top',
-                                fill='both',
-                                expand=True)
+    qt = QuietText(master)
+    qt.pack(side='top', fill='both', expand=True)
+    master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
 
 
