@@ -5,6 +5,19 @@
   "repoHost": "https://github.com",
   "skipCi": true,
   "contributors": [
+      {
+      "login": "SethWalkeroo",
+      "name": "Seth Walker",
+      "avatar_url": "https://rb.gy/eaqnjk",
+      "profile": "https://github.com/SethWalkeroo",
+      "contributions": [
+        "code",
+        "doc",
+        "bug",
+        "content",
+        "design"
+      ]
+    },
     {
       "login": "Sid200026",
       "name": "Siddharth Singha Roy",
@@ -29,7 +42,6 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/6984902?v=4",
       "profile": "https://github.com/Thanarathanam",
       "contributions": [
-        "content",
         "code"
       ]
     },
@@ -43,12 +55,13 @@
       ]
     },
     {
-      "login": "Ryuno",
-      "name": "龍野優也",
+      "login": "Ryuno-Ki",
+      "name": "André Jaenisch",
       "avatar_url": "https://avatars0.githubusercontent.com/u/6725050?v=4",
-      "profile": "https://github.com/ryuno",
+      "profile": "https://github.com/Ryuno-Ki",
       "contributions": [
-        "code"
+        "code",
+        "doc"
       ]
     },
     {
