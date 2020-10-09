@@ -304,6 +304,7 @@ class QuietText(tk.Frame):
         self.insertion_blink = 300 if self.settings['insertion_blink'] else 0
         self.insertion_color = self.settings['insertion_color']
         self.tab_size_spaces = self.settings['tab_size']
+        self.text_wrap = self.settings['text_wrap']
 
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.settings['font_size'])
@@ -340,12 +341,11 @@ class QuietText(tk.Frame):
                                     activebackground='#8a7575',
                                     orient='horizontal')
 
-        # configuring of the editor after scrolling
         self.textarea.configure(yscrollcommand=self.scrolly.set,
                                 xscrollcommand=self.scrollx.set,
                                 bg=self.bg_color,
                                 fg=self.font_color,
-                                wrap='none',
+                                wrap= self.text_wrap,
                                 spacing1=self.top_spacing, 
                                 spacing3=self.bottom_spacing,
                                 selectbackground='#7a7666',
@@ -450,6 +450,7 @@ class QuietText(tk.Frame):
             tab_size_spaces = _settings['tab_size']
             padding_x = _settings['padding_x']
             padding_y = _settings['padding_y']
+            text_wrap = _settings['text_wrap']
 
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
@@ -462,7 +463,8 @@ class QuietText(tk.Frame):
                                     spacing1=top_spacing,
                                     spacing3=bottom_spacing,
                                     insertbackground=insertion_color,
-                                    insertofftime=insertion_blink)
+                                    insertofftime=insertion_blink,
+                                    wrap=text_wrap)
 
             self.set_new_tab_width(tab_size_spaces)
 
@@ -780,6 +782,7 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 

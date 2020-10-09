@@ -12,6 +12,7 @@ padding_y: '5'
 tab_size: 4
 font_color: '#fbf1c7'
 top_spacing: '1'
+text_wrap: 'none'
 
 
 
