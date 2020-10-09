@@ -151,7 +151,7 @@ class Statusbar:
         label = tk.Label(parent.textarea,
                          textvariable=self.status,
                          fg='#fbf1c7',
-                         bg='#38342b',
+                         bg='#272822',
                          anchor='se',
                          font=font_specs)
 
@@ -806,10 +806,14 @@ class QuietText(tk.Frame):
     def _on_linux_scroll_up(self, _):
         if self.control_key:
             self.change_font_size(1)
+            if self.filename == 'settings.yaml':
+                self.syntax_highlighter.on_key_release()
 
     def _on_linux_scroll_down(self, _):
         if self.control_key:
             self.change_font_size(-1)
+            if self.filename == 'settings.yaml':
+                self.syntax_highlighter.on_key_release()
 
     def change_font_size(self, delta):
         self.font_size = self.font_size + delta
@@ -840,16 +844,18 @@ class QuietText(tk.Frame):
         else:
             self.statusbar.update_status('hide')
 
-    def _on_keyup(self, event):
-        if event.keycode in [37, 109, 262401, 270336, 262145]:
-            self.control_key = False
-            self.textarea.isControlPressed = False
+    # def _on_keyup(self, event):
+    #     if event.keycode in [37, 109, 262401, 270336, 262145]:
+    #         self.control_key = False
+    #         self.textarea.isControlPressed = False
 
-    def highlightering(self, event):
+    def syntax_highlight(self, event):
         if self.filename and self.filename[-3:] == '.py':
             self.syntax_highlighter.on_key_release()
-            self.control_key = False
-            self.textarea.isControlPressed = False
+
+        self.control_key = False
+        self.textarea.isControlPressed = False
+
 
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
@@ -870,8 +876,8 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
         self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
         self.textarea.bind('<Key>', self._on_keydown)
-        self.textarea.bind('<KeyRelease>', self._on_keyup)
-        self.textarea.bind('<KeyRelease>', self.highlightering)
+        # self.textarea.bind('<KeyRelease>', self._on_keyup)
+        self.textarea.bind('<KeyRelease>', self.syntax_highlight)
 
 
 if __name__ == '__main__':
@@ -885,6 +891,8 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
+
 
 
 
