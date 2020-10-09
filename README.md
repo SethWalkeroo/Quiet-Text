@@ -20,7 +20,7 @@
 # Preview
 
 <p>
-  <img src="images/picture.png" alt="there should be an image here...">
+  <img src="images/picture1.png" alt="there should be an image here...">
 </p>
 
 

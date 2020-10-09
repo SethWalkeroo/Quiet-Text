@@ -1,8 +1,9 @@
-bg_color: '#38342b'
+bg_color: '#272822'
 bottom_spacing: '1'
+font_color: '#fff'
 font_family: monospace
-font_size: 12
-insertion_blink: False
+font_size: 15
+insertion_blink: false
 insertion_color: '#d5c4a1'
 menu_active_bg: '#38342b'
 menu_active_fg: '#d5c4a1'
@@ -10,9 +11,8 @@ menu_bg: '#181816'
 padding_x: '5'
 padding_y: '5'
 tab_size: 4
-font_color: '#fbf1c7'
+text_wrap: none
 top_spacing: '1'
-text_wrap: 'none'
 
 
 
