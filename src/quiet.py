@@ -65,7 +65,7 @@ class Menubar:
                                    command=parent.run)
         # exit feature
         file_dropdown.add_separator()
-        file_dropdown.add_command(label='Exit',
+        file_dropdown.add_command(label='Exit', 
                                   command=parent.on_closing)
         # adding featues to about dropdown in menubar
         about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
@@ -272,6 +272,96 @@ class CustomText(tk.Text):
         # return what the actual widget returned
         return result   
 
+class SyntaxHighlighter:
+    def __init__(self, text_widget, syntax_file):
+        self.text_widget = text_widget
+        self.syntax_file = syntax_file
+        self.categories = None
+        self.numbers_color = 'blue'
+        self.strings_color = 'red'
+
+        self.disallowed_previous_chars = ['_', '-', '.']
+
+        self.parse_syntax_file()
+
+        self.text_widget.bind('<KeyRelease>', self.on_key_release)
+
+    def on_key_release(self, event=None):
+        self.highlight()
+
+    def parse_syntax_file(self):
+        with open(self.syntax_file, 'r') as stream:
+            try:
+                config = yaml.load(stream, Loader=yaml.FullLoader)
+            except yaml.YAMLError as error:
+                print(error)
+                return
+        self.categories = config['categories']
+        self.numbers_color = config['numbers']['color']
+        self.strings_color = config['strings']['color']
+        self.configure_tags()
+
+    def configure_tags(self):
+        for category in self.categories.keys():
+            color = self.categories[category]['color']
+            self.text_widget.tag_config(category, foreground=color)
+        self.text_widget.tag_config('number', foreground=self.numbers_color)
+        self.text_widget.tag_config('string', foreground=self.strings_color)
+
+    def highlight(self, event=None):
+        length = tk.IntVar()
+        for category in self.categories:
+            matches = self.categories[category]['matches']
+            for keyword in matches:
+                start = 1.0
+                keyword = keyword + '[^A-Za-z_-]'
+                index = self.text_widget.search(keyword, start, stopindex=END,
+                                                count=length, regexp=True)
+                while index:
+                    char_match_found = int(str(index).split('.')[1])
+                    line_match_found = int(str(index).split('.')[0])
+                    if char_match_found > 0:
+                        previous_char_index = str(line_match_found) + '.' + str(char_match_found - 1)
+                        previous_char = self.text_widget.get(previous_char_index, previous_char_index + '+1c')
+
+                        if previous_char.isalnum() or previous_char in self.disallowed_previous_chars:
+                            end = f'{index}+{length.get() - 1}c'
+                            start = end
+                            index = self.text_widget.search(keyword, start, stopindex=END, regexp=True)
+                        else:
+                            end = f'{index}+{length.get() - 1}c'
+                            self.text_widget.tag_add(category, index, end)
+                            start = end
+                            index = self.text_widget.search(keyword, start, stopindex=END, regexp=True)
+                    else:
+                        end = f"{index}+{length.get() - 1}c"
+                        self.text_widget.tag_add(category, index, end)
+                        start = end
+                        index = self.text_widget.search(keyword, start, stopindex=tk.END, regexp=1)  
+
+            self.highlight_regex(r"(\d)+[.]?(\d)*", "number")
+            self.highlight_regex(r"[\'][^\']*[\']", "string")
+            self.highlight_regex(r"[\"][^\']*[\"]", "string")
+            self.highlight_regex(r"[\"][^\']*[\"]", "comment")
+
+
+    def highlight_regex(self, regex, tag):
+        length = tk.IntVar()
+        start = 1.0
+        index = self.text_widget.search(regex, start, stopindex=END, regexp=1, count=length)
+        while index:
+            end = f'{index}+{length.get()}c'
+            self.text_widget.tag_add(tag, index, end)
+            start = end
+            index = self.text_widget.search(regex, start, stopindex=tk.END, regexp=1, count=length)
+
+    def force_highlight(self):
+        self.highlight()
+
+    def clear_highlight(self):
+        for category in self.categories:
+            self.text_widget.tag_remove(category, 1.0, tk.END)
+
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -368,6 +458,7 @@ class QuietText(tk.Frame):
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
+        self.syntax_highlighter = SyntaxHighlighter(self.textarea, 'languages/python.yaml')
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=RIGHT, fill=Y)
@@ -422,6 +513,7 @@ class QuietText(tk.Frame):
             self.textarea.delete(1.0, END)
             try:
                 with open(self.filename, 'r') as f:
+                    self.syntax_highlighter.on_key_release()
                     self.textarea.insert(1.0, f.read())
             except TypeError:
                 pass
@@ -497,7 +589,6 @@ class QuietText(tk.Frame):
     def hide_status_bar(self, *args):
         self.statusbar.hide_status_bar()
 
-
     # setting up the editor title
     #Renames the window title bar to the name of the current file.
     def set_window_title(self, name=None):
@@ -529,6 +620,8 @@ class QuietText(tk.Frame):
         if self.filename:
             self.clear_and_replace_textarea()
             self.set_window_title(name=self.filename)
+            if self.filename[-3:] == '.py':
+                self.syntax_highlighter.on_key_release()
 
     # saving changes made in the file
     def save(self,*args):
@@ -582,13 +675,10 @@ class QuietText(tk.Frame):
 
     def on_closing(self):
         message = messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
-
         if message == True:
             self.quit_save()
-            
         elif message == False:
             quit()
-
         else:
             return
 
@@ -613,11 +703,13 @@ class QuietText(tk.Frame):
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
         self.set_window_title(name=self.filename)
+        self.syntax_highlighter.on_key_release()
 
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
         self.reconfigure_settings('settings-default.yaml', overwrite=True)
         self.clear_and_replace_textarea()
+        self.syntax_highlighter.on_key_release()
 
     # select all written text in the editor
     def select_all_text(self, *args):
@@ -672,7 +764,7 @@ class QuietText(tk.Frame):
                     current_tags = self.textarea.tag_names("sel.first")
                     bold_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
                     bold_font.configure(weight = "bold")
-                    self.textarea.tag_configure("bold", font = bold_font)
+                    self.textarea.tag_config("bold", font = bold_font)
                     if "bold" in current_tags:
                         self.textarea.tag_remove("bold", "sel.first", "sel.last")
                     else:
@@ -691,7 +783,7 @@ class QuietText(tk.Frame):
                     new_color = self.menubar.open_color_picker()
                     current_tags = self.textarea.tag_names("sel.first")
                     highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
-                    self.textarea.tag_configure("highlight", font = highlight_font, foreground = "black", background = new_color)
+                    self.textarea.tag_config("highlight", font = highlight_font, foreground = "black", background = new_color)
                     if "highlight" in current_tags:
                         self.textarea.tag_remove("highlight", "sel.first", "sel.last")
                     else:
@@ -723,10 +815,10 @@ class QuietText(tk.Frame):
         self.font_size = self.font_size + delta
         min_font_size = 6
         self.font_size = min_font_size if self.font_size < min_font_size else self.font_size
-        self.font_style = tk_font.Font(family=self.font_style,
+        self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.font_size)
-        self.textarea.configure(font=self.font_style)
 
+        self.textarea.configure(font=self.font_style)
         self.set_new_tab_width()
         _settings = self.load_settings_data('settings.yaml')
         _settings['font_size'] = self.font_size
@@ -753,6 +845,12 @@ class QuietText(tk.Frame):
             self.control_key = False
             self.textarea.isControlPressed = False
 
+    def highlightering(self, event):
+        if self.filename[-3:] == '.py':
+            self.syntax_highlighter.on_key_release()
+            self.control_key = False
+            self.textarea.isControlPressed = False
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
@@ -773,6 +871,7 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
         self.textarea.bind('<Key>', self._on_keydown)
         self.textarea.bind('<KeyRelease>', self._on_keyup)
+        self.textarea.bind('<KeyRelease>', self.highlightering)
 
 
 if __name__ == '__main__':
