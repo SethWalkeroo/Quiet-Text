@@ -1,4 +1,10 @@
 <p align="center">
+<<<<<<< HEAD
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+=======
+>>>>>>> 950b203d9b25f93243fcdf7fb63b39cc96909dde
     <img src="/images/q.png" alt="Quiet Text logo" width="72" height="72">
   </a>
 </p>
@@ -129,8 +135,24 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/JuliusChrona"><img src="https://avatars1.githubusercontent.com/u/47902797?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kirill Vackevich</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=JuliusChrona" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/aish007"><img src="https://avatars2.githubusercontent.com/u/10829523?v=4?s=100" width="100px;" alt=""/><br /><sub><b>aish007</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=aish007" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/ryuno"><img src="https://avatars0.githubusercontent.com/u/6725050?v=4?s=100" width="100px;" alt=""/><br /><sub><b>龍野優也</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=ryuno" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Thanarathanam"><img src="https://avatars3.githubusercontent.com/u/6984902?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thanarathanam Lakshmanan</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=Thanarathanam" title="Code">💻</a></td>
+    <td align="center"><a href="https://sid200026.github.io/"><img src="https://avatars0.githubusercontent.com/u/42297087?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Siddharth Singha Roy</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=Sid200026" title="Code">💻</a></td>
+    <td align="center"><a href="https://punidramesh.tech/"><img src="https://avatars3.githubusercontent.com/u/47942208?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Punid Ramesh</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=punidramesh" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/hrishikesharma"><img src="https://avatars1.githubusercontent.com/u/72077890?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HRISHIKESH  SARMA</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=hrishikesharma" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/thainapires"><img src="https://avatars0.githubusercontent.com/u/28638008?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thainá Pires</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=thainapires" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
