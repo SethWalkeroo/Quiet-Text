@@ -1,10 +1,4 @@
 <p align="center">
-<<<<<<< HEAD
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-=======
->>>>>>> 950b203d9b25f93243fcdf7fb63b39cc96909dde
     <img src="/images/q.png" alt="Quiet Text logo" width="72" height="72">
   </a>
 </p>
