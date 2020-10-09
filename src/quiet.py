@@ -57,7 +57,7 @@ class Menubar:
                                    command=parent.save)
         # Save as feature
         file_dropdown.add_command(label='Save As',
-                                   accelerator='Ctrl+Shift+S',
+                                   accelerator='Ctrl+Shift+S
                                    command=parent.save_as)
         # run file feature
         file_dropdown.add_command(label='Run File',
@@ -693,7 +693,7 @@ class QuietText(tk.Frame):
                     else:
                         self.textarea.tag_add("highlight", "sel.first", "sel.last")
                 else:
-                    self.statusbar.update('no txt high')
+                    self.statusbar.update_status('no txt high')
             except tk.TclError:
                 pass
         else:
@@ -782,6 +782,7 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 
