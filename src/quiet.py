@@ -380,7 +380,7 @@ class QuietText(tk.Frame):
         with open('settings.yaml') as settings_yaml:
             self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
 
-        master.tk_setPalette(background='#181816', foreground='#8f3f71')
+        master.tk_setPalette(background='#272822', foreground='#8f3f71')
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['bg_color']
@@ -846,7 +846,7 @@ class QuietText(tk.Frame):
             self.textarea.isControlPressed = False
 
     def highlightering(self, event):
-        if self.filename[-3:] == '.py':
+        if self.filename and self.filename[-3:] == '.py':
             self.syntax_highlighter.on_key_release()
             self.control_key = False
             self.textarea.isControlPressed = False
