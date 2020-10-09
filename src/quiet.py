@@ -1,9 +1,10 @@
 import os
+import time
 import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
 from tkinter import (filedialog, messagebox, colorchooser, END,
-                    BOTH, LEFT, RIGHT, BOTTOM, CENTER, Y, ttk)
+                    BOTH, LEFT, RIGHT, BOTTOM, Y, ttk)
 
 
 class Menu(tk.Menu):
@@ -14,8 +15,10 @@ class Menu(tk.Menu):
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
-                         foreground='white',
+                         foreground='#d5c4a1',
                          activeborderwidth=0,
+                         relief='sunken',
+                         bd=0,
                          *args, **kwargs)
 
 
@@ -29,10 +32,11 @@ class Menubar:
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
                           font=font_specs,
-                          fg='#c9bebb',
+                          fg='#ebdbb2',
                           bg='#181816',
-                          activeforeground='white',
+                          activeforeground='#d5c4a1',
                           activebackground='#38342b',
+                          activeborderwidth=0,
                           bd=0)
 
         parent.master.config(menu=menubar)
@@ -89,7 +93,7 @@ class Menubar:
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='View', menu=view_dropdown)
-        menubar.add_command(label='Hex Colors', command=self.open_color_picker)
+        menubar.add_command(label='Color Menu', command=self.open_color_picker)
         menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
         menubar.add_cascade(label='About', menu=about_dropdown)
         
@@ -106,7 +110,7 @@ class Menubar:
 
     # color to different text tye can be set here
     def open_color_picker(self):
-        return colorchooser.askcolor(title='Hex Colors', initialcolor='white')[1]
+        return colorchooser.askcolor(title='Color Menu', initialcolor='#d5c4a1')[1]
 
     # quiet mode is defined here
     def enter_quiet_mode(self):
@@ -143,26 +147,54 @@ class Statusbar:
         font_specs = ('Droid Sans Fallback', 10)
 
         self.status = tk.StringVar()
-        self.status.set('Quiet Text (v0.1)')
 
         label = tk.Label(parent.textarea,
                          textvariable=self.status,
-                         fg='#c9bebb',
+                         fg='#fbf1c7',
                          bg='#38342b',
                          anchor='se',
                          font=font_specs)
 
-        label.pack(side=BOTTOM, fill=BOTH)
+        label.pack(side=BOTTOM)
         self._label = label
 
     # status update of the status bar
-    def update_status(self, *args):
-        if args[0] == 'saved':
-            self.status.set('changes saved')
-        elif args[0] == 'no file':
-            self.status.set('Cannot run! No file selected.')
+    def update_status(self, event):
+        if event == 'saved':
+            self.display_status_message('changes saved!', msg_type='save')
+        elif event == 'no file run':
+            self.display_status_message('Cannot run! No Python file selected.')
+        elif event == 'no file':
+            self.display_status_message('No file detected. Create or open a file.')
+        elif event == 'no python':
+            self.display_status_message('You can only run Python files.')
+        elif event == 'no txt bold':
+            self.display_status_message('You can only bold text in text files.')
+        elif event == 'no txt high':
+            self.display_status_message('You can only highlight text in text files.')
+        elif event == 'quiet':
+            self.display_status_message('You can leave quiet mode by pressing "escape"', msg_type='hint')
         else:
-            self.status.set('Quiet Text (v0.1)')
+            self.hide_status_bar()
+
+    def display_status_message(self, message, msg_type='error'):
+        self.show_status_bar()
+        self.status.set(message)
+        if msg_type == 'save':
+            self.save_color()
+        elif msg_type == 'hint':
+            self.hint_color()
+        else:
+            self.error_color()
+
+    def error_color(self):
+        self._label.config(bg='#522628')
+
+    def save_color(self):
+        self._label.config(bg='#47632b')
+
+    def hint_color(self):
+        self._label.config(bg='#38342b', fg='#d5c4a1')
 
     # hiding the status bar while in quiet mode
     def hide_status_bar(self):
@@ -170,7 +202,7 @@ class Statusbar:
 
     # display of the status bar
     def show_status_bar(self):
-        self._label.pack(side=BOTTOM, fill=BOTH)
+        self._label.pack(side=BOTTOM)
 
    
 class TextLineNumbers(tk.Canvas):
@@ -197,7 +229,7 @@ class TextLineNumbers(tk.Canvas):
             self.create_text(2, y, anchor='nw',
                              text=linenum,
                              font=(self._text_font, self._parent.font_size),
-                             fill='#c9bebb')
+                             fill='#d5c4a1')
             i = self.textwidget.index('%s+1line' % i)
 
 
@@ -258,22 +290,30 @@ class QuietText(tk.Frame):
         with open('settings.yaml') as settings_yaml:
             self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
 
-        master.tk_setPalette(background='#181816', foreground='black')
+        master.tk_setPalette(background='#181816', foreground='#fbf1c7')
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['bg_color']
-        self.text_color = self.settings['text_color']
+        self.font_color = self.settings['font_color']
         self.tab_size = self.settings['tab_size']
         self.font_size = int(self.settings['font_size'])
         self.top_spacing = self.settings['top_spacing']
         self.bottom_spacing = self.settings['bottom_spacing']
         self.padding_x = self.settings['padding_x']
         self.padding_y = self.settings['padding_y']
-        self.insertion_blink_bool = self.settings['insertion_blink']
+        self.insertion_blink = 300 if self.settings['insertion_blink'] else 0
+        self.insertion_color = self.settings['insertion_color']
         self.tab_size_spaces = self.settings['tab_size']
 
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.settings['font_size'])
+
+        #configuration of the file dialog text colors.
+        self.style = ttk.Style(master)
+        self.style.configure('TLabel', foreground='black')
+        self.style.configure('TEntry', foreground='black')
+        self.style.configure('TMenubutton', foreground='black')
+        self.style.configure('TButton', foreground='black')
 
         self.master = master
         self.filename = None
@@ -304,12 +344,13 @@ class QuietText(tk.Frame):
         self.textarea.configure(yscrollcommand=self.scrolly.set,
                                 xscrollcommand=self.scrollx.set,
                                 bg=self.bg_color,
-                                fg=self.text_color,
+                                fg=self.font_color,
                                 wrap='none',
                                 spacing1=self.top_spacing, 
                                 spacing3=self.bottom_spacing,
                                 selectbackground='#7a7666',
-                                insertbackground='white',
+                                insertbackground=self.insertion_color,
+                                insertofftime=self.insertion_blink,
                                 bd=0,
                                 highlightthickness=0,
                                 font=self.font_family,
@@ -318,11 +359,6 @@ class QuietText(tk.Frame):
                                 maxundo=-1,
                                 padx=self.padding_x,
                                 pady=self.padding_y)
-
-        if self.insertion_blink_bool == 'true':
-            self.textarea.configure(insertofftime=300)
-        else:
-            self.textarea.configure(insrtofftime=0)
 
         #retrieving the font from the text area and setting a tab width
         self._font = tk_font.Font(font=self.textarea['font'])
@@ -342,7 +378,7 @@ class QuietText(tk.Frame):
         # setting right click menu bar
         self.right_click_menu = tk.Menu(master,
                                         font=self.font_family,
-                                        fg='#c9bebb',
+                                        fg='#d5c4a1',
                                         bg='#2e2724',
                                         activebackground='#9c8383',
                                         bd=0,
@@ -365,11 +401,6 @@ class QuietText(tk.Frame):
         self.right_click_menu.add_command(label='Highlight',
                                           accelerator='Ctrl+G',
                                           command=self.hightlight)
-
-        # self.tabs = ttk.Notebook(self.master)
-        # self.tabs.pack(side=BOTTOM)
-        # f1 = tk.Frame(self.tabs)
-        # self.tabs.add(f1, text='working?')
 
         
         #calling function to bind hotkeys.
@@ -411,10 +442,11 @@ class QuietText(tk.Frame):
             _settings = self.load_settings_data(settings_path)
             font_family = _settings['font_family']
             bg_color = _settings['bg_color']
-            text_color = _settings['text_color']
+            font_color = _settings['font_color']
             top_spacing = _settings['top_spacing']
             bottom_spacing = _settings['bottom_spacing']
-            insertion_blink_bool = _settings['insertion_blink']
+            insertion_blink = 300 if _settings['insertion_blink'] else 0
+            insertion_color = _settings['insertion_color']
             tab_size_spaces = _settings['tab_size']
             padding_x = _settings['padding_x']
             padding_y = _settings['padding_y']
@@ -426,14 +458,12 @@ class QuietText(tk.Frame):
                                     bg=bg_color,
                                     pady=padding_y,
                                     padx=padding_x,
-                                    fg=text_color,
+                                    fg=font_color,
                                     spacing1=top_spacing,
-                                    spacing3=bottom_spacing)
+                                    spacing3=bottom_spacing,
+                                    insertbackground=insertion_color,
+                                    insertofftime=insertion_blink)
 
-            if insertion_blink_bool == 'true':
-                self.textarea.configure(insertofftime=300)
-            else:
-                self.textarea.configure(insertofftime=0)
             self.set_new_tab_width(tab_size_spaces)
 
             if overwrite:
@@ -451,6 +481,7 @@ class QuietText(tk.Frame):
         self.menubar.hide_menu()
         self.scrollx.configure(width=0)
         self.scrolly.configure(width=0)
+        self.statusbar.update_status('quiet')
 
     # editor leaving quite enu to bring back status bar and menu bar
     def leave_quiet_mode(self, *args):
@@ -537,10 +568,13 @@ class QuietText(tk.Frame):
 
     # running the python file
     def run(self, *args):
-        if self.filename:
-            os.system(f"gnome-terminal -- python3.8 {self.filename}")
-        else:
-            self.statusbar.update_status('no file')
+        try:
+            if self.filename[-3:] == '.py':
+                os.system(f"gnome-terminal -- python3.8 {self.filename}")
+            else:
+                self.statusbar.update_status('no python')
+        except TypeError:
+            self.statusbar.update_status('no file run')
 
     # opens the main setting file of the editor
     def open_settings_file(self):
@@ -602,19 +636,23 @@ class QuietText(tk.Frame):
 
     # Setting the selected text to be bold
     def bold(self, event=None):
-        try:
-            if(os.path.splitext(self.filename)[1][1:] == "txt"):
-                current_tags = self.textarea.tag_names("sel.first")
-                bold_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
-                bold_font.configure(weight = "bold")
-                self.textarea.tag_configure("bold", font = bold_font)
-                if "bold" in current_tags:
-                    self.textarea.tag_remove("bold", "sel.first", "sel.last")
-                else:
-                    self.textarea.tag_add("bold", "sel.first", "sel.last")
-            else: pass
-        except tk.TclError:
-            pass
+        if self.filename:
+            try:
+                if(os.path.splitext(self.filename)[1][1:] == "txt"):
+                    current_tags = self.textarea.tag_names("sel.first")
+                    bold_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
+                    bold_font.configure(weight = "bold")
+                    self.textarea.tag_configure("bold", font = bold_font)
+                    if "bold" in current_tags:
+                        self.textarea.tag_remove("bold", "sel.first", "sel.last")
+                    else:
+                        self.textarea.tag_add("bold", "sel.first", "sel.last")
+                else: 
+                    self.statusbar.update_status('no txt bold')
+            except tk.TclError:
+                pass
+        else:
+            self.statusbar.update_status('no file')
 
     def hightlight(self, event=None):
         try:
@@ -627,7 +665,8 @@ class QuietText(tk.Frame):
                     self.textarea.tag_remove("highlight", "sel.first", "sel.last")
                 else:
                     self.textarea.tag_add("highlight", "sel.first", "sel.last")
-            else: pass
+            else:
+                self.statusbar.update('no txt high')
         except tk.TclError:
             pass
         
@@ -673,7 +712,8 @@ class QuietText(tk.Frame):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
             self.textarea.isControlPressed = True
-            self.textarea.configure()
+        else:
+            self.statusbar.update_status('hide')
 
     def _on_keyup(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
@@ -692,14 +732,13 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Control-r>', self.run)
         self.textarea.bind('<Control-q>', self.enter_quiet_mode)
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
-        self.textarea.bind('<Key>', self.statusbar.update_status)
         self.textarea.bind('<<Change>>', self._on_change)
         self.textarea.bind('<Configure>', self._on_change)
         self.textarea.bind('<Button-3>', self.show_click_menu)
         self.textarea.bind('<MouseWheel>', self._on_mousewheel)
         self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
         self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
-        self.textarea.bind('<KeyPress>', self._on_keydown)
+        self.textarea.bind('<Key>', self._on_keydown)
         self.textarea.bind('<KeyRelease>', self._on_keyup)
 
 
