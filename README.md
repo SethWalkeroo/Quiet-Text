@@ -8,7 +8,8 @@
 <p align="center">
    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/sethwalkeroo/Quiet-Text">
    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/sethwalkeroo/Quiet-Text">
-   <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/sethwalkeroo/Quiet-Text">
+   <img alt="GitHub issues" src="https://img.shields.io/github/issues/sethwalkeroo/Quiet-Text">
+   <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sethwalkeroo/Quiet-Text">
    <a href="https://www.codacy.com/gh/SethWalkeroo/Quiet-Text/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SethWalkeroo/Quiet-Text&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/d8b43699912a4282823dfbf3a5c30dbc"/></a>
 </p>
 
