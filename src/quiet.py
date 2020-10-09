@@ -489,6 +489,7 @@ class QuietText(tk.Frame):
         self.menubar.show_menu()
         self.scrollx.configure(width=8)
         self.scrolly.configure(width=8)
+        self.statusbar.update_status('hide')
 
     #hide status bar for text class so it can be used in menu class
     def hide_status_bar(self, *args):
