@@ -282,7 +282,7 @@ class QuietText(tk.Frame):
 
         # defined editor basic bakground and looking
         master.tk_setPalette(background='#261e1b',
-                             foreground='#c9bebb',
+                             foreground='black',
                              activeForeground='white',
                              activeBackground='#9c8383',)
 
@@ -290,7 +290,7 @@ class QuietText(tk.Frame):
         with open('settings.yaml') as settings_yaml:
             self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
 
-        master.tk_setPalette(background='#181816', foreground='#fbf1c7')
+        master.tk_setPalette(background='#181816', foreground='#8f3f71')
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['bg_color']
