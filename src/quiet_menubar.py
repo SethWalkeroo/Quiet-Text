@@ -4,9 +4,9 @@ from tkinter.colorchooser import askcolor
 
 
 class Menu(tk.Menu):
-    # menu method and its initializatipn from settings.yaml
+    # menu method and its initializatipn from config/settings.yaml
     def __init__(self, *args, **kwargs):
-        with open('settings.yaml', 'r') as settings_yaml:
+        with open('config/settings.yaml', 'r') as settings_yaml:
             settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
@@ -97,7 +97,7 @@ class Menubar:
 
         # Settings reconfiguration function
     def reconfigure_settings(self):
-        with open('settings.yaml', 'r') as settings_yaml:
+        with open('config/settings.yaml', 'r') as settings_yaml:
             settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
         for field in self.menu_fields:
             field.configure(bg=settings['menu_bg'],

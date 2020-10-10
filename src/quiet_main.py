@@ -27,7 +27,7 @@ class QuietText(tk.Frame):
                              activeBackground='#9c8383',)
 
         # start editor according to defined settings in settings.yaml
-        with open('settings.yaml') as settings_yaml:
+        with open('config/settings.yaml') as settings_yaml:
             self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
 
         master.tk_setPalette(background='#272822', foreground='black')
@@ -159,7 +159,7 @@ class QuietText(tk.Frame):
             return _settings
 
     def store_settings_data(self, information):
-        with open('settings.yaml', 'w') as user_settings:
+        with open('config/settings.yaml', 'w') as user_settings:
             yaml.dump(information, user_settings)
 
     def clear_and_replace_textarea(self):
@@ -220,7 +220,7 @@ class QuietText(tk.Frame):
                 if MsgBox == 'yes':
                     self.store_settings_data(_settings)
                 else:
-                    self.save('settings.yaml')
+                    self.save('config/settings.yaml')
 
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
@@ -284,7 +284,7 @@ class QuietText(tk.Frame):
                 with open(self.filename, 'w') as f:
                     f.write(textarea_content)
                 self.statusbar.update_status('saved')
-                if self.filename == 'settings.yaml':
+                if self.filename == 'config/settings.yaml':
                     self.reconfigure_settings(self.filename)
                     self.menubar.reconfigure_settings()
             except Exception as e:
@@ -351,7 +351,7 @@ class QuietText(tk.Frame):
 
     # opens the main setting file of the editor
     def open_settings_file(self):
-        self.filename = 'settings.yaml'
+        self.filename = 'config/settings.yaml'
         self.textarea.delete(1.0, tk.END)
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
@@ -360,7 +360,7 @@ class QuietText(tk.Frame):
 
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
-        self.reconfigure_settings('settings-default.yaml', overwrite=True)
+        self.reconfigure_settings('config/settings-default.yaml', overwrite=True)
         self.clear_and_replace_textarea()
         self.syntax_highlighter.on_key_release()
 
@@ -459,13 +459,13 @@ class QuietText(tk.Frame):
     def _on_linux_scroll_up(self, _):
         if self.control_key:
             self.change_font_size(1)
-            if self.filename == 'settings.yaml':
+            if self.filename == 'config/settings.yaml':
                 self.syntax_highlighter.on_key_release()
 
     def _on_linux_scroll_down(self, _):
         if self.control_key:
             self.change_font_size(-1)
-            if self.filename == 'settings.yaml':
+            if self.filename == 'config/settings.yaml':
                 self.syntax_highlighter.on_key_release()
 
     def change_font_size(self, delta):
@@ -477,11 +477,11 @@ class QuietText(tk.Frame):
 
         self.textarea.configure(font=self.font_style)
         self.set_new_tab_width()
-        _settings = self.load_settings_data('settings.yaml')
+        _settings = self.load_settings_data('config/settings.yaml')
         _settings['font_size'] = self.font_size
         self.store_settings_data(_settings)
 
-        if self.filename == 'settings.yaml':
+        if self.filename == 'config/settings.yaml':
             self.clear_and_replace_textarea()
 
 
@@ -549,6 +549,7 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 
