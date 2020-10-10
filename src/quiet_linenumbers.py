@@ -24,5 +24,5 @@ class TextLineNumbers(tk.Canvas):
             self.create_text(2, y, anchor='nw',
                              text=linenum,
                              font=(self._text_font, self._parent.font_size),
-                             fill='#d5c4a1')
+                             fill='#75715E')
             i = self.textwidget.index('%s+1line' % i)
