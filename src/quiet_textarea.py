@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 
-
 class CustomText(tk.Text):
     def __init__(self, *args, **kwargs):
         tk.Text.__init__(self, *args, **kwargs)
@@ -77,3 +76,4 @@ class CustomText(tk.Text):
         self.find_search_starting_index = 1.0
         self.find_match_index = None
         self.tag_remove('find_match', 1.0, tk.END)
+

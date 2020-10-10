@@ -5,13 +5,12 @@ import tkinter as tk
 import tkinter.font as tk_font
 from tkinter import (filedialog, messagebox, ttk)
 
-from quiet_syntax import SyntaxHighlighter
+from quiet_syntax_highlighting import PythonSyntaxHighlight
 from quiet_menubar import Menu, Menubar
 from quiet_statusbar import Statusbar
 from quiet_linenumbers import TextLineNumbers
 from quiet_textarea import CustomText
 from quiet_find import FindWindow
-
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -100,6 +99,8 @@ class QuietText(tk.Frame):
                                 padx=self.padding_x,
                                 pady=self.padding_y)
 
+        self.initial_content = self.textarea.get("1.0", tk.END)
+
         #retrieving the font from the text area and setting a tab width
         self._font = tk_font.Font(font=self.textarea['font'])
         self._tab_width = self._font.measure(' ' * self.tab_size_spaces)
@@ -108,7 +109,7 @@ class QuietText(tk.Frame):
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
-        self.syntax_highlighter = SyntaxHighlighter(self.textarea, 'languages/python.yaml')
+        self.syntax_highlighter = PythonSyntaxHighlight(self.textarea, self.initial_content)
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)
@@ -147,6 +148,8 @@ class QuietText(tk.Frame):
         self.textarea.tag_configure('find_match', background='#75715e')
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
+
+        self.tags_configured = False
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
@@ -166,7 +169,6 @@ class QuietText(tk.Frame):
             self.textarea.delete(1.0, tk.END)
             try:
                 with open(self.filename, 'r') as f:
-                    self.syntax_highlighter.on_key_release()
                     self.textarea.insert(1.0, f.read())
             except TypeError:
                 pass
@@ -273,8 +275,7 @@ class QuietText(tk.Frame):
         if self.filename:
             self.clear_and_replace_textarea()
             self.set_window_title(name=self.filename)
-            if self.filename[-3:] == '.py':
-                self.syntax_highlighter.on_key_release()
+            self.syntax_highlighter.initial_highlight()
 
     # saving changes made in the file
     def save(self,*args):
@@ -356,13 +357,11 @@ class QuietText(tk.Frame):
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
         self.set_window_title(name=self.filename)
-        self.syntax_highlighter.on_key_release()
 
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
         self.reconfigure_settings('config/settings-default.yaml', overwrite=True)
         self.clear_and_replace_textarea()
-        self.syntax_highlighter.on_key_release()
 
     # select all written text in the editor
     def select_all_text(self, *args):
@@ -460,13 +459,13 @@ class QuietText(tk.Frame):
         if self.control_key:
             self.change_font_size(1)
             if self.filename == 'config/settings.yaml':
-                self.syntax_highlighter.on_key_release()
+                pass
 
     def _on_linux_scroll_down(self, _):
         if self.control_key:
             self.change_font_size(-1)
             if self.filename == 'config/settings.yaml':
-                self.syntax_highlighter.on_key_release()
+                pass
 
     def change_font_size(self, delta):
         self.font_size = self.font_size + delta
@@ -503,10 +502,10 @@ class QuietText(tk.Frame):
     #         self.textarea.isControlPressed = False
     # self.textarea.bind('<KeyRelease>', self._on_keyup)
 
-    def syntax_highlight(self, event):
-        if self.filename and self.filename[-3:] == '.py':
-            self.syntax_highlighter.on_key_release()
-
+    def syntax_highlight(self, *args):
+        self.syntax_highlighter.default_highlight()
+        if not self.tags_configured:
+            self.syntax_highlighter.syntax_theme_configuration()
         self.control_key = False
         self.textarea.isControlPressed = False
 
@@ -549,6 +548,8 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
+
 
 
 
