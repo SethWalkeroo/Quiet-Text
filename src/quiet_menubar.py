@@ -1,13 +1,13 @@
 import tkinter as tk
 import yaml
 from tkinter.colorchooser import askcolor
+from quiet_zutilityfuncs import load_settings_data
 
 
 class Menu(tk.Menu):
     # menu method and its initializatipn from config/settings.yaml
     def __init__(self, *args, **kwargs):
-        with open('config/settings.yaml', 'r') as settings_yaml:
-            settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
+        settings = load_settings_data()
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
