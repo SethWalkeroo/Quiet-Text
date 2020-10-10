@@ -857,12 +857,12 @@ class QuietText(tk.Frame):
         self.textarea.isControlPressed = False
 
 
-    def autoclose_parantheses(self, event):
+    def autocloses_parantheses(self, event):
         index = self.textarea.index(INSERT)
         self.textarea.insert(index, '}')
         self.textarea.mark_set("insert", index)
 
-    def autoclose_brackets(self, event):
+    def autocloses_brackets(self, event):
         index = self.textarea.index(INSERT)
         self.textarea.insert(index, ')')
         self.textarea.mark_set("insert", index)
@@ -888,8 +888,8 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Key>', self._on_keydown)
         # self.textarea.bind('<KeyRelease>', self._on_keyup)
         self.textarea.bind('<KeyRelease>', self.syntax_highlight)
-        self.textarea.bind('<KeyRelease-{>', self.autoclose_parantheses)
-        self.textarea.bind('<KeyRelease-(>', self.autoclose_brackets)
+        self.textarea.bind('<Shift-{>', self.autocloses_parantheses)
+        self.textarea.bind('<Shift-(>', self.autocloses_brackets)
 
 
 if __name__ == '__main__':
