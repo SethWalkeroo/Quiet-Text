@@ -50,12 +50,8 @@ class QuietText(tk.Frame):
                                        size=self.settings['font_size'])
 
         #configuration of the file dialog text colors.
-        self.style = ttk.Style(master)
-        self.style.configure('TLabel', foreground='black')
-        self.style.configure('TEntry', foreground='black')
-        self.style.configure('TMenubutton', foreground='black')
-        self.style.configure('TButton', foreground='black')
 
+        self.italics = tk_font.Font(family=self.font_family, slant='italic')
         self.master = master
         self.filename = None
                                 
@@ -111,7 +107,7 @@ class QuietText(tk.Frame):
         self.context_menu = ContextMenu(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
-        self.syntax_highlighter = PythonSyntaxHighlight(self.textarea, self.initial_content)
+        self.syntax_highlighter = PythonSyntaxHighlight(self, self.textarea, self.initial_content)
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)
@@ -249,7 +245,6 @@ class QuietText(tk.Frame):
             self.clear_and_replace_textarea()
             self.set_window_title(name=self.filename)
             self.syntax_highlighter.initial_highlight()
-            self.syntax_highlighter.update_highlight_font()
 
     # saving changes made in the file
     def save(self,*args):
@@ -382,8 +377,12 @@ class QuietText(tk.Frame):
         self.font_size = min_font_size if self.font_size < min_font_size else self.font_size
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.font_size)
+        self.italics = tk_font.Font(family=self.font_family,
+                                    size=self.font_size,
+                                    slant='italic')
 
         self.textarea.configure(font=self.font_style)
+        self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
         self.set_new_tab_width()
         _settings = load_settings_data('config/settings.yaml')
         _settings['font_size'] = self.font_size
@@ -442,6 +441,8 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Key>', self._on_keydown)
         self.textarea.bind('<KeyRelease>', self.syntax_highlight)
         self.textarea.bind_all('<<Paste>>', self.context_menu.paste)
+        self.textarea.bind('<Control-z>', self.syntax_highlighter.initial_highlight)
+        self.textarea.bind('<Control-Shift-KeyRelease>', self.syntax_highlighter.initial_highlight)
 
 
 if __name__ == '__main__':

@@ -7,11 +7,12 @@ from quiet_zutilityfuncs import load_settings_data
 
 class PythonSyntaxHighlight():
 
-    def __init__(self, text_widget, initial_content):
+    def __init__(self, parent, text_widget, initial_content):
         self.settings = load_settings_data()
-        self.font_family = self.settings['font_family']
+        self.parent = parent
         self.text = text_widget
-        self.italics = tk_font.Font(family=self.font_family, slant='italic')
+        self.font_family = self.parent.font_family
+        self.font_size = self.parent.font_size
         self.previousContent = initial_content
         self.lexer = PythonLexer
         self.comment_tokens = [
@@ -64,12 +65,6 @@ class PythonSyntaxHighlight():
         self.punctuation_color = '#c9bfbd'
         self.object_color = '#A9DC76'
 
-    def update_highlight_font(self):
-        settings = load_settings_data()
-        self.font_family = settings['font_family']
-        self.font_size = settings['font_size']
-        self.italics = tk_font.Font(family=self.font_family, slant='italic')
-
     def default_highlight(self):
         row = float(self.text.index(tk.INSERT))
         row = str(math.trunc(row))
@@ -99,7 +94,7 @@ class PythonSyntaxHighlight():
         for token in self.function_tokens:
             self.text.tag_configure(token, foreground=self.function_color)
         for token in self.class_tokens:
-            self.text.tag_configure(token, foreground=self.class_color, font=self.italics)
+            self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics, size=self.font_size)
         for token in self.variable_tokens:
             self.text.tag_configure(token, foreground=self.variable_color)
         for token in self.punctuation_tokens:
@@ -107,7 +102,7 @@ class PythonSyntaxHighlight():
         for token in self.object_tokens:
             self.text.tag_configure(token, foreground=self.object_color)
 
-    def initial_highlight(self):
+    def initial_highlight(self, *args):
         content = self.text.get("1.0", tk.END)
 
         self.text.mark_set("range_start", "1.0")
@@ -127,6 +122,5 @@ class PythonSyntaxHighlight():
             
         self.previousContent = self.text.get("1.0", tk.END)
         self.syntax_theme_configuration()
-        self.update_highlight_font()
 
 
