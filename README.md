@@ -38,8 +38,37 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 
 ## Installation
+This project requires **Pygments** as well as **PyYAML**. Both of these packages can be installed through a virtual environment with **requirements.txt**.
 
-This project requires a Python3 interpreter with Tkinter support.
+**Mac and Linux installation:**
+
+```sh
+python3 -m venv env
+```
+
+```sh
+source env/bin/activate
+```
+
+```sh
+pip3 install -r requirements.txt
+```
+
+**Windows:**
+
+```sh
+python -m venv env
+```
+
+```
+env\Scripts\activate.bat
+```
+```
+pip install -r requirements.txt
+```
+
+
+This project also requires a Python3 interpreter with Tkinter support.
 You can test it using
 
 ```sh
