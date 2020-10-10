@@ -1,15 +1,14 @@
 import tkinter as tk
 import math
 import tkinter.font as tk_font
-import yaml
 from pygments import lex
 from pygments.lexers import PythonLexer
+from quiet_zutilityfuncs import load_settings_data
 
 class PythonSyntaxHighlight():
 
     def __init__(self, text_widget, initial_content):
-        with open('config/settings.yaml') as f:
-            self.settings = yaml.load(f, Loader=yaml.FullLoader)
+        self.settings = load_settings_data()
         self.font_family = self.settings['font_family']
         self.text = text_widget
         self.italics = tk_font.Font(family=self.font_family, slant='italic')
@@ -66,9 +65,10 @@ class PythonSyntaxHighlight():
         self.object_color = '#A9DC76'
 
     def update_highlight_font(self):
-        with open('config/settings.yaml') as f:
-            settings = yaml.load(f, Loader=yaml.FullLoader)
+        settings = load_settings_data()
         self.font_family = settings['font_family']
+        self.font_size = settings['font_size']
+        self.italics = tk_font.Font(family=self.font_family, slant='italic')
 
     def default_highlight(self):
         row = float(self.text.index(tk.INSERT))
@@ -86,7 +86,6 @@ class PythonSyntaxHighlight():
                 self.text.mark_set("range_start", "range_end")
 
         self.previousContent = self.text.get("1.0", tk.END)
-
 
     def syntax_theme_configuration(self):
         for token in self.comment_tokens:

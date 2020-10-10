@@ -11,6 +11,8 @@ from quiet_statusbar import Statusbar
 from quiet_linenumbers import TextLineNumbers
 from quiet_textarea import CustomText
 from quiet_find import FindWindow
+from quiet_context import ContextMenu
+from quiet_zutilityfuncs import load_settings_data, store_settings_data
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -26,8 +28,7 @@ class QuietText(tk.Frame):
                              activeBackground='#9c8383',)
 
         # start editor according to defined settings in settings.yaml
-        with open('config/settings.yaml') as settings_yaml:
-            self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
+        self.settings = load_settings_data()
 
         master.tk_setPalette(background='#2C2525', foreground='black')
 
@@ -107,6 +108,7 @@ class QuietText(tk.Frame):
         self.textarea.config(tabs=(self._tab_width,))
 
         self.menubar = Menubar(self)
+        self.context_menu = ContextMenu(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
         self.syntax_highlighter = PythonSyntaxHighlight(self.textarea, self.initial_content)
@@ -116,34 +118,6 @@ class QuietText(tk.Frame):
         self.scrollx.pack(side=tk.BOTTOM, fill='both')
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
-
-        # setting tk.RIGHT click menu bar
-        self.right_click_menu = tk.Menu(master,
-                                        font=self.font_family,
-                                        fg='#d5c4a1',
-                                        bg='#2e2724',
-                                        activebackground='#9c8383',
-                                        bd=0,
-                                        tearoff=0)
-
-        self.right_click_menu.add_command(label='Cut',
-                                          accelerator='Ctrl+X',
-                                          command=self.cut)
-
-        self.right_click_menu.add_command(label='Copy',
-                                          accelerator='Ctrl+C',
-                                          command=self.copy)
-
-        self.right_click_menu.add_command(label='Paste',
-                                          accelerator='Ctrl+V',
-                                          command=self.paste)
-        self.right_click_menu.add_command(label='Bold',
-                                          accelerator='Ctrl+B',
-                                          command=self.bold)
-        self.right_click_menu.add_command(label='Highlight',
-                                          accelerator='Ctrl+G',
-                                          command=self.hightlight)
-
         
         self.textarea.tag_configure('find_match', background='#75715e')
         self.textarea.find_match_index = None
@@ -158,12 +132,8 @@ class QuietText(tk.Frame):
     def load_settings_data(self, settings_path):
         settings_path = settings_path
         with open(settings_path, 'r') as settings_yaml:
-            _settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
+            _settings = load_settings_data()
             return _settings
-
-    def store_settings_data(self, information):
-        with open('config/settings.yaml', 'w') as user_settings:
-            yaml.dump(information, user_settings)
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, tk.END)
@@ -185,8 +155,11 @@ class QuietText(tk.Frame):
 
     # editor basic settings can be altered here
     #function used to reload settings after the user changes in settings.yaml
-    def reconfigure_settings(self, settings_path, overwrite=False):
-            _settings = self.load_settings_data(settings_path)
+    def reconfigure_settings(self, overwrite_with_default=False):
+            if overwrite_with_default:
+                _settings = load_settings_data(default=True)
+            else:
+                _settings = load_settings_data()
             font_family = _settings['font_family']
             bg_color = _settings['bg_color']
             font_color = _settings['font_color']
@@ -215,12 +188,12 @@ class QuietText(tk.Frame):
 
             self.set_new_tab_width(tab_size_spaces)
 
-            if overwrite:
+            if overwrite_with_default:
                 MsgBox = tk.messagebox.askquestion('Reset Settings?',
                                                    'Are you sure you want to reset the editor settings to their default value?',
                                                     icon='warning')
                 if MsgBox == 'yes':
-                    self.store_settings_data(_settings)
+                    store_settings_data(_settings)
                 else:
                     self.save('config/settings.yaml')
 
@@ -287,7 +260,7 @@ class QuietText(tk.Frame):
                     f.write(textarea_content)
                 self.statusbar.update_status('saved')
                 if self.filename == 'config/settings.yaml':
-                    self.reconfigure_settings(self.filename)
+                    self.reconfigure_settings()
                     self.menubar.reconfigure_settings()
             except Exception as e:
                 print(e)
@@ -357,12 +330,14 @@ class QuietText(tk.Frame):
         self.textarea.delete(1.0, tk.END)
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
+        self.syntax_highlighter.initial_highlight()
         self.set_window_title(name=self.filename)
 
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
-        self.reconfigure_settings('config/settings-default.yaml', overwrite=True)
+        self.reconfigure_settings(overwrite_with_default=True)
         self.clear_and_replace_textarea()
+        self.syntax_highlighter.initial_highlight()
 
     # select all written text in the editor
     def select_all_text(self, *args):
@@ -382,73 +357,6 @@ class QuietText(tk.Frame):
         except tk.TclError:
             pass
 
-    # Render the tk.RIGHT click menu on tk.RIGHT click
-    def show_click_menu(self, key_event):
-        self.right_click_menu.tk_popup(key_event.x_root, key_event.y_root)
-
-    # shortcut keys that the editor supports
-    def copy(self, event=None):
-        try:
-            self.textarea.clipboard_clear()
-            text=self.textarea.get("sel.first", "sel.last")
-            self.textarea.clipboard_append(text)
-        except tk.TclError:
-            pass
-
-    def cut(self,event=None):
-        try:
-            self.copy()
-            self.textarea.delete("sel.first", "sel.last")
-        except tk.TclError:
-            pass
-
-    def paste(self, event=None):
-        try:
-            text = self.textarea.selection_get(selection='CLIPBOARD')
-            self.textarea.insert('insert',text)
-        except tk.TclError:
-            pass
-
-    # Setting the selected text to be bold
-    def bold(self, event=None):
-        if self.filename:
-            try:
-                if(os.path.splitext(self.filename)[1][1:] == "txt"):
-                    current_tags = self.textarea.tag_names("sel.first")
-                    bold_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
-                    bold_font.configure(weight = "bold")
-                    self.textarea.tag_config("bold", font = bold_font)
-                    if "bold" in current_tags:
-                        self.textarea.tag_remove("bold", "sel.first", "sel.last")
-                    else:
-                        self.textarea.tag_add("bold", "sel.first", "sel.last")
-                else: 
-                    self.statusbar.update_status('no txt bold')
-            except tk.TclError:
-                pass
-        else:
-            self.statusbar.update_status('no file')
-
-    def hightlight(self, event=None):
-        if self.filename:
-            try:
-                if(os.path.splitext(self.filename)[1][1:] == "txt"):
-                    new_color = self.menubar.open_color_picker()
-                    current_tags = self.textarea.tag_names("sel.first")
-                    highlight_font = tk_font.Font(self.textarea, self.textarea.cget("font"))
-                    self.textarea.tag_config("highlight", font = highlight_font, foreground = "black", background = new_color)
-                    if "highlight" in current_tags:
-                        self.textarea.tag_remove("highlight", "sel.first", "sel.last")
-                    else:
-                        self.textarea.tag_add("highlight", "sel.first", "sel.last")
-                else:
-                    self.statusbar.update_status('no txt high')
-            except tk.TclError:
-                pass
-        else:
-            self.statusbar.update_status('no file')
-            
-          
     def _on_change(self, key_event):
         self.linenumbers.redraw()
 
@@ -460,13 +368,13 @@ class QuietText(tk.Frame):
         if self.control_key:
             self.change_font_size(1)
             if self.filename == 'config/settings.yaml':
-                pass
+                self.syntax_highlighter.initial_highlight()
 
     def _on_linux_scroll_down(self, _):
         if self.control_key:
             self.change_font_size(-1)
             if self.filename == 'config/settings.yaml':
-                pass
+                self.syntax_highlighter.initial_highlight()
 
     def change_font_size(self, delta):
         self.font_size = self.font_size + delta
@@ -477,9 +385,9 @@ class QuietText(tk.Frame):
 
         self.textarea.configure(font=self.font_style)
         self.set_new_tab_width()
-        _settings = self.load_settings_data('config/settings.yaml')
+        _settings = load_settings_data('config/settings.yaml')
         _settings['font_size'] = self.font_size
-        self.store_settings_data(_settings)
+        store_settings_data(_settings)
 
         if self.filename == 'config/settings.yaml':
             self.clear_and_replace_textarea()
@@ -497,12 +405,6 @@ class QuietText(tk.Frame):
         else:
             self.statusbar.update_status('hide')
 
-    # def _on_keyup(self, event):
-    #     if event.keycode in [37, 109, 262401, 270336, 262145]:
-    #         self.control_key = False
-    #         self.textarea.isControlPressed = False
-    # self.textarea.bind('<KeyRelease>', self._on_keyup)
-
     def syntax_highlight(self, *args):
         self.syntax_highlighter.default_highlight()
         if not self.tags_configured:
@@ -515,13 +417,16 @@ class QuietText(tk.Frame):
         self.control_key = False
         self.textarea.isControlPressed = False
 
+    def select_all(self):
+        self.selection_set(0, 'end')
+
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
         self.textarea.bind('<Control-o>', self.open_file)
         self.textarea.bind('<Control-s>', self.save)
         self.textarea.bind('<Control-S>', self.save_as)
-        self.textarea.bind('<Control-b>', self.bold)
-        self.textarea.bind('<Control-h>', self.hightlight)
+        self.textarea.bind('<Control-b>', self.context_menu.bold)
+        self.textarea.bind('<Control-h>', self.context_menu.hightlight)
         self.textarea.bind('<Control-a>', self.select_all_text)
         self.textarea.bind('<Control-m>', self.apply_hex_color)
         self.textarea.bind('<Control-r>', self.run)
@@ -530,12 +435,13 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
         self.textarea.bind('<<Change>>', self._on_change)
         self.textarea.bind('<Configure>', self._on_change)
-        self.textarea.bind('<Button-3>', self.show_click_menu)
+        self.textarea.bind('<Button-3>', self.context_menu.popup)
         self.textarea.bind('<MouseWheel>', self._on_mousewheel)
         self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
         self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
         self.textarea.bind('<Key>', self._on_keydown)
         self.textarea.bind('<KeyRelease>', self.syntax_highlight)
+        self.textarea.bind_all('<<Paste>>', self.context_menu.paste)
 
 
 if __name__ == '__main__':
@@ -549,6 +455,7 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 

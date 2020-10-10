@@ -61,3 +61,4 @@ class FindWindow(tk.Toplevel):
         self.master.cancel_find()
         self.destroy()
 
+

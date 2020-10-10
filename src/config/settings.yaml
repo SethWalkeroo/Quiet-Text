@@ -2,7 +2,7 @@ bg_color: '#2C2525'
 bottom_spacing: '1'
 font_color: '#F8F8F2'
 font_family: monospace
-font_size: 12
+font_size: 8
 insertion_blink: false
 insertion_color: '#75715E'
 menu_active_bg: '#38342b'
