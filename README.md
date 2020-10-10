@@ -38,7 +38,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 
 ## Installation
-This project requires **Pygments** as well as **PyYAML**. Both of these packages can be installed through a virtual environment with requirements.txt.
+This project requires **Pygments** as well as **PyYAML**. Both of these packages can be installed through a virtual environment with **requirements.txt**.
 
 **Mac and Linux installation:**
 
