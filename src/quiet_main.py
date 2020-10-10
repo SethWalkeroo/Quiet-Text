@@ -10,6 +10,7 @@ from quiet_menubar import Menu, Menubar
 from quiet_statusbar import Statusbar
 from quiet_linenumbers import TextLineNumbers
 from quiet_textarea import CustomText
+from quiet_find import FindWindow
 
 
 class QuietText(tk.Frame):
@@ -29,7 +30,7 @@ class QuietText(tk.Frame):
         with open('settings.yaml') as settings_yaml:
             self.settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
 
-        master.tk_setPalette(background='#272822', foreground='#8f3f71')
+        master.tk_setPalette(background='#272822', foreground='black')
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['bg_color']
@@ -87,7 +88,7 @@ class QuietText(tk.Frame):
                                 wrap= self.text_wrap,
                                 spacing1=self.top_spacing, 
                                 spacing3=self.bottom_spacing,
-                                selectbackground='#7a7666',
+                                selectbackground='#75715e',
                                 insertbackground=self.insertion_color,
                                 insertofftime=self.insertion_blink,
                                 bd=0,
@@ -143,6 +144,9 @@ class QuietText(tk.Frame):
                                           command=self.hightlight)
 
         
+        self.textarea.tag_configure('find_match', background='#75715e')
+        self.textarea.find_match_index = None
+        self.textarea.find_search_starting_index = 1.0
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
@@ -506,6 +510,10 @@ class QuietText(tk.Frame):
         self.control_key = False
         self.textarea.isControlPressed = False
 
+    def show_find_window(self, event=None):
+        FindWindow(self.textarea)
+        self.control_key = False
+        self.textarea.isControlPressed = False
 
     def bind_shortcuts(self, *args):
         self.textarea.bind('<Control-n>', self.new_file)
@@ -518,6 +526,7 @@ class QuietText(tk.Frame):
         self.textarea.bind('<Control-m>', self.apply_hex_color)
         self.textarea.bind('<Control-r>', self.run)
         self.textarea.bind('<Control-q>', self.enter_quiet_mode)
+        self.textarea.bind('<Control-f>', self.show_find_window)
         self.textarea.bind('<Escape>', self.leave_quiet_mode)
         self.textarea.bind('<<Change>>', self._on_change)
         self.textarea.bind('<Configure>', self._on_change)

@@ -72,7 +72,6 @@ class SyntaxHighlighter:
             self.highlight_regex(r"(\d)+[.]?(\d)*", "number")
             self.highlight_regex(r"[\'][^\']*[\']", "string")
             self.highlight_regex(r"[\"][^\']*[\"]", "string")
-            self.highlight_regex(r"[\"][^\']*[\"]", "comment")
 
 
     def highlight_regex(self, regex, tag):

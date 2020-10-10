@@ -1,35 +1,35 @@
 categories:
 
   keywords:
-    color: '#f92672'
+    color: '#F92672'
     matches: [for, while, from, import, as, with]
 
   definitions:
-    color: '#66d9ef'
+    color: '#66D9EF'
     matches: [class, def]
 
   parameters:
-    color: '#fd971f'
+    color: '#FD971F'
     matches: [self, args, kwargs]
 
   booleans:
-    color: '#ae81ff'
+    color: '#AE81FF'
     matches: ['True', 'False', None]
 
   conditionals:
-    color: '#f92672'
+    color: '#F92672'
     matches: [try, except, if, else, elif]
 
   functions:
-    color: '#66d9ef'
+    color: '#66D9EF'
     matches: [int, str, dict, list, set, float]
 
   operators:
-    color: '#f92672'
+    color: '#F92672'
     matches: [is not, is, in, not in, and, or, not]
 
 numbers:
-  color: '#ae81ff'
+  color: '#A6E22E'
 
 strings:
-  color: '#a6e22e'
+  color: '#A6E22E'

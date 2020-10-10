@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 
 class CustomText(tk.Text):
@@ -10,6 +11,7 @@ class CustomText(tk.Text):
         self._orig = self._w + '_orig'
         self.tk.call('rename', self._w, self._orig)
         self.tk.createcommand(self._w, self._proxy)
+        self.bg_color = '#272822'
 
     def _proxy(self, *args):
         # let the actual widget perform the requested action
@@ -39,3 +41,39 @@ class CustomText(tk.Text):
 
         # return what the actual widget returned
         return result   
+
+    def find(self, text_to_find):
+        length = tk.IntVar()
+        index = self.search(text_to_find, self.find_search_starting_index, stopindex=tk.END, count=length)
+
+        if index:
+            self.tag_remove('find_match', 1.0, tk.END)
+
+            end = f'{index}+{length.get()}c'
+            self.tag_add('find_match', index, end)
+            self.see(index)
+
+            self.find_search_starting_index = end
+            self.find_match_index = index
+        else:
+            if self.find_match_index != 1.0:
+                if tk.messagebox.askyesno("No more results", "No further matches. Repeat from the beginning?"):
+                    self.find_search_starting_index = 1.0
+                    self.find_match_index = None
+                    return self.find(text_to_find)
+            else:
+                tk.messagebox.showinfo("No Matches", "No matching text found")
+
+    def replace_text(self, target, replacement):
+        if self.find_match_index:
+            current_found_index_line = str(self.find_match_index).split('.')[0]
+
+            end = f"{self.find_match_index}+{len(target)}c"
+            self.replace(self.find_match_index, end, replacement)
+
+            self.find_search_starting_index = current_found_index_line + '.0'
+
+    def cancel_find(self):
+        self.find_search_starting_index = 1.0
+        self.find_match_index = None
+        self.tag_remove('find_match', 1.0, tk.END)

@@ -77,6 +77,7 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | Cut | <kbd>ctrl</kbd>+<kbd>x</kbd> | Cut selected text |
 | Paste | <kbd>ctrl</kbd>+<kbd>v</kbd> | Paste text from the clipboard |
 | Bold | <kbd>ctrl</kbd>+<kbd>b</kbd> | Bold selected text |
+| Find and Replace | <kbd>ctrl</kbd>+<kbd>f</kbd> | Find and replace specified text |
 | Highlight | <kbd>ctrl</kbd>+<kbd>h</kbg> | Highlight selected text |
 | New File | <kbd>ctrl</kbd>+<kbd>n</kbd> | Open a new empty file |
 | Open File | <kbd>ctrl</kbd>+<kbd>o</kbd> | Open an existing file |
