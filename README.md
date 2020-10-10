@@ -9,6 +9,7 @@
    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/sethwalkeroo/Quiet-Text">
    <img alt="GitHub issues" src="https://img.shields.io/github/issues/sethwalkeroo/Quiet-Text">
    <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sethwalkeroo/Quiet-Text">
+   <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/sethwalkeroo/Quiet-Text">
 </p>
 
 <p align="center">
