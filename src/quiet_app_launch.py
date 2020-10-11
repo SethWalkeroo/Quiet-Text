@@ -3,8 +3,9 @@ import time
 import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
-from tkinter import (filedialog, messagebox, ttk)
+import re
 
+from tkinter import (filedialog, messagebox, ttk)
 from quiet_syntax_highlighting import PythonSyntaxHighlight
 from quiet_menubar import Menu, Menubar
 from quiet_statusbar import Statusbar
@@ -419,30 +420,67 @@ class QuietText(tk.Frame):
     def select_all(self):
         self.selection_set(0, 'end')
 
+    def autoclose_base(self, symbol):
+        index = self.textarea.index(tk.INSERT)
+        self.textarea.insert(index, symbol)
+        self.textarea.mark_set(tk.INSERT, index)
+
+    def autoclose_parentheses(self, event):
+        self.autoclose_base(')')
+
+    def autoclose_curly_brackets(self, event):
+        self.autoclose_base('}')
+
+    def autoclose_square_brackets(self, event):
+        self.autoclose_base(']')
+
+    def autoclose_double_quotes(self, event):
+        self.autoclose_base('"')
+
+    def autoclose_single_quotes(self, event):
+        self.autoclose_base("'")
+
+    def auto_indentation(self, event):
+        text = self.textarea
+        line = text.get('insert linestart', 'insert lineend')
+        match = re.match(r'^(\s+)', line)
+        current_indent = len(match.group(0)) if match else 0
+        new_indent = current_indent + 4
+        text.insert('insert', event.char + '\n' + ' ' * new_indent)
+        return 'break'
+
+
     def bind_shortcuts(self, *args):
-        self.textarea.bind('<Control-n>', self.new_file)
-        self.textarea.bind('<Control-o>', self.open_file)
-        self.textarea.bind('<Control-s>', self.save)
-        self.textarea.bind('<Control-S>', self.save_as)
-        self.textarea.bind('<Control-b>', self.context_menu.bold)
-        self.textarea.bind('<Control-h>', self.context_menu.hightlight)
-        self.textarea.bind('<Control-a>', self.select_all_text)
-        self.textarea.bind('<Control-m>', self.apply_hex_color)
-        self.textarea.bind('<Control-r>', self.run)
-        self.textarea.bind('<Control-q>', self.enter_quiet_mode)
-        self.textarea.bind('<Control-f>', self.show_find_window)
-        self.textarea.bind('<Escape>', self.leave_quiet_mode)
-        self.textarea.bind('<<Change>>', self._on_change)
-        self.textarea.bind('<Configure>', self._on_change)
-        self.textarea.bind('<Button-3>', self.context_menu.popup)
-        self.textarea.bind('<MouseWheel>', self._on_mousewheel)
-        self.textarea.bind('<Button-4>', self._on_linux_scroll_up)
-        self.textarea.bind('<Button-5>', self._on_linux_scroll_down)
-        self.textarea.bind('<Key>', self._on_keydown)
-        self.textarea.bind('<KeyRelease>', self.syntax_highlight)
-        self.textarea.bind_all('<<Paste>>', self.context_menu.paste)
-        self.textarea.bind('<Control-z>', self.syntax_highlighter.initial_highlight)
-        self.textarea.bind('<Control-Shift-KeyRelease>', self.syntax_highlighter.initial_highlight)
+        text = self.textarea
+        text.bind('<Control-n>', self.new_file)
+        text.bind('<Control-o>', self.open_file)
+        text.bind('<Control-s>', self.save)
+        text.bind('<Control-S>', self.save_as)
+        text.bind('<Control-b>', self.context_menu.bold)
+        text.bind('<Control-h>', self.context_menu.hightlight)
+        text.bind('<Control-a>', self.select_all_text)
+        text.bind('<Control-m>', self.apply_hex_color)
+        text.bind('<Control-r>', self.run)
+        text.bind('<Control-q>', self.enter_quiet_mode)
+        text.bind('<Control-f>', self.show_find_window)
+        text.bind('<Escape>', self.leave_quiet_mode)
+        text.bind('<<Change>>', self._on_change)
+        text.bind('<Configure>', self._on_change)
+        text.bind('<Button-3>', self.context_menu.popup)
+        text.bind('<MouseWheel>', self._on_mousewheel)
+        text.bind('<Button-4>', self._on_linux_scroll_up)
+        text.bind('<Button-5>', self._on_linux_scroll_down)
+        text.bind('<Key>', self._on_keydown)
+        text.bind('<KeyRelease>', self.syntax_highlight)
+        text.bind_all('<<Paste>>', self.context_menu.paste)
+        text.bind('<Control-z>', self.syntax_highlighter.initial_highlight)
+        text.bind('<Control-Shift-KeyRelease>', self.syntax_highlighter.initial_highlight)
+        text.bind('<Shift-parenleft>', self.autoclose_parentheses)
+        text.bind('<bracketleft>', self.autoclose_square_brackets)
+        text.bind('<apostrophe>', self.autoclose_single_quotes)
+        text.bind('<quotedbl>', self.autoclose_double_quotes)
+        text.bind('<braceleft>', self.autoclose_curly_brackets)
+        text.bind('<Shift-colon>', self.auto_indentation)
 
 
 if __name__ == '__main__':
@@ -458,6 +496,12 @@ if __name__ == '__main__':
     master.mainloop()
 
 
+for i in range(10):
+    print('')
+    print()
+    thing = []
+    people = {}
+    boop = ""
 
 
 
