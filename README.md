@@ -32,7 +32,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 ## Table of contents
 - [Installation/Setup](#installation)
-- [Keyboard Shortcuts and Usage](#keyboard-shortcuts)
+- [Keyboard Shortcuts and Usage](#keyboard-shortcuts-and-usage)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 
