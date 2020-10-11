@@ -32,7 +32,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 ## Table of contents
 - [Installation/Setup](#installation)
-- [Keyboard Shortcuts](#keyboard-shortcuts)
+- [Keyboard Shortcuts and Usage](#keyboard-shortcuts)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 
@@ -98,7 +98,9 @@ Be aware, that the Docker container has full access to your machine! So you bett
 
 
 
-## Keyboard Shortcuts
+## Keyboard Shortcuts and Usage
+
+
 Quiet Text has shortcuts for most commonly performed actions. The list of all the shortcuts is presented bellow:
 
 | Command | KeyBinding | Description |
@@ -117,7 +119,17 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | Save As | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>s</kbd> | Save the currently active file under a different name |
 | Change Font Size | <kbd>ctrl</kbd>+<kbd>mousewheel</kbd> | Increases or decrease font size |
 
+**IMPORTANT:** If you don't want your teminal to close when using the <kbd>ctrl</kbd>+<kbd>r</kbd> run command, add an input field at the end of your script.
 
+_for example..._
+
+```python3
+for i in range(10):
+	print('hello world')
+
+
+input()
+```
 
 
 ## <a href="CONTRIBUTING.md">Contributing</a>
