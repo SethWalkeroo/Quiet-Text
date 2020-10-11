@@ -17,7 +17,7 @@
 </p>
 
 
-# Preview
+## Preview
 
 <p>
   <img src="images/quiet4.png" alt="there should be an image here...">
