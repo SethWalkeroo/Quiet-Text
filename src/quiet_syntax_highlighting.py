@@ -57,9 +57,6 @@ class PythonSyntaxHighlight():
         self.variable_tokens = [
             "Token.Name.Namespace",
         ]
-        self.punctuation_tokens = [
-            "Token.Punctuation",
-        ]
 
         self.comment_color = '#928374'
         self.string_color = '#b8bb26'
@@ -68,7 +65,6 @@ class PythonSyntaxHighlight():
         self.function_color = '#8ec87c'
         self.class_color = '#d3869b'
         self.variable_color = '#fbf1c7'
-        self.punctuation_color = '#fbf1c7'
         self.func_object_color = '#b8bb26'
         self.class_object_color = '#458588'
 
