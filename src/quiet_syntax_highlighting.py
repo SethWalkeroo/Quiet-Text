@@ -100,8 +100,6 @@ class PythonSyntaxHighlight():
             self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics, size=self.font_size)
         for token in self.variable_tokens:
             self.text.tag_configure(token, foreground=self.variable_color)
-        for token in self.punctuation_tokens:
-            self.text.tag_configure(token, foreground=self.punctuation_color)
         for token in self.func_object_tokens:
             self.text.tag_configure(token, foreground=self.func_object_color)
         for token in self.class_object_tokens:
