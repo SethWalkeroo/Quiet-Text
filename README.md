@@ -26,7 +26,7 @@
 
 ## About
 
-Quiet Text aims to give you a **clean and simple** text editor experience. Everything is right in front of you and all completely customizable to your preferences. Too many text editors clutter their ui with unnecessary tooling that overwhelms their users. It isn't uncommon for somebody to lose hours of their precious work day mulling over and disabling irratating configuration settings in their text editor/ide. We want to eliminate the annoyances of a noisy/busy text editing environment and bring you an environment that has the **main goal of increasing focus and eliminating distractions**.
+Quiet Text aims to give you a **clean and simple** text editor experience. Everything is right in front of you and all completely customizable to your preferences. Too many text editors clutter their ui with unnecessary tooling that overwhelms their users. It isn't uncommon for somebody to lose hours of their precious work day mulling over and disabling irritating configuration settings in their text editor/ide. We want to eliminate the annoyances of a noisy/busy text editing environment and bring you an environment that has the **main goal of increasing focus and eliminating distractions**.
 
 
 
@@ -40,6 +40,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 ## Installation
 This project requires **Pygments** as well as **PyYAML**. Both of these packages can be installed through a virtual environment with **requirements.txt**.
+After you install the dependencies, you can simply head into the **src** directory and launch the editor from **quiet_app_launch.py**.
 
 **Mac and Linux installation:**
 
@@ -53,6 +54,13 @@ source env/bin/activate
 
 ```sh
 pip3 install -r requirements.txt
+```
+```sh
+cd src
+```
+
+```sh
+python3 quiet_app_launch.py
 ```
 
 **Windows:**
@@ -68,6 +76,13 @@ env\Scripts\activate.bat
 pip install -r requirements.txt
 ```
 
+```sh
+cd src
+```
+
+```sh
+python3 quiet_app_launch.py
+```
 
 This project also requires a Python3 interpreter with Tkinter support.
 You can test it using
