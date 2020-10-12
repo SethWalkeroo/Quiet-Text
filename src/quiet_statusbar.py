@@ -52,13 +52,13 @@ class Statusbar:
             self.error_color()
 
     def error_color(self):
-        self._label.config(bg='#522628')
+        self._label.config(bg='#fb4934', fg='#282828')
 
     def save_color(self):
-        self._label.config(bg='#47632b')
+        self._label.config(bg='#b8bb26', fg='#282828')
 
     def hint_color(self):
-        self._label.config(bg='#38342b', fg='#d5c4a1')
+        self._label.config(bg='#8ec07c', fg='#282828')
 
     # hiding the status bar while in quiet mode
     def hide_status_bar(self):

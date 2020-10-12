@@ -31,7 +31,7 @@ class QuietText(tk.Frame):
         # start editor according to defined settings in settings.yaml
         self.settings = load_settings_data()
 
-        master.tk_setPalette(background='#2C2525', foreground='black')
+        master.tk_setPalette(background='#282828', foreground='black')
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['bg_color']
@@ -449,6 +449,10 @@ class QuietText(tk.Frame):
         text.insert('insert', event.char + '\n' + ' ' * new_indent)
         return 'break'
 
+    def possibly_indent_bracket(self, event):
+        pos = self.textarea.get(tk.INSERT)
+        print(pos)
+
 
     def bind_shortcuts(self, *args):
         text = self.textarea
@@ -473,14 +477,15 @@ class QuietText(tk.Frame):
         text.bind('<Key>', self._on_keydown)
         text.bind('<KeyRelease>', self.syntax_highlight)
         text.bind_all('<<Paste>>', self.context_menu.paste)
-        text.bind('<Control-z>', self.syntax_highlighter.initial_highlight)
+        text.bind('<Shift-asciitilde>', self.syntax_highlighter.initial_highlight)
         text.bind('<Control-Shift-KeyRelease>', self.syntax_highlighter.initial_highlight)
         text.bind('<Shift-parenleft>', self.autoclose_parentheses)
         text.bind('<bracketleft>', self.autoclose_square_brackets)
-        text.bind('<apostrophe>', self.autoclose_single_quotes)
+        text.bind('<quoteright>', self.autoclose_single_quotes)
         text.bind('<quotedbl>', self.autoclose_double_quotes)
         text.bind('<braceleft>', self.autoclose_curly_brackets)
         text.bind('<Shift-colon>', self.auto_indentation)
+        text.bind(':', self.possibly_indent_bracket)
 
 
 if __name__ == '__main__':

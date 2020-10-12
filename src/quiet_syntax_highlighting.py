@@ -21,10 +21,14 @@ class PythonSyntaxHighlight():
         self.string_tokens = [
             "Token.Name.Function",
             "Token.Name.Class",
+            "Token.String",
             "Token.Literal.String.Single",
+            "Token.Literal.String.Double"
         ]
-        self.object_tokens = [
+        self.func_object_tokens = [
             "Token.Name.Function",
+        ]
+        self.class_object_tokens = [
             "Token.Name.Class",
         ]
         self.number_tokens = [
@@ -55,15 +59,16 @@ class PythonSyntaxHighlight():
             "Token.Punctuation",
         ]
 
-        self.comment_color = '#75715E'
-        self.string_color = '#FFD866'
-        self.number_color = '#AB9DF2'
-        self.keyword_color = '#F92672'
-        self.function_color = '#78DCE8'
-        self.class_color = '#c9bfbd'
-        self.variable_color = '#fff'
-        self.punctuation_color = '#c9bfbd'
-        self.object_color = '#A9DC76'
+        self.comment_color = '#928374'
+        self.string_color = '#b8bb26'
+        self.number_color = '#d3869b'
+        self.keyword_color = '#fe8019'
+        self.function_color = '#8ec87c'
+        self.class_color = '#d3869b'
+        self.variable_color = '#fbf1c7'
+        self.punctuation_color = '#fbf1c7'
+        self.func_object_color = '#b8bb26'
+        self.class_object_color = '#83a598'
 
     def default_highlight(self):
         row = float(self.text.index(tk.INSERT))
@@ -76,6 +81,7 @@ class PythonSyntaxHighlight():
             data = self.text.get(row + ".0", row + "." + str(len(lines[int(row) - 1])))
 
             for token, content in lex(data, self.lexer()):
+                print(token, content)
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
@@ -99,8 +105,10 @@ class PythonSyntaxHighlight():
             self.text.tag_configure(token, foreground=self.variable_color)
         for token in self.punctuation_tokens:
             self.text.tag_configure(token, foreground=self.punctuation_color)
-        for token in self.object_tokens:
-            self.text.tag_configure(token, foreground=self.object_color)
+        for token in self.func_object_tokens:
+            self.text.tag_configure(token, foreground=self.func_object_color)
+        for token in self.class_object_tokens:
+            self.text.tag_configure(token, foreground=self.class_object_color)
 
     def initial_highlight(self, *args):
         content = self.text.get("1.0", tk.END)
