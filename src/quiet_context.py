@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.font as tk_font
 import os
 from quiet_zutilityfuncs import load_settings_data
 
@@ -97,11 +98,15 @@ class ContextMenu(tk.Listbox):
                     new_color = self.parent.menubar.open_color_picker()
                     current_tags = self.parent.textarea.tag_names("sel.first")
                     highlight_font = tk_font.Font(self.parent.textarea, self.parent.textarea.cget("font"))
-                    self.parent.textarea.tag_config("highlight", font = highlight_font, foreground = "black", background = new_color)
+                    self.parent.textarea.tag_config(f"highlight_{new_color}", font = highlight_font, foreground = "black", background = new_color)
                     if "highlight" in current_tags:
-                        self.parent.textarea.tag_remove("highlight", "sel.first", "sel.last")
+                        for tag in current_tags:
+                            if "highlight" in tag:
+                                print(tag)
+                                self.parent.textarea.tag_remove(tag, "sel.first", "sel.last")
                     else:
                         self.parent.textarea.tag_add("highlight", "sel.first", "sel.last")
+                        self.parent.textarea.tag_add(f"highlight_{new_color}","sel.first", "sel.last")
                 else:
                     self.parent.statusbar.update_status('no txt high')
             except tk.TclError:
