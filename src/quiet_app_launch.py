@@ -392,7 +392,7 @@ class QuietText(tk.Frame):
         self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
         self.set_new_tab_width()
         
-        _settings = load_settings_data('config/settings.yaml')
+        _settings = load_settings_data()
         _settings['font_size'] = self.font_size
         store_settings_data(_settings)
 
