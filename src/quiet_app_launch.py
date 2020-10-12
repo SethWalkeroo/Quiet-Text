@@ -220,6 +220,10 @@ class QuietText(tk.Frame):
     def hide_status_bar(self, *args):
         self.statusbar.hide_status_bar()
 
+    # toggle the visibility of line numbers
+    def toggle_linenumbers(self, *args):
+        self.linenumbers.visible = not self.linenumbers.visible
+
     # setting up the editor title
     #Renames the window title bar to the name of the current file.
     def set_window_title(self, name=None):
@@ -529,6 +533,7 @@ class QuietText(tk.Frame):
         text.bind('<BackSpace>', self.backspace_situations)
         text.bind('<Enter>', self.autoindent_bracket)
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
+        text.bind('<Control-L>', self.toggle_linenumbers)
 
 
 if __name__ == '__main__':

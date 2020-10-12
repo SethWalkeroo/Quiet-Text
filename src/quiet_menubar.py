@@ -82,6 +82,10 @@ class Menubar:
 
         view_dropdown.add_command(label='Hide Status Bar',
                                   command=parent.hide_status_bar)
+        
+        view_dropdown.add_command(label='Toggle Line Numbers',
+                                  accelerator='Ctrl+Shift+L',
+                                  command=parent.toggle_linenumbers)
 
         view_dropdown.add_command(label='Enter Quiet Mode',
                                   accelerator='Ctrl+Q',

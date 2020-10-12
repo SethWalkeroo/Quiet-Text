@@ -12,6 +12,9 @@ class TextLineNumbers(tk.Canvas):
 
     def redraw(self, *args):
         '''redraw line numbers'''
+        if not self.visible:
+            return
+
         self.delete('all')
         self.config(width=(self._parent.font_size * 3))
 
@@ -26,3 +29,17 @@ class TextLineNumbers(tk.Canvas):
                              font=(self._text_font, self._parent.font_size),
                              fill='#75715E')
             i = self.textwidget.index('%s+1line' % i)
+
+    @property
+    def visible(self):
+        return self.cget('state') == 'normal'
+
+    @visible.setter
+    def visible(self, visible):
+        self.config(state='normal' if visible else 'disabled')
+
+        if visible:
+            self.redraw()
+        else:
+            self.delete('all')
+            self.config(width=0)
