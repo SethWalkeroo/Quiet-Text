@@ -3,12 +3,14 @@ import math
 import tkinter.font as tk_font
 from pygments import lex
 from pygments.lexers import PythonLexer
-from quiet_zutilityfuncs import load_settings_data
+from quiet_zutilityfuncs import load_settings_data, load_default_syntax
 
 class PythonSyntaxHighlight():
 
     def __init__(self, parent, text_widget, initial_content):
         self.settings = load_settings_data()
+        self.syntax = load_default_syntax()
+        # lexer = get_lexer_by_name('python')
         self.parent = parent
         self.text = text_widget
         self.font_family = self.parent.font_family
@@ -68,7 +70,7 @@ class PythonSyntaxHighlight():
         self.variable_color = '#fbf1c7'
         self.punctuation_color = '#fbf1c7'
         self.func_object_color = '#b8bb26'
-        self.class_object_color = '#83a598'
+        self.class_object_color = '#458588'
 
     def default_highlight(self):
         row = float(self.text.index(tk.INSERT))
@@ -123,6 +125,7 @@ class PythonSyntaxHighlight():
 
         data = self.text.get("1.0", tk.END)
         for token, content in lex(data, PythonLexer()):
+            print(token)
             self.text.mark_set("range_end", "range_start + %dc" % len(content))
             self.text.tag_add(str(token), "range_start", "range_end")
             self.text.mark_set("range_start", "range_end")
@@ -131,3 +134,7 @@ class PythonSyntaxHighlight():
         self.syntax_theme_configuration()
 
 
+    def load_new_syntax(self, path):
+        with open(path) as new_syntax_config:
+            new_config = yaml.load(new_syntax_config, Loader=yaml.FullLoader)
+        pass

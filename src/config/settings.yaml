@@ -1,5 +1,8 @@
-bg_color: '#282828'
-bottom_spacing: '1'
+autoclose_curlybraces: true
+autoclose_doublequotes: true
+autoclose_parentheses: true
+autoclose_singlequotes: true
+autoclose_squarebrackets: true
 font_color: '#fbf1c7'
 font_family: monospace
 font_size: 12
@@ -8,8 +11,10 @@ insertion_color: '#75715E'
 menu_active_bg: '#38342b'
 menu_active_fg: '#AB9DF2'
 menu_bg: '#181816'
-padding_x: '5'
-padding_y: '5'
 tab_size: 4
+text_bottom_lineheight: '1'
+text_top_lineheight: '1'
 text_wrap: none
-top_spacing: '1'
+textarea_background_color: '#282828'
+textarea_padding_x: '5'
+textarea_padding_y: '5'

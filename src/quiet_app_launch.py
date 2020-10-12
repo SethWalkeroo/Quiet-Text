@@ -34,18 +34,23 @@ class QuietText(tk.Frame):
         master.tk_setPalette(background='#282828', foreground='black')
 
         self.font_family = self.settings['font_family']
-        self.bg_color = self.settings['bg_color']
+        self.bg_color = self.settings['textarea_background_color']
         self.font_color = self.settings['font_color']
         self.tab_size = self.settings['tab_size']
         self.font_size = int(self.settings['font_size'])
-        self.top_spacing = self.settings['top_spacing']
-        self.bottom_spacing = self.settings['bottom_spacing']
-        self.padding_x = self.settings['padding_x']
-        self.padding_y = self.settings['padding_y']
+        self.top_spacing = self.settings['text_top_lineheight']
+        self.bottom_spacing = self.settings['text_bottom_lineheight']
+        self.padding_x = self.settings['textarea_padding_x']
+        self.padding_y = self.settings['textarea_padding_y']
         self.insertion_blink = 300 if self.settings['insertion_blink'] else 0
         self.insertion_color = self.settings['insertion_color']
         self.tab_size_spaces = self.settings['tab_size']
         self.text_wrap = self.settings['text_wrap']
+        self.autoclose_parens = self.settings['autoclose_parentheses']
+        self.autoclose_curlybraces = self.settings['autoclose_curlybraces']
+        self.autoclose_squarebrackets = self.settings['autoclose_squarebrackets']
+        self.autoclose_singlequotes = self.settings['autoclose_singlequotes']
+        self.autoclose_doublequotes = self.settings['autoclose_doublequotes']
 
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.settings['font_size'])
@@ -105,6 +110,7 @@ class QuietText(tk.Frame):
         self.textarea.config(tabs=(self._tab_width,))
 
         self.menubar = Menubar(self)
+        self.menu_hidden = 0
         self.context_menu = ContextMenu(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
@@ -158,15 +164,15 @@ class QuietText(tk.Frame):
             else:
                 _settings = load_settings_data()
             font_family = _settings['font_family']
-            bg_color = _settings['bg_color']
+            bg_color = _settings['textarea_background_color']
             font_color = _settings['font_color']
-            top_spacing = _settings['top_spacing']
-            bottom_spacing = _settings['bottom_spacing']
+            top_spacing = _settings['text_top_lineheight']
+            bottom_spacing = _settings['text_bottom_lineheight']
             insertion_blink = 300 if _settings['insertion_blink'] else 0
             insertion_color = _settings['insertion_color']
             tab_size_spaces = _settings['tab_size']
-            padding_x = _settings['padding_x']
-            padding_y = _settings['padding_y']
+            padding_x = _settings['textarea_padding_x']
+            padding_y = _settings['textarea_padding_y']
             text_wrap = _settings['text_wrap']
 
             font_style = tk_font.Font(family=font_family,
@@ -426,19 +432,24 @@ class QuietText(tk.Frame):
         self.textarea.mark_set(tk.INSERT, index)
 
     def autoclose_parentheses(self, event):
-        self.autoclose_base(')')
+        if self.autoclose_parentheses:
+            self.autoclose_base(')')
 
     def autoclose_curly_brackets(self, event):
-        self.autoclose_base('}')
+        if self.autoclose_curlybraces:
+            self.autoclose_base('}')
 
     def autoclose_square_brackets(self, event):
-        self.autoclose_base(']')
+        if self.autoclose_squarebrackets:
+            self.autoclose_base(']')
 
     def autoclose_double_quotes(self, event):
-        self.autoclose_base('"')
+        if self.autoclose_doublequotes:
+            self.autoclose_base('"')
 
     def autoclose_single_quotes(self, event):
-        self.autoclose_base("'")
+        if self.autoclose_singlequotes:
+            self.autoclose_base("'")
 
     def auto_indentation(self, event):
         text = self.textarea
@@ -449,17 +460,20 @@ class QuietText(tk.Frame):
         text.insert('insert', event.char + '\n' + ' ' * new_indent)
         return 'break'
 
-    def possibly_indent_bracket(self, event):
-        pos = self.textarea.get(tk.INSERT)
-        pass
-        
-    def backspace_situations(self, event):
+
+    def get_chars_in_front_and_back(self):
         index = self.textarea.index(tk.INSERT)
         first_pos = f'{str(index)}-1c'
         end_second_pos = f'{str(index)}+1c'
-
         first_char = self.textarea.get(first_pos, index)
         second_char = self.textarea.get(index, end_second_pos)
+        return (first_char, second_char, index)
+
+    def autoindent_bracket(self, event):
+        first_char, second_char, index = self.get_chars_in_front_and_back()
+        
+    def backspace_situations(self, event):
+        first_char, second_char, index = self.get_chars_in_front_and_back()
 
         if first_char == "'" and second_char == "'":
             self.textarea.delete(index, end_second_pos)
@@ -472,7 +486,13 @@ class QuietText(tk.Frame):
         elif first_char == '[' and second_char == ']':
             self.textarea.delete(index, end_second_pos)
 
-
+    def hide_and_unhide_menubar(self, key_event):
+        if self.menu_hidden % 2 == 0:
+            self.menubar.show_menu()
+            self.menu_hidden += 1
+        else:
+            self.menubar.hide_menu()
+            self.menu_hidden += 1
 
     def bind_shortcuts(self, *args):
         text = self.textarea
@@ -506,6 +526,8 @@ class QuietText(tk.Frame):
         text.bind('<braceleft>', self.autoclose_curly_brackets)
         text.bind('<Shift-colon>', self.auto_indentation)
         text.bind('<BackSpace>', self.backspace_situations)
+        text.bind('<Enter>', self.autoindent_bracket)
+        text.bind('<Alt_L>', self.hide_and_unhide_menubar)
 
 
 if __name__ == '__main__':
@@ -519,14 +541,6 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
-
-
-for i in range(10):
-    print('')
-    print()
-    thing = []
-    people = {}
-    boop = ""
 
 
 

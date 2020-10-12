@@ -27,10 +27,10 @@ class Menubar:
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
                           font=font_specs,
-                          fg='#75715E',
-                          bg='#181816',
-                          activeforeground='#fff',
-                          activebackground='#38342b',
+                          fg='#458588',
+                          bg='#1d2021',
+                          activeforeground='#83a598',
+                          activebackground='#282828',
                           activeborderwidth=0,
                           bd=0)
 
@@ -54,21 +54,17 @@ class Menubar:
         file_dropdown.add_command(label='Save As',
                                    accelerator='Ctrl+Shift+S',
                                    command=parent.save_as)
-        # run file feature
-        file_dropdown.add_command(label='Run File',
-                                   accelerator='Ctrl+R',
-                                   command=parent.run)
         # exit feature
         file_dropdown.add_separator()
         file_dropdown.add_command(label='Exit', 
                                   command=parent.on_closing)
-        # adding featues to about dropdown in menubar
-        about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        about_dropdown.add_command(label='Release Notes',
-                                   command=self.release_notes)
-        # about command added
-        about_dropdown.add_command(label='About',
-                                   command=self.about_message)
+        # # adding featues to about dropdown in menubar
+        # about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        # about_dropdown.add_command(label='Release Notes',
+        #                            command=self.release_notes)
+        # # about command added
+        # about_dropdown.add_command(label='About',
+        #                            command=self.about_message)
         # adding featues to settings dropdown in menubar
         # Edit settings feature
         settings_dropdown = Menu(menubar, font=font_specs, tearoff=0)
@@ -80,19 +76,33 @@ class Menubar:
 
         view_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         view_dropdown.add_command(label='Hide Menu Bar',
+                                  accelerator='Alt',
                                   command=self.hide_menu)
+
         view_dropdown.add_command(label='Hide Status Bar',
                                   command=parent.hide_status_bar)
 
+        view_dropdown.add_command(label='Enter Quiet Mode',
+                                  accelerator='Ctrl+Q',
+                                  command=self.enter_quiet_mode)
+
+        tools_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        tools_dropdown.add_command(label='Open Color Selector',
+                                   accelerator='Ctrl+M',
+                                   command=self.open_color_picker)
+
+        tools_dropdown.add_command(label='Run Selected File',
+                                   accelerator='Ctrl+R',
+                                   command=parent.run)
+
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
-        menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='View', menu=view_dropdown)
-        menubar.add_command(label='Color Menu', command=self.open_color_picker)
-        menubar.add_command(label='Quiet Mode', command=self.enter_quiet_mode)
-        menubar.add_cascade(label='About', menu=about_dropdown)
+        menubar.add_cascade(label='Settings', menu=settings_dropdown)
+        menubar.add_cascade(label='Tools', menu=tools_dropdown)
+        # menubar.add_cascade(label='About', menu=about_dropdown)
         
-        self.menu_fields = [field for field in (file_dropdown, about_dropdown, settings_dropdown)]
+        self.menu_fields = [field for field in (file_dropdown, view_dropdown, settings_dropdown, tools_dropdown)]
 
         # Settings reconfiguration function
     def reconfigure_settings(self):
@@ -121,12 +131,12 @@ class Menubar:
         self._parent.master.config(menu=self._menubar)
 
     # what to display on clicking about feature is defined here
-    def about_message(self):
-        box_title = 'About Quiet Text'
-        box_message = 'A simple text editor for your Python and notetaking needs.'
-        tk.messagebox.showinfo(box_title, box_message)
+    # def about_message(self):
+    #     box_title = 'About Quiet Text'
+    #     box_message = 'A simple text editor for your Python and notetaking needs.'
+    #     tk.messagebox.showinfo(box_title, box_message)
 
-    def release_notes(self):
-        box_title = 'Release Notes'
-        box_message = 'Version 0.1'
-        tk.messagebox.showinfo(box_title, box_message)
+    # def release_notes(self):
+    #     box_title = 'Release Notes'
+    #     box_message = 'Version 0.1'
+    #     tk.messagebox.showinfo(box_title, box_message)
