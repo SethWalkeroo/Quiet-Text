@@ -8,9 +8,9 @@ font_family: monospace
 font_size: 12
 insertion_blink: false
 insertion_color: '#75715E'
-menu_active_bg: '#38342b'
-menu_active_fg: '#AB9DF2'
-menu_bg: '#181816'
+menu_active_bg: '#282828'
+menu_active_fg: '#83a593'
+menu_bg: '#1d2021'
 tab_size: 4
 text_bottom_lineheight: '1'
 text_top_lineheight: '1'
@@ -18,3 +18,10 @@ text_wrap: none
 textarea_background_color: '#282828'
 textarea_padding_x: '5'
 textarea_padding_y: '5'
+
+
+
+
+
+
+

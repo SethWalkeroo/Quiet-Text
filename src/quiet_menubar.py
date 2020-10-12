@@ -11,7 +11,8 @@ class Menu(tk.Menu):
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
-                         foreground='#fff',
+                         foreground='#458588',
+                         background = '#1d2021',
                          activeborderwidth=0,
                          bd=0,
                          *args, **kwargs)

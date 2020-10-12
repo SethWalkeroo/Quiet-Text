@@ -110,7 +110,7 @@ class QuietText(tk.Frame):
         self.textarea.config(tabs=(self._tab_width,))
 
         self.menubar = Menubar(self)
-        self.menu_hidden = 0
+        self.menu_hidden = 1
         self.context_menu = ContextMenu(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
@@ -297,7 +297,6 @@ class QuietText(tk.Frame):
         try:
             os.path.isfile(self.filename)
             self.save()          
-            
         except:
             self.save_as()
         quit()
@@ -384,6 +383,7 @@ class QuietText(tk.Frame):
         self.font_size = min_font_size if self.font_size < min_font_size else self.font_size
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.font_size)
+
         self.italics = tk_font.Font(family=self.font_family,
                                     size=self.font_size,
                                     slant='italic')
@@ -391,6 +391,7 @@ class QuietText(tk.Frame):
         self.textarea.configure(font=self.font_style)
         self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
         self.set_new_tab_width()
+        
         _settings = load_settings_data('config/settings.yaml')
         _settings['font_size'] = self.font_size
         store_settings_data(_settings)

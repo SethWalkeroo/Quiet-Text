@@ -38,7 +38,7 @@ class ContextMenu(tk.Listbox):
                                           command=self.bold)
 
         self.right_click_menu.add_command(label='Highlight',
-                                          accelerator='Ctrl+G',
+                                          accelerator='Ctrl+H',
                                           command=self.hightlight)
 
     def popup(self, event):
