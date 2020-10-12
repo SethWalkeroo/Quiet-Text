@@ -453,24 +453,24 @@ class QuietText(tk.Frame):
         pos = self.textarea.get(tk.INSERT)
         pass
         
-        def backspace_situations(self, event):
-            index = self.textarea.index(tk.INSERT)
-            first_pos = f'{str(index)}-1c'
-            end_second_pos = f'{str(index)}+1c'
+    def backspace_situations(self, event):
+        index = self.textarea.index(tk.INSERT)
+        first_pos = f'{str(index)}-1c'
+        end_second_pos = f'{str(index)}+1c'
 
-            first_char = self.textarea.get(first_pos, index)
-            second_char = self.textarea.get(index, end_second_pos)
+        first_char = self.textarea.get(first_pos, index)
+        second_char = self.textarea.get(index, end_second_pos)
 
-            if first_char == "'" and second_char == "'":
-                self.textarea.delete(index, end_second_pos)
-            elif first_char == '"' and second_char == '"':
-                self.textarea.delete(index, end_second_pos)
-            elif first_char == '(' and second_char == ')':
-                self.textarea.delete(index, end_second_pos)
-            elif first_char == '{' and second_char == '}':
-                self.textarea.delete(index, end_second_pos)
-            elif first_char == '[' and second_char == ']':
-                self.textarea.delete(index, end_second_pos)
+        if first_char == "'" and second_char == "'":
+            self.textarea.delete(index, end_second_pos)
+        elif first_char == '"' and second_char == '"':
+            self.textarea.delete(index, end_second_pos)
+        elif first_char == '(' and second_char == ')':
+            self.textarea.delete(index, end_second_pos)
+        elif first_char == '{' and second_char == '}':
+            self.textarea.delete(index, end_second_pos)
+        elif first_char == '[' and second_char == ']':
+            self.textarea.delete(index, end_second_pos)
 
 
 
