@@ -451,7 +451,27 @@ class QuietText(tk.Frame):
 
     def possibly_indent_bracket(self, event):
         pos = self.textarea.get(tk.INSERT)
-        print(pos)
+        pass
+        
+        def backspace_situations(self, event):
+            index = self.textarea.index(tk.INSERT)
+            first_pos = f'{str(index)}-1c'
+            end_second_pos = f'{str(index)}+1c'
+
+            first_char = self.textarea.get(first_pos, index)
+            second_char = self.textarea.get(index, end_second_pos)
+
+            if first_char == "'" and second_char == "'":
+                self.textarea.delete(index, end_second_pos)
+            elif first_char == '"' and second_char == '"':
+                self.textarea.delete(index, end_second_pos)
+            elif first_char == '(' and second_char == ')':
+                self.textarea.delete(index, end_second_pos)
+            elif first_char == '{' and second_char == '}':
+                self.textarea.delete(index, end_second_pos)
+            elif first_char == '[' and second_char == ']':
+                self.textarea.delete(index, end_second_pos)
+
 
 
     def bind_shortcuts(self, *args):
@@ -485,7 +505,7 @@ class QuietText(tk.Frame):
         text.bind('<quotedbl>', self.autoclose_double_quotes)
         text.bind('<braceleft>', self.autoclose_curly_brackets)
         text.bind('<Shift-colon>', self.auto_indentation)
-        text.bind(':', self.possibly_indent_bracket)
+        text.bind('<BackSpace>', self.backspace_situations)
 
 
 if __name__ == '__main__':
