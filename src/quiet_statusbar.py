@@ -18,8 +18,7 @@ class Statusbar:
                          bg=self._parent.bg_color,
                          anchor='se',
                          font=font_specs)
-
-        label.pack(side=tk.BOTTOM)
+        
         self._label = label
 
     # status update of the status bar

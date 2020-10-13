@@ -195,6 +195,7 @@ class QuietText(tk.Frame):
                                     spacing1=top_spacing,
                                     spacing3=bottom_spacing,
                                     insertbackground=insertion_color,
+                                    selectbackground= text_selection_bg,
                                     insertofftime=insertion_blink,
                                     bd=border,
                                     highlightthickness=border,

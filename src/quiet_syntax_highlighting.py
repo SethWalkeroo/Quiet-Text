@@ -142,3 +142,4 @@ class SyntaxHighlighting():
         self.initial_highlight()
 
 
+
