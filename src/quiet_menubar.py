@@ -108,6 +108,9 @@ class Menubar:
 
         syntax_dropdown.add_command(label='Solarized',
                                     command=self.load_solarized)
+        
+        syntax_dropdown.add_command(label='Dark Heart',
+                                    command=self.load_darkheart)
 
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
@@ -164,5 +167,8 @@ class Menubar:
 
     def load_solarized(self):
         self.syntax.load_new_theme('theme_configs/Python3/solarized.yaml')
+
+    def load_darkheart(self):
+        self.syntax.load_new_theme('theme_configs/Python3/dark-heart.yaml')
 
 
