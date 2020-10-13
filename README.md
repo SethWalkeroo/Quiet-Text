@@ -17,12 +17,11 @@
 </p>
 
 
-## Preview
+## Preview Images
 
-<p>
-  <img src="images/picture5.png" alt="there should be an image here...">
-</p>
-
+<img src="images/themepic1.png" alt="there should be an image here...">
+<img src="images/themepic2.png" alt="there should be an image here...">
+<img src="images/themepic3.png" alt="there should be an image here...">
 
 ## About
 
