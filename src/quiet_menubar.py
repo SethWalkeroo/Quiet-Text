@@ -11,8 +11,8 @@ class Menu(tk.Menu):
         super().__init__(bg=settings["menu_bg"],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
-                         foreground='#458588',
-                         background = '#1d2021',
+                         foreground= settings['font_color'],
+                         background = settings['textarea_background_color'],
                          activeborderwidth=0,
                          bd=0,
                          *args, **kwargs)
@@ -22,15 +22,16 @@ class Menubar:
     def __init__(self, parent):
         self._parent = parent
         self.syntax = parent.syntax_highlighter
+        self.settings = load_settings_data()
         font_specs = ('Droid Sans Fallback', 12)
 
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
                           font=font_specs,
-                          fg='#458588',
-                          bg='#1d2021',
-                          activeforeground='#83a598',
-                          activebackground='#282828',
+                          foreground= self.settings['font_color'],
+                          background = self.settings['textarea_background_color'],
+                          activeforeground= self.settings['menubar_active_fg'],
+                          activebackground= self.settings['menubar_active_bg'],
                           activeborderwidth=0,
                           bd=0)
 
@@ -117,16 +118,23 @@ class Menubar:
         menubar.add_cascade(label='Color Schemes', menu=syntax_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
         
-        self.menu_fields = [field for field in (file_dropdown, view_dropdown, settings_dropdown, tools_dropdown)]
+        self.menu_fields = [field for field in (file_dropdown, view_dropdown,
+                                                settings_dropdown, tools_dropdown, syntax_dropdown)]
 
         # Settings reconfiguration function
     def reconfigure_settings(self):
-        with open('config/settings.yaml', 'r') as settings_yaml:
-            settings = yaml.load(settings_yaml, Loader=yaml.FullLoader)
+        settings = load_settings_data()
         for field in self.menu_fields:
             field.configure(bg=settings['menu_bg'],
                             activeforeground=settings['menu_active_fg'],
-                            activebackground=settings['menu_active_bg'],)
+                            activebackground=settings['menu_active_bg'],
+                            foreground= settings['font_color'],
+                            background = settings['textarea_background_color'],)
+
+        self._menubar.configure(foreground= settings['font_color'],
+                  background = settings['textarea_background_color'],
+                  activeforeground= settings['menubar_active_fg'],
+                  activebackground= settings['menubar_active_bg'],)
 
     # color to different text tye can be set here
     def open_color_picker(self):

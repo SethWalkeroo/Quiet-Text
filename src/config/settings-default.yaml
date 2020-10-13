@@ -3,22 +3,30 @@ autoclose_doublequotes: true
 autoclose_parentheses: true
 autoclose_singlequotes: true
 autoclose_squarebrackets: true
-textarea_background_color: '#282828'
-text_bottom_lineheight: '1'
-font_color: '#fbf1c7'
+font_color: '#839496'
 font_family: monospace
 font_size: 12
+horizontal_scrollbar_active_bg: '#8a7575'
+horizontal_scrollbar_color: '#383030'
+horizontal_scrollbar_trough_color: '#2e2724'
+horizontal_scrollbar_width: 8
 insertion_blink: false
 insertion_color: '#75715E'
 menu_active_bg: '#38342b'
-menu_active_fg: '#AB9DF2'
+menu_active_fg: '#83a598'
 menu_bg: '#181816'
+menubar_active_bg: '#000'
+menubar_active_fg: '#fff'
+tab_size: 4
+text_bottom_lineheight: '1'
+text_selection_bg: '#75715e'
+text_top_lineheight: '1'
+text_wrap: none
+textarea_background_color: '#002b36'
+textarea_border: 0.5
 textarea_padding_x: '5'
 textarea_padding_y: '5'
-tab_size: 4
-text_wrap: none
-text_top_lineheight: '1'
-
-
-#MAKE SURE TO SAVE AFTER EVERY CHANGE.
-#THIS WARNING EXISTS BECAUSE RESIZING THE WINDOW WITH CTRL SCROLL WHEEL RELOADS THE FILE.
+vertical_scrollbar_active_bg: '#8a7575'
+vertical_scrollbar_color: '#383030'
+vertical_scrollbar_trough_color: '#2e2724'
+vertical_scrollbar_width: 8

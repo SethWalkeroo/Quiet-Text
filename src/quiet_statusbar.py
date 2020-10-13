@@ -14,8 +14,8 @@ class Statusbar:
 
         label = tk.Label(parent.textarea,
                          textvariable=self.status,
-                         fg='#fbf1c7',
-                         bg='#272822',
+                         fg=self._parent.font_color,
+                         bg=self._parent.bg_color,
                          anchor='se',
                          font=font_specs)
 
@@ -67,3 +67,6 @@ class Statusbar:
     # display of the status bar
     def show_status_bar(self):
         self._label.pack(side=tk.BOTTOM)
+
+    def reconfigure_status_label(self):
+        self._label.config()

@@ -22,16 +22,9 @@ class QuietText(tk.Frame):
         # defined size of the editer window
         master.geometry('1920x1080')
 
-        # defined editor basic bakground and looking
-        master.tk_setPalette(background='#261e1b',
-                             foreground='black',
-                             activeForeground='white',
-                             activeBackground='#9c8383',)
-
         # start editor according to defined settings in settings.yaml
         self.settings = load_settings_data()
 
-        master.tk_setPalette(background='#282828', foreground='black')
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['textarea_background_color']
@@ -51,7 +44,18 @@ class QuietText(tk.Frame):
         self.autoclose_squarebrackets = self.settings['autoclose_squarebrackets']
         self.autoclose_singlequotes = self.settings['autoclose_singlequotes']
         self.autoclose_doublequotes = self.settings['autoclose_doublequotes']
+        self.border = self.settings['textarea_border']
+        self.text_selection_bg = self.settings['text_selection_bg']
+        self.scrollx_clr = self.settings['horizontal_scrollbar_color']
+        self.troughx_clr = self.settings['horizontal_scrollbar_trough_color']
+        self.scrollx_width = self.settings['horizontal_scrollbar_width']
+        self.scrollx_active_bg = self.settings['horizontal_scrollbar_active_bg']
+        self.scrolly_clr = self.settings['vertical_scrollbar_color']
+        self.troughy_clr = self.settings['vertical_scrollbar_trough_color']
+        self.scrolly_width = self.settings['vertical_scrollbar_width']
+        self.scrolly_active_bg = self.settings['vertical_scrollbar_active_bg']
 
+        master.tk_setPalette(background=self.bg_color, foreground='black')
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.settings['font_size'])
 
@@ -65,22 +69,22 @@ class QuietText(tk.Frame):
 
         self.scrolly = tk.Scrollbar(master,
                                     command=self.textarea.yview,
-                                    bg='#383030',
-                                    troughcolor='#2e2724',
+                                    bg=self.scrolly_clr,
+                                    troughcolor=self.troughy_clr,
                                     bd=0,
-                                    width=8,
+                                    width=self.scrolly_width,
                                     highlightthickness=0,
-                                    activebackground='#8a7575',
+                                    activebackground=self.scrolly_active_bg,
                                     orient='vertical')
 
         self.scrollx = tk.Scrollbar(master,
                                     command=self.textarea.xview,
-                                    bg='#383030',
-                                    troughcolor='#2e2724',
+                                    bg=self.scrollx_clr,
+                                    troughcolor=self.troughx_clr,
                                     bd=0,
-                                    width=8,
+                                    width=self.scrollx_width,
                                     highlightthickness=0,
-                                    activebackground='#8a7575',
+                                    activebackground=self.scrollx_active_bg,
                                     orient='horizontal')
 
         self.textarea.configure(yscrollcommand=self.scrolly.set,
@@ -90,11 +94,12 @@ class QuietText(tk.Frame):
                                 wrap= self.text_wrap,
                                 spacing1=self.top_spacing, 
                                 spacing3=self.bottom_spacing,
-                                selectbackground='#75715e',
+                                selectbackground= self.text_selection_bg,
                                 insertbackground=self.insertion_color,
                                 insertofftime=self.insertion_blink,
-                                bd=0,
-                                highlightthickness=0,
+                                bd=self.border,
+                                highlightthickness=self.border,
+                                highlightbackground='black',
                                 font=self.font_family,
                                 undo=True,
                                 autoseparators=True,
@@ -130,13 +135,6 @@ class QuietText(tk.Frame):
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
-
-
-    def load_settings_data(self, settings_path):
-        settings_path = settings_path
-        with open(settings_path, 'r') as settings_yaml:
-            _settings = load_settings_data()
-            return _settings
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, tk.END)
@@ -174,6 +172,12 @@ class QuietText(tk.Frame):
             padding_x = _settings['textarea_padding_x']
             padding_y = _settings['textarea_padding_y']
             text_wrap = _settings['text_wrap']
+            border = _settings['textarea_border']
+            text_selection_bg = _settings['text_selection_bg']
+            scrollx_clr = _settings['horizontal_scrollbar_color']
+            troughx_clr = _settings['horizontal_scrollbar_trough_color']
+            scrollx_width = _settings['horizontal_scrollbar_width']
+            scrollx_active_bg = _settings['horizontal_scrollbar_active_bg']
 
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
@@ -187,9 +191,16 @@ class QuietText(tk.Frame):
                                     spacing3=bottom_spacing,
                                     insertbackground=insertion_color,
                                     insertofftime=insertion_blink,
+                                    bd=border,
+                                    highlightthickness=border,
                                     wrap=text_wrap)
 
             self.set_new_tab_width(tab_size_spaces)
+            self.menubar.reconfigure_settings()
+            self.linenumbers.font_color = font_color
+            self.linenumbers.config(bg=bg_color, highlightbackground=bg_color)
+            self.statusbar._label.config(bg=bg_color)
+            self.linenumbers.redraw()
 
             if overwrite_with_default:
                 MsgBox = tk.messagebox.askquestion('Reset Settings?',

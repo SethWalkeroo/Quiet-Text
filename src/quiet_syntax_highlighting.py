@@ -4,7 +4,7 @@ import yaml
 import tkinter.font as tk_font
 from pygments import lex
 from pygments.lexers import PythonLexer, CLexer, JavascriptLexer
-from quiet_zutilityfuncs import load_settings_data
+from quiet_zutilityfuncs import load_settings_data, store_settings_data
 
 class SyntaxHighlighting():
 
@@ -126,6 +126,16 @@ class SyntaxHighlighting():
         self.class_color = new_config['class_color']
         self.object_color = new_config['object_color']
 
+        settings = load_settings_data()
+        settings['font_color'] = new_config['font_color']
+        settings['textarea_background_color'] = new_config['bg_color']
+        settings['menubar_active_bg'] = new_config['menu_bg_active']
+        settings['menubar_active_fg'] = new_config['menu_fg_active']  
+        settings['menu_active_bg'] = new_config['menu_bg_active']
+        settings['menu_active_fg'] = new_config['menu_fg_active']  
+        store_settings_data(settings)
+
+        self.parent.reconfigure_settings()
         self.syntax_theme_configuration()
         self.initial_highlight()
 
