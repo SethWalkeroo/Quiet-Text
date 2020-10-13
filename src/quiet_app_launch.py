@@ -513,6 +513,18 @@ class QuietText(tk.Frame):
             self.menubar.hide_menu()
             self.menu_hidden += 1
 
+    def tab_text(self, event):
+        index = self.textarea.index("sel.first linestart")
+        last = self.textarea.index("sel.last linestart")
+        if last != index:
+            while self.textarea.compare(index,"<=", last):
+                self.textarea.insert(index, '\t')
+                index = self.textarea.index("%s + 1 line" % index)
+        else:
+            index = self.textarea.index(tk.INSERT)
+            self.textarea.insert(index, '\t')
+        return "break"
+
 
     def bind_shortcuts(self, *args):
         text = self.textarea
@@ -548,6 +560,7 @@ class QuietText(tk.Frame):
         text.bind('<BackSpace>', self.backspace_situations)
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
         text.bind('<Control-L>', self.toggle_linenumbers)
+        text.bind('<KeyPress-Tab>', self.tab_text)
 
 
 if __name__ == '__main__':
