@@ -1,24 +1,25 @@
 import tkinter as tk
 import math
+import yaml
 import tkinter.font as tk_font
 from pygments import lex
-from pygments.lexers import PythonLexer
-from quiet_zutilityfuncs import load_settings_data, load_default_syntax
+from pygments.lexers import PythonLexer, CLexer, JavascriptLexer
+from quiet_zutilityfuncs import load_settings_data
 
-class PythonSyntaxHighlight():
+class SyntaxHighlighting():
 
     def __init__(self, parent, text_widget, initial_content):
         self.settings = load_settings_data()
-        self.syntax = load_default_syntax()
-        # lexer = get_lexer_by_name('python')
+
         self.parent = parent
         self.text = text_widget
         self.font_family = self.parent.font_family
         self.font_size = self.parent.font_size
         self.previousContent = initial_content
         self.lexer = PythonLexer
+
         self.comment_tokens = [
-            "Token.Comment.Single"
+            "Token.Comment.Single",
         ]
         self.string_tokens = [
             "Token.Name.Function",
@@ -27,11 +28,9 @@ class PythonSyntaxHighlight():
             "Token.Literal.String.Single",
             "Token.Literal.String.Double"
         ]
-        self.func_object_tokens = [
-            "Token.Name.Function",
-        ]
-        self.class_object_tokens = [
+        self.object_tokens = [
             "Token.Name.Class",
+            "Token.Name.Function",
         ]
         self.number_tokens = [
             "Token.Keyword.Constant",
@@ -64,9 +63,7 @@ class PythonSyntaxHighlight():
         self.keyword_color = '#fe8019'
         self.function_color = '#8ec87c'
         self.class_color = '#d3869b'
-        self.variable_color = '#fbf1c7'
-        self.func_object_color = '#b8bb26'
-        self.class_object_color = '#458588'
+        self.object_color = '#b8bb26'
 
     def default_highlight(self):
         row = float(self.text.index(tk.INSERT))
@@ -98,12 +95,8 @@ class PythonSyntaxHighlight():
             self.text.tag_configure(token, foreground=self.function_color)
         for token in self.class_tokens:
             self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics, size=self.font_size)
-        for token in self.variable_tokens:
-            self.text.tag_configure(token, foreground=self.variable_color)
-        for token in self.func_object_tokens:
-            self.text.tag_configure(token, foreground=self.func_object_color)
-        for token in self.class_object_tokens:
-            self.text.tag_configure(token, foreground=self.class_object_color)
+        for token in self.object_tokens:
+            self.text.tag_configure(token, foreground=self.object_color)
 
     def initial_highlight(self, *args):
         content = self.text.get("1.0", tk.END)
@@ -120,7 +113,20 @@ class PythonSyntaxHighlight():
         self.syntax_theme_configuration()
 
 
-    def load_new_syntax(self, path):
-        with open(path) as new_syntax_config:
-            new_config = yaml.load(new_syntax_config, Loader=yaml.FullLoader)
-        pass
+    def load_new_theme(self, path):
+
+        with open(path) as new_theme_config:
+            new_config = yaml.load(new_theme_config, Loader=yaml.FullLoader)
+
+        self.comment_color = new_config['comment_color']
+        self.string_color = new_config['string_color']
+        self.number_color = new_config['number_color']
+        self.keyword_color = new_config['keyword_color']
+        self.function_color = new_config['function_color']
+        self.class_color = new_config['class_color']
+        self.object_color = new_config['object_color']
+
+        self.syntax_theme_configuration()
+        self.initial_highlight()
+
+

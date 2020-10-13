@@ -140,4 +140,5 @@ cython_debug/
 # Ignore test file
 TEST_FILE.txt
 test.py
+test.c
 .vscode

@@ -1,0 +1,7 @@
+comment_color: '#75715E'
+string_color: '#a6e22e'
+number_color: '#ae81ff'
+keyword_color: '#f92672'
+function_color: '#66d9ef'
+class_color: '#fd971f'
+object_color: '#66d9ef'

@@ -5,7 +5,7 @@ autoclose_singlequotes: true
 autoclose_squarebrackets: true
 font_color: '#fbf1c7'
 font_family: monospace
-font_size: 12
+font_size: 9
 insertion_blink: false
 insertion_color: '#75715E'
 menu_active_bg: '#282828'
@@ -18,10 +18,3 @@ text_wrap: none
 textarea_background_color: '#282828'
 textarea_padding_x: '5'
 textarea_padding_y: '5'
-
-
-
-
-
-
-

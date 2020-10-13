@@ -2,7 +2,7 @@ import tkinter as tk
 import yaml
 from tkinter.colorchooser import askcolor
 from quiet_zutilityfuncs import load_settings_data
-
+from quiet_syntax_highlighting import SyntaxHighlighting
 
 class Menu(tk.Menu):
     # menu method and its initializatipn from config/settings.yaml
@@ -17,12 +17,11 @@ class Menu(tk.Menu):
                          bd=0,
                          *args, **kwargs)
 
-
 class Menubar:
-
     # initialising the menu bar of editor
     def __init__(self, parent):
         self._parent = parent
+        self.syntax = parent.syntax_highlighter
         font_specs = ('Droid Sans Fallback', 12)
 
         # setting up basic features in menubar
@@ -59,13 +58,7 @@ class Menubar:
         file_dropdown.add_separator()
         file_dropdown.add_command(label='Exit', 
                                   command=parent.on_closing)
-        # # adding featues to about dropdown in menubar
-        # about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        # about_dropdown.add_command(label='Release Notes',
-        #                            command=self.release_notes)
-        # # about command added
-        # about_dropdown.add_command(label='About',
-        #                            command=self.about_message)
+
         # adding featues to settings dropdown in menubar
         # Edit settings feature
         settings_dropdown = Menu(menubar, font=font_specs, tearoff=0)
@@ -75,6 +68,7 @@ class Menubar:
         settings_dropdown.add_command(label='Reset Settings to Default',
                                       command=parent.reset_settings_file)
 
+        #view dropdown menu
         view_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         view_dropdown.add_command(label='Hide Menu Bar',
                                   accelerator='Alt',
@@ -87,6 +81,7 @@ class Menubar:
                                   accelerator='Ctrl+Q',
                                   command=self.enter_quiet_mode)
 
+        #tools dropdown menu
         tools_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
@@ -96,11 +91,26 @@ class Menubar:
                                    accelerator='Ctrl+R',
                                    command=parent.run)
 
+        #syntax dropdown menu
+        syntax_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        syntax_dropdown.add_command(label='Monokai',
+                                    command=self.load_monokai)
+
+        syntax_dropdown.add_command(label='Monokai Pro',
+                                    command=self.load_monokai_pro)
+
+        syntax_dropdown.add_command(label='Gruvbox',
+                                    command=self.load_gruvbox)
+
+        syntax_dropdown.add_command(label='Solarized',
+                                    command=self.load_solarized)
+
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='View', menu=view_dropdown)
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='Tools', menu=tools_dropdown)
+        menubar.add_cascade(label='Color Schemes', menu=syntax_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
         
         self.menu_fields = [field for field in (file_dropdown, view_dropdown, settings_dropdown, tools_dropdown)]
@@ -131,13 +141,16 @@ class Menubar:
     def show_menu(self):
         self._parent.master.config(menu=self._menubar)
 
-    # what to display on clicking about feature is defined here
-    # def about_message(self):
-    #     box_title = 'About Quiet Text'
-    #     box_message = 'A simple text editor for your Python and notetaking needs.'
-    #     tk.messagebox.showinfo(box_title, box_message)
+    def load_monokai_pro(self):
+        self.syntax.load_new_theme('theme_configs/Python3/monokai_pro.yaml')
 
-    # def release_notes(self):
-    #     box_title = 'Release Notes'
-    #     box_message = 'Version 0.1'
-    #     tk.messagebox.showinfo(box_title, box_message)
+    def load_monokai(self):
+        self.syntax.load_new_theme('theme_configs/Python3/monokai.yaml')
+
+    def load_gruvbox(self):
+        self.syntax.load_new_theme('theme_configs/Python3/gruvbox.yaml')
+
+    def load_solarized(self):
+        self.syntax.load_new_theme('theme_configs/Python3/solarized.yaml')
+
+

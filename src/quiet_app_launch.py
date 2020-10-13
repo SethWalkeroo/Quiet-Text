@@ -6,7 +6,7 @@ import tkinter.font as tk_font
 import re
 
 from tkinter import (filedialog, messagebox, ttk)
-from quiet_syntax_highlighting import PythonSyntaxHighlight
+from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menu, Menubar
 from quiet_statusbar import Statusbar
 from quiet_linenumbers import TextLineNumbers
@@ -109,12 +109,12 @@ class QuietText(tk.Frame):
         self._tab_width = self._font.measure(' ' * self.tab_size_spaces)
         self.textarea.config(tabs=(self._tab_width,))
 
-        self.menubar = Menubar(self)
         self.menu_hidden = 1
         self.context_menu = ContextMenu(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
-        self.syntax_highlighter = PythonSyntaxHighlight(self, self.textarea, self.initial_content)
+        self.syntax_highlighter = SyntaxHighlighting(self, self.textarea, self.initial_content)
+        self.menubar = Menubar(self)
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)
@@ -468,13 +468,10 @@ class QuietText(tk.Frame):
         end_second_pos = f'{str(index)}+1c'
         first_char = self.textarea.get(first_pos, index)
         second_char = self.textarea.get(index, end_second_pos)
-        return (first_char, second_char, index)
-
-    def autoindent_bracket(self, event):
-        first_char, second_char, index = self.get_chars_in_front_and_back()
+        return (first_char, second_char, index, end_second_pos)
         
     def backspace_situations(self, event):
-        first_char, second_char, index = self.get_chars_in_front_and_back()
+        first_char, second_char, index, end_second_pos = self.get_chars_in_front_and_back()
 
         if first_char == "'" and second_char == "'":
             self.textarea.delete(index, end_second_pos)
@@ -494,6 +491,7 @@ class QuietText(tk.Frame):
         else:
             self.menubar.hide_menu()
             self.menu_hidden += 1
+
 
     def bind_shortcuts(self, *args):
         text = self.textarea
@@ -527,7 +525,6 @@ class QuietText(tk.Frame):
         text.bind('<braceleft>', self.autoclose_curly_brackets)
         text.bind('<Shift-colon>', self.auto_indentation)
         text.bind('<BackSpace>', self.backspace_situations)
-        text.bind('<Enter>', self.autoindent_bracket)
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
 
 
