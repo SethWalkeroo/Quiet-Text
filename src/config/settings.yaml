@@ -18,10 +18,5 @@ text_wrap: none
 textarea_background_color: '#282828'
 textarea_padding_x: '5'
 textarea_padding_y: '5'
-
-
-
-
-
-
+show_linenumbers: true
 

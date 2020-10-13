@@ -18,6 +18,7 @@ textarea_padding_y: '5'
 tab_size: 4
 text_wrap: none
 text_top_lineheight: '1'
+show_linenumbers: true
 
 
 #MAKE SURE TO SAVE AFTER EVERY CHANGE.

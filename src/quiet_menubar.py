@@ -12,7 +12,7 @@ class Menu(tk.Menu):
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
                          foreground='#458588',
-                         background = '#1d2021',
+                         background='#1d2021',
                          activeborderwidth=0,
                          bd=0,
                          *args, **kwargs)
@@ -41,23 +41,23 @@ class Menubar:
         file_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         # new file creation feature
         file_dropdown.add_command(label='New File',
-                                   accelerator='Ctrl+N',
-                                   command=parent.new_file)
+                                  accelerator='Ctrl+N',
+                                  command=parent.new_file)
         # open file feature
         file_dropdown.add_command(label='Open File',
-                                   accelerator='Ctrl+O',
-                                   command=parent.open_file)
+                                  accelerator='Ctrl+O',
+                                  command=parent.open_file)
         # save file feature
         file_dropdown.add_command(label='Save',
-                                   accelerator='Ctrl+S',
-                                   command=parent.save)
+                                  accelerator='Ctrl+S',
+                                  command=parent.save)
         # Save as feature
         file_dropdown.add_command(label='Save As',
-                                   accelerator='Ctrl+Shift+S',
-                                   command=parent.save_as)
+                                  accelerator='Ctrl+Shift+S',
+                                  command=parent.save_as)
         # exit feature
         file_dropdown.add_separator()
-        file_dropdown.add_command(label='Exit', 
+        file_dropdown.add_command(label='Exit',
                                   command=parent.on_closing)
         # # adding featues to about dropdown in menubar
         # about_dropdown = Menu(menubar, font=font_specs, tearoff=0)
@@ -83,6 +83,9 @@ class Menubar:
         view_dropdown.add_command(label='Hide Status Bar',
                                   command=parent.hide_status_bar)
 
+        view_dropdown.add_command(label='Toggle Line Numbers',
+                                  command=parent.toggle_linenumbers)
+
         view_dropdown.add_command(label='Enter Quiet Mode',
                                   accelerator='Ctrl+Q',
                                   command=self.enter_quiet_mode)
@@ -102,7 +105,7 @@ class Menubar:
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='Tools', menu=tools_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
-        
+
         self.menu_fields = [field for field in (file_dropdown, view_dropdown, settings_dropdown, tools_dropdown)]
 
         # Settings reconfiguration function

@@ -1,7 +1,7 @@
 import os
 import time
 import yaml
-import tkinter as tk 
+import tkinter as tk
 import tkinter.font as tk_font
 import re
 
@@ -14,6 +14,7 @@ from quiet_textarea import CustomText
 from quiet_find import FindWindow
 from quiet_context import ContextMenu
 from quiet_zutilityfuncs import load_settings_data, store_settings_data
+
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -55,12 +56,12 @@ class QuietText(tk.Frame):
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.settings['font_size'])
 
-        #configuration of the file dialog text colors.
+        # configuration of the file dialog text colors.
 
         self.italics = tk_font.Font(family=self.font_family, slant='italic')
         self.master = master
         self.filename = None
-                                
+
         self.textarea = CustomText(self)
 
         self.scrolly = tk.Scrollbar(master,
@@ -87,8 +88,8 @@ class QuietText(tk.Frame):
                                 xscrollcommand=self.scrollx.set,
                                 bg=self.bg_color,
                                 fg=self.font_color,
-                                wrap= self.text_wrap,
-                                spacing1=self.top_spacing, 
+                                wrap=self.text_wrap,
+                                spacing1=self.top_spacing,
                                 spacing3=self.bottom_spacing,
                                 selectbackground='#75715e',
                                 insertbackground=self.insertion_color,
@@ -104,7 +105,7 @@ class QuietText(tk.Frame):
 
         self.initial_content = self.textarea.get("1.0", tk.END)
 
-        #retrieving the font from the text area and setting a tab width
+        # retrieving the font from the text area and setting a tab width
         self._font = tk_font.Font(font=self.textarea['font'])
         self._tab_width = self._font.measure(' ' * self.tab_size_spaces)
         self.textarea.config(tabs=(self._tab_width,))
@@ -121,16 +122,15 @@ class QuietText(tk.Frame):
         self.scrollx.pack(side=tk.BOTTOM, fill='both')
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
-        
+
         self.textarea.tag_configure('find_match', background='#75715e')
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
 
         self.tags_configured = False
-        #calling function to bind hotkeys.
+        # calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
-
 
     def load_settings_data(self, settings_path):
         settings_path = settings_path
@@ -139,15 +139,15 @@ class QuietText(tk.Frame):
             return _settings
 
     def clear_and_replace_textarea(self):
-            self.textarea.delete(1.0, tk.END)
-            try:
-                with open(self.filename, 'r') as f:
-                    self.textarea.insert(1.0, f.read())
-            except TypeError:
-                pass
+        self.textarea.delete(1.0, tk.END)
+        try:
+            with open(self.filename, 'r') as f:
+                self.textarea.insert(1.0, f.read())
+        except TypeError:
+            pass
 
-    #reconfigure the tab_width depending on changes.
-    def set_new_tab_width(self, tab_spaces = 'default'):
+    # reconfigure the tab_width depending on changes.
+    def set_new_tab_width(self, tab_spaces='default'):
         if tab_spaces == 'default':
             space_count = self.tab_size_spaces
         else:
@@ -157,48 +157,48 @@ class QuietText(tk.Frame):
         self.textarea.config(tabs=(_tab_width,))
 
     # editor basic settings can be altered here
-    #function used to reload settings after the user changes in settings.yaml
+    # function used to reload settings after the user changes in settings.yaml
     def reconfigure_settings(self, overwrite_with_default=False):
-            if overwrite_with_default:
-                _settings = load_settings_data(default=True)
+        if overwrite_with_default:
+            _settings = load_settings_data(default=True)
+        else:
+            _settings = load_settings_data()
+        font_family = _settings['font_family']
+        bg_color = _settings['textarea_background_color']
+        font_color = _settings['font_color']
+        top_spacing = _settings['text_top_lineheight']
+        bottom_spacing = _settings['text_bottom_lineheight']
+        insertion_blink = 300 if _settings['insertion_blink'] else 0
+        insertion_color = _settings['insertion_color']
+        tab_size_spaces = _settings['tab_size']
+        padding_x = _settings['textarea_padding_x']
+        padding_y = _settings['textarea_padding_y']
+        text_wrap = _settings['text_wrap']
+
+        font_style = tk_font.Font(family=font_family,
+                                  size=_settings['font_size'])
+
+        self.textarea.configure(font=font_style,
+                                bg=bg_color,
+                                pady=padding_y,
+                                padx=padding_x,
+                                fg=font_color,
+                                spacing1=top_spacing,
+                                spacing3=bottom_spacing,
+                                insertbackground=insertion_color,
+                                insertofftime=insertion_blink,
+                                wrap=text_wrap)
+
+        self.set_new_tab_width(tab_size_spaces)
+
+        if overwrite_with_default:
+            MsgBox = tk.messagebox.askquestion('Reset Settings?',
+                                               'Are you sure you want to reset the editor settings to their default value?',
+                                               icon='warning')
+            if MsgBox == 'yes':
+                store_settings_data(_settings)
             else:
-                _settings = load_settings_data()
-            font_family = _settings['font_family']
-            bg_color = _settings['textarea_background_color']
-            font_color = _settings['font_color']
-            top_spacing = _settings['text_top_lineheight']
-            bottom_spacing = _settings['text_bottom_lineheight']
-            insertion_blink = 300 if _settings['insertion_blink'] else 0
-            insertion_color = _settings['insertion_color']
-            tab_size_spaces = _settings['tab_size']
-            padding_x = _settings['textarea_padding_x']
-            padding_y = _settings['textarea_padding_y']
-            text_wrap = _settings['text_wrap']
-
-            font_style = tk_font.Font(family=font_family,
-                                      size=_settings['font_size'])
-
-            self.textarea.configure(font=font_style,
-                                    bg=bg_color,
-                                    pady=padding_y,
-                                    padx=padding_x,
-                                    fg=font_color,
-                                    spacing1=top_spacing,
-                                    spacing3=bottom_spacing,
-                                    insertbackground=insertion_color,
-                                    insertofftime=insertion_blink,
-                                    wrap=text_wrap)
-
-            self.set_new_tab_width(tab_size_spaces)
-
-            if overwrite_with_default:
-                MsgBox = tk.messagebox.askquestion('Reset Settings?',
-                                                   'Are you sure you want to reset the editor settings to their default value?',
-                                                    icon='warning')
-                if MsgBox == 'yes':
-                    store_settings_data(_settings)
-                else:
-                    self.save('config/settings.yaml')
+                self.save('config/settings.yaml')
 
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
@@ -216,12 +216,17 @@ class QuietText(tk.Frame):
         self.scrolly.configure(width=8)
         self.statusbar.update_status('hide')
 
-    #hide status bar for text class so it can be used in menu class
+    # hide status bar for text class so it can be used in menu class
     def hide_status_bar(self, *args):
         self.statusbar.hide_status_bar()
 
+    # toggle the line numbers
+    def toggle_linenumbers(self, *args):
+        self.linenumbers.toggle_linenumbers()
+
     # setting up the editor title
-    #Renames the window title bar to the name of the current file.
+    # Renames the window title bar to the name of the current file.
+
     def set_window_title(self, name=None):
         if name:
             self.master.title(f'{name} - QuietText')
@@ -229,7 +234,7 @@ class QuietText(tk.Frame):
             self.master.title('Untitled - QuietText')
 
     # new file creating in the editor feature
-    #Deletes all of the text in the current area and sets window title to default.
+    # Deletes all of the text in the current area and sets window title to default.
     def new_file(self, *args):
         self.textarea.delete(1.0, tk.END)
         self.filename = None
@@ -254,7 +259,7 @@ class QuietText(tk.Frame):
             self.syntax_highlighter.initial_highlight()
 
     # saving changes made in the file
-    def save(self,*args):
+    def save(self, *args):
         if self.filename:
             try:
                 textarea_content = self.textarea.get(1.0, tk.END)
@@ -291,16 +296,15 @@ class QuietText(tk.Frame):
             self.statusbar.update_status('saved')
         except Exception as e:
             print(e)
-            
-    #On exiting the Program
+
+    # On exiting the Program
     def quit_save(self):
         try:
             os.path.isfile(self.filename)
-            self.save()          
+            self.save()
         except:
             self.save_as()
         quit()
-                        
 
     def on_closing(self):
         message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
@@ -315,7 +319,7 @@ class QuietText(tk.Frame):
     def run(self, *args):
         try:
             if self.filename[-3:] == '.py':
-                #run separate commands for different os
+                # run separate commands for different os
                 if os.name == 'nt':
                     os.system(f'start cmd.exe @cmd /k "python {self.filename}"')
                 else:
@@ -389,9 +393,9 @@ class QuietText(tk.Frame):
                                     slant='italic')
 
         self.textarea.configure(font=self.font_style)
-        self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
+        self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo", font=self.italics)
         self.set_new_tab_width()
-        
+
         _settings = load_settings_data()
         _settings['font_size'] = self.font_size
         store_settings_data(_settings)
@@ -399,12 +403,12 @@ class QuietText(tk.Frame):
         if self.filename == 'config/settings.yaml':
             self.clear_and_replace_textarea()
 
-
     # control_l = 37
     # control_r = 109
     # mac_control = 262401 #control key in mac keyboard
     # mac_control_l = 270336 #tk.LEFT control key in mac os with normal keyboard
     # mac_control_r = 262145 #tk.RIGHT control key in mac os with normal keyboard
+
     def _on_keydown(self, event):
         if event.keycode in [37, 109, 262401, 270336, 262145]:
             self.control_key = True
@@ -461,7 +465,6 @@ class QuietText(tk.Frame):
         text.insert('insert', event.char + '\n' + ' ' * new_indent)
         return 'break'
 
-
     def get_chars_in_front_and_back(self):
         index = self.textarea.index(tk.INSERT)
         first_pos = f'{str(index)}-1c'
@@ -472,7 +475,7 @@ class QuietText(tk.Frame):
 
     def autoindent_bracket(self, event):
         first_char, second_char, index = self.get_chars_in_front_and_back()
-        
+
     def backspace_situations(self, event):
         first_char, second_char, index = self.get_chars_in_front_and_back()
 
@@ -542,15 +545,3 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
