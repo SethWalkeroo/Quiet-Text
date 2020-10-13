@@ -127,6 +127,8 @@ class SyntaxHighlighting():
         self.object_color = new_config['object_color']
 
         settings = load_settings_data()
+        settings['menu_fg'] = new_config['comment_color']
+        settings['menu_bg'] = new_config['bg_color']
         settings['font_color'] = new_config['font_color']
         settings['textarea_background_color'] = new_config['bg_color']
         settings['menubar_active_bg'] = new_config['menu_bg_active']

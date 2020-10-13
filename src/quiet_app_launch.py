@@ -54,6 +54,9 @@ class QuietText(tk.Frame):
         self.troughy_clr = self.settings['vertical_scrollbar_trough_color']
         self.scrolly_width = self.settings['vertical_scrollbar_width']
         self.scrolly_active_bg = self.settings['vertical_scrollbar_active_bg']
+        self.menu_fg = self.settings['menu_fg']
+        self.menu_bg = self.settings['menu_bg']
+
 
         master.tk_setPalette(background=self.bg_color, foreground='black')
         self.font_style = tk_font.Font(family=self.font_family,
@@ -178,6 +181,8 @@ class QuietText(tk.Frame):
             troughx_clr = _settings['horizontal_scrollbar_trough_color']
             scrollx_width = _settings['horizontal_scrollbar_width']
             scrollx_active_bg = _settings['horizontal_scrollbar_active_bg']
+            menu_fg = _settings['menu_fg']
+            menu_bg = _settings['menu_bg']
 
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
@@ -197,7 +202,7 @@ class QuietText(tk.Frame):
 
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
-            self.linenumbers.font_color = font_color
+            self.linenumbers.font_color = menu_fg
             self.linenumbers.config(bg=bg_color, highlightbackground=bg_color)
             self.statusbar._label.config(bg=bg_color)
             self.linenumbers.redraw()

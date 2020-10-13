@@ -9,10 +9,9 @@ class Menu(tk.Menu):
     def __init__(self, *args, **kwargs):
         settings = load_settings_data()
         super().__init__(bg=settings["menu_bg"],
+                         fg=settings['menu_fg'],
                          activeforeground=settings['menu_active_fg'],
                          activebackground=settings['menu_active_bg'],
-                         foreground= settings['font_color'],
-                         background = settings['textarea_background_color'],
                          activeborderwidth=0,
                          bd=0,
                          *args, **kwargs)
@@ -28,8 +27,8 @@ class Menubar:
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
                           font=font_specs,
-                          foreground= self.settings['font_color'],
-                          background = self.settings['textarea_background_color'],
+                          fg=self.settings['menu_fg'],
+                          bg=self.settings['menu_bg'],
                           activeforeground= self.settings['menubar_active_fg'],
                           activebackground= self.settings['menubar_active_bg'],
                           activeborderwidth=0,
@@ -126,15 +125,16 @@ class Menubar:
         settings = load_settings_data()
         for field in self.menu_fields:
             field.configure(bg=settings['menu_bg'],
+                            fg=settings['menu_fg'],
                             activeforeground=settings['menu_active_fg'],
                             activebackground=settings['menu_active_bg'],
-                            foreground= settings['font_color'],
                             background = settings['textarea_background_color'],)
 
-        self._menubar.configure(foreground= settings['font_color'],
-                  background = settings['textarea_background_color'],
-                  activeforeground= settings['menubar_active_fg'],
-                  activebackground= settings['menubar_active_bg'],)
+        self._menubar.configure(bg=settings['menu_bg'],
+                                fg=settings['menu_fg'],
+                                background = settings['textarea_background_color'],
+                                activeforeground= settings['menubar_active_fg'],
+                                activebackground= settings['menubar_active_bg'],)
 
     # color to different text tye can be set here
     def open_color_picker(self):

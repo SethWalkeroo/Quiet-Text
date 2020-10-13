@@ -6,7 +6,7 @@ class TextLineNumbers(tk.Canvas):
         self._text_font = parent.settings['font_family']
         self._parent = parent
         self.textwidget = parent.textarea
-        self.font_color = parent.font_color
+        self.font_color = parent.menu_fg
 
     def attach(self, text_widget):
         self.textwidget = text_widget
