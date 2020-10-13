@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import yaml
 import tkinter as tk 
@@ -273,6 +274,20 @@ class QuietText(tk.Frame):
             self.clear_and_replace_textarea()
             self.set_window_title(name=self.filename)
             self.syntax_highlighter.initial_highlight()
+
+    # opening an existing file without TK filedialog
+    def open_file_without_dialog(self, path):
+        if os.path.isdir(path):
+            self.statusbar.update_status('Unable to open directory.')
+            return
+
+        if not os.path.exists(path):
+            self.statusbar.update_status('File does not exists.')
+            return
+
+        self.filename = path
+        self.clear_and_replace_textarea()
+        self.syntax_highlighter.initial_highlight()
 
     # saving changes made in the file
     def save(self,*args):
@@ -559,6 +574,8 @@ if __name__ == '__main__':
         print(e)
     qt = QuietText(master)
     qt.pack(side='top', fill='both', expand=True)
+    if len(sys.argv) > 1:
+        qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
 
