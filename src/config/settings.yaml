@@ -5,7 +5,7 @@ autoclose_singlequotes: true
 autoclose_squarebrackets: true
 font_color: '#fbf1c7'
 font_family: monospace
-font_size: 9
+font_size: 8
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_trough_color: '#2e2724'
