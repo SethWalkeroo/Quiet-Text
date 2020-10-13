@@ -29,8 +29,10 @@ class SyntaxHighlighting():
             "Token.Literal.String.Double"
         ]
         self.object_tokens = [
-            "Token.Name.Class",
-            "Token.Name.Function",
+            "Token.Name.Class"
+        ]
+        self.function_name_tokens = [
+            "Token.Name.Function"
         ]
         self.number_tokens = [
             "Token.Keyword.Constant",
@@ -64,6 +66,7 @@ class SyntaxHighlighting():
         self.function_color = '#8ec87c'
         self.class_color = '#d3869b'
         self.object_color = '#b8bb26'
+        self.function_name_color = '#b8bb26'
 
     def default_highlight(self):
         row = float(self.text.index(tk.INSERT))
@@ -97,6 +100,8 @@ class SyntaxHighlighting():
             self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics, size=self.font_size)
         for token in self.object_tokens:
             self.text.tag_configure(token, foreground=self.object_color)
+        for token in self.function_name_tokens:
+            self.text.tag_configure(token, foreground=self.function_name_color)
 
     def initial_highlight(self, *args):
         content = self.text.get("1.0", tk.END)
@@ -125,7 +130,15 @@ class SyntaxHighlighting():
         self.function_color = new_config['function_color']
         self.class_color = new_config['class_color']
         self.object_color = new_config['object_color']
-
+        
+        # object_color determines the color of both function names
+        #  and class names. This allows themes to set them independently
+        # while not breaking existing themes.
+        if 'function_name_color' in new_config:
+            self.function_name_color = new_config['function_name_color']
+        else:
+            self.function_name_color = self.object_color
+        
         settings = load_settings_data()
         settings['menu_fg'] = new_config['comment_color']
         settings['menu_bg'] = new_config['bg_color']

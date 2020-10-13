@@ -112,6 +112,8 @@ class Menubar:
         syntax_dropdown.add_command(label='Dark Heart',
                                     command=self.load_darkheart)
 
+        syntax_dropdown.add_command(label='Githubly', command=self.load_githubly)
+
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='View', menu=view_dropdown)
@@ -170,5 +172,7 @@ class Menubar:
 
     def load_darkheart(self):
         self.syntax.load_new_theme('theme_configs/Python3/dark-heart.yaml')
-
+    
+    def load_githubly(self):
+        self.syntax.load_new_theme('theme_configs/Python3/githubly.yaml')
 
