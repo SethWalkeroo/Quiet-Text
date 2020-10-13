@@ -110,16 +110,8 @@ class PythonSyntaxHighlight():
 
         self.text.mark_set("range_start", "1.0")
 
-        words = content.split(" ")
-        lastWordLength = len(words[len(words) - 1])
-
-        lastPos = self.text.index("end-1c")
-        startRow = int(lastPos.split(".")[0])
-        startCol = abs(int(lastPos.split(".")[1]) - lastWordLength)
-
         data = self.text.get("1.0", tk.END)
         for token, content in lex(data, PythonLexer()):
-            print(token)
             self.text.mark_set("range_end", "range_start + %dc" % len(content))
             self.text.tag_add(str(token), "range_start", "range_end")
             self.text.mark_set("range_start", "range_end")
