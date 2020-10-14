@@ -26,6 +26,14 @@ class QuietText(tk.Frame):
 
         # start editor according to defined settings in settings.yaml
         self.settings = self.loader.load_settings_data()
+        self.default_theme = self.loader.load_default_theme()
+
+        self.settings['font_color'] = self.default_theme['font_color']
+        self.settings['textarea_background_color'] = self.default_theme['bg_color']
+        self.settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
+        self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
+        self.settings['menu_active_bg'] = self.default_theme['menu_bg_active']
+        self.settings['menu_active_fg'] = self.default_theme['menu_fg_active']
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['textarea_background_color']
@@ -57,6 +65,7 @@ class QuietText(tk.Frame):
         self.scrolly_active_bg = self.settings['vertical_scrollbar_active_bg']
         self.menu_fg = self.settings['menu_fg']
         self.menu_bg = self.settings['menu_bg']
+
 
 
         master.tk_setPalette(background=self.bg_color, foreground='black')

@@ -8,7 +8,12 @@ class Menu(tk.Menu):
     # menu method and its initializatipn from config/settings.yaml
     def __init__(self, *args, **kwargs):
         loader = QuietLoaders()
+        default_theme = loader.load_default_theme()
         settings = loader.load_settings_data()
+        settings['menu_active_bg'] = default_theme['menu_bg_active']
+        settings['menu_active_fg'] = default_theme['menu_fg_active']
+        settings['menu_fg'] = default_theme['comment_color']
+        settings['menu_bg'] = default_theme['bg_color']
         super().__init__(bg=settings["menu_bg"],
                          fg=settings['menu_fg'],
                          activeforeground=settings['menu_active_fg'],
@@ -22,7 +27,12 @@ class Menubar:
     def __init__(self, parent):
         self._parent = parent
         self.syntax = parent.syntax_highlighter
+        self.default_theme = parent.loader.load_default_theme()
         self.settings = parent.loader.load_settings_data()
+        self.settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
+        self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
+        self.settings['menu_fg'] = self.default_theme['comment_color']
+        self.settings['menu_bg'] = self.default_theme['bg_color']
         self.border_on = True if self.settings['textarea_border'] > 0 else False
         font_specs = ('Droid Sans Fallback', 12)
 
