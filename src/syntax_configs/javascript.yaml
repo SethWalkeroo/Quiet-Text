@@ -1,29 +1,20 @@
 comments:
 - "Token.Comment.Single"
 strings:
-- "Token.Name.Function"
-- "Token.Name.Class"
-- "Token.String"
-- "Token.Literal.String.Single"
 - "Token.Literal.String.Double"
+- "Token.Literal.String.Single"
 object_names: 
-- "Token.Name.Class"
-- "Token.Name.Function"
 numbers: 
-- "Token.Keyword.Constant"
-- "Token.Literal.String.Interpol"
-- "Token.Literal.Number.Integer"
 - "Token.Literal.Number.Float"
-- "Token.Name.Decorator"
+- "Token.Literal.Number.Oct"
+- "Token.Keyword.Constant"
 keywords: 
-- "Token.Operator"
-- "Token.Operator.Word"
-- "Token.Keyword.Namespace"
-functions: 
+- "Token.Keyword.Reserved"
 - "Token.Keyword"
-- "Token.Name.Builtin"
-- "Token.Literal.String.Affix"
-- "Token.Name.Function.Magic"
+- "Token.Operator"
+functions: 
+- "Token.Keyword.Declaration"
 class_self:
-- "Token.Name.Builtin.Pseudo"
+text:
+
 

@@ -41,6 +41,10 @@ class QuietLoaders:
 		with open(self.javascript_syntax_path, 'r') as some_config:
 			return yaml.load(some_config, Loader=yaml.FullLoader)
 
+	def load_c_syntax(self):
+		with open(self.c_syntax_path, 'r') as some_config:
+			return yaml.load(some_config, Loader=yaml.FullLoader)
+
 
 
 

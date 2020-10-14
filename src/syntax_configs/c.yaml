@@ -1,29 +1,23 @@
 comments:
-- "Token.Comment.Single"
+- "Token.Comment.Preproc"
+- "Token.Comment.PreprocFile"
+- "Token.Comment.Multiline"
 strings:
-- "Token.Name.Function"
-- "Token.Name.Class"
-- "Token.String"
-- "Token.Literal.String.Single"
-- "Token.Literal.String.Double"
+- "Token.Literal.String"
+- "Token.Literal.String.Char"
 object_names: 
-- "Token.Name.Class"
-- "Token.Name.Function"
 numbers: 
-- "Token.Keyword.Constant"
-- "Token.Literal.String.Interpol"
 - "Token.Literal.Number.Integer"
-- "Token.Literal.Number.Float"
-- "Token.Name.Decorator"
-keywords: 
-- "Token.Operator"
-- "Token.Operator.Word"
-- "Token.Keyword.Namespace"
-functions: 
-- "Token.Keyword"
 - "Token.Name.Builtin"
-- "Token.Literal.String.Affix"
-- "Token.Name.Function.Magic"
+keywords: 
+- "Token.Keyword.Type"
+- "Token.Keyword"
+- "Token.Operator"
+functions:
+- "Token.Name" 
 class_self:
-- "Token.Name.Builtin.Pseudo"
+text:
+- "Token.Text"
+- "Token.Name"
+
 

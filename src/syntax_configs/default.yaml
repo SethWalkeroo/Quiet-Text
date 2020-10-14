@@ -26,4 +26,4 @@ functions:
 - "Token.Name.Function.Magic"
 class_self:
 - "Token.Name.Builtin.Pseudo"
-
+text:

@@ -121,9 +121,14 @@ class Menubar:
 
 
         syntax_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        syntax_dropdown.add_command(label='Python3')
-        syntax_dropdown.add_command(label='JavaScript')
-        syntax_dropdown.add_command(label='C')
+        syntax_dropdown.add_command(label='Python3',
+                                    command=self.syntax.load_python3_syntax)
+
+        syntax_dropdown.add_command(label='JavaScript',
+                                    command=self.syntax.load_javascript_syntax)
+        
+        syntax_dropdown.add_command(label='C',
+                                    command=self.syntax.load_c_syntax)
 
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
