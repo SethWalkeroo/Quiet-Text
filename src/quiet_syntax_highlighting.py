@@ -73,10 +73,11 @@ class SyntaxHighlighting():
 
 
     def initial_highlight(self, *args):
+        for tag in self.text.tag_names():
+            self.text.tag_delete(tag)
+
         content = self.text.get("1.0", tk.END)
-
         self.text.mark_set("range_start", "1.0")
-
         data = self.text.get("1.0", tk.END)
         for token, content in lex(data, self.lexer):
             self.text.mark_set("range_end", "range_start + %dc" % len(content))
