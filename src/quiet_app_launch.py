@@ -6,6 +6,7 @@ import tkinter as tk
 import tkinter.font as tk_font
 import re
 
+from platform import system
 from tkinter import (filedialog, messagebox, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menu, Menubar
@@ -23,6 +24,7 @@ class QuietText(tk.Frame):
         # defined size of the editer window
         master.geometry('1920x1080')
         self.loader = QuietLoaders()
+        user_operating_system = system()
 
         # start editor according to defined settings in settings.yaml
         self.settings = self.loader.load_settings_data()
@@ -34,6 +36,8 @@ class QuietText(tk.Frame):
         self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
         self.settings['menu_active_bg'] = self.default_theme['menu_bg_active']
         self.settings['menu_active_fg'] = self.default_theme['menu_fg_active']
+        self.settings['menu_bg'] = self.default_theme['bg_color']
+        self.settings['font_color'] = self.default_theme['font_color']
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['textarea_background_color']

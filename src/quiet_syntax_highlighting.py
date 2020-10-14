@@ -113,6 +113,7 @@ class SyntaxHighlighting():
         settings['menu_active_fg'] = new_config['menu_fg_active']  
         self.parent.loader.store_settings_data(settings)
         self.parent.reconfigure_settings()
+        self.parent.clear_and_replace_textarea()
 
         self.initial_highlight()
 
