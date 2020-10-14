@@ -17,5 +17,4 @@ functions:
 class_self:
 text:
 - "Token.Text"
-- "Token.Name"
 

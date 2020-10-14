@@ -28,4 +28,3 @@ class_self:
 - "Token.Name.Builtin.Pseudo"
 text:
 - "Token.Text"
-- "Token.Name"
