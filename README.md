@@ -134,6 +134,8 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | Save | <kbd>ctrl</kbd>+<kbd>s</kbd> | Save the currently active file |
 | Save As | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>s</kbd> | Save the currently active file under a different name |
 | Change Font Size | <kbd>ctrl</kbd>+<kbd>mousewheel</kbd> | Increases or decrease font size |
+| Indent | <kbd>tab</kbd> | Indent one or multiple lines |
+| Unindent | <kbd>shift</kbd>+<kbd>tab</kbd> | Unindent one or multiple lines |
 
 **IMPORTANT:** If you don't want your teminal to close when using the <kbd>ctrl</kbd>+<kbd>r</kbd> run command, add an input field at the end of your script.
 
