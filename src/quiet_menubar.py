@@ -181,7 +181,7 @@ class Menubar:
           self._parent.textarea.configure(bd=0.5)
           settings['textarea_border'] = 0.5
         self.border_on = not self.border_on
-        store_settings_data(settings)
+        self._parent.store_settings_data(settings)
 
     # quiet mode is defined here
     def enter_quiet_mode(self):
