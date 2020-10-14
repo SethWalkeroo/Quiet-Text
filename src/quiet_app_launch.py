@@ -455,7 +455,7 @@ class QuietText(tk.Frame):
     # mac_control_l = 270336 #tk.LEFT control key in mac os with normal keyboard
     # mac_control_r = 262145 #tk.RIGHT control key in mac os with normal keyboard
     def _on_keydown(self, event):
-        if event.keycode in [37, 109, 262401, 270336, 262145]:
+        if event.keycode in [17, 37, 109, 262401, 270336, 262145]:
             self.control_key = True
             self.textarea.isControlPressed = True
         else:
