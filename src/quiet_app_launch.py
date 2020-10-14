@@ -554,27 +554,13 @@ class QuietText(tk.Frame):
     def tab_text(self, event):
         index = self.textarea.index("sel.first linestart")
         last = self.textarea.index("sel.last linestart")
-
         if last != index:
-            if event.state == 8:
-                while self.textarea.compare(index,"<=", last):
-                    if len(self.textarea.get(index, 'end')) != 0:
-                        self.textarea.insert(index, '\t')
-                    index = self.textarea.index("%s + 1 line" % index)
-            else:
-                 while self.textarea.compare(index,"<=", last):
-                    if self.textarea.get(index, 'end')[:1] == "\t":
-                        self.textarea.delete(index)
-                    index = self.textarea.index("%s + 1 line" % index)
-        else:
-            if event.state == 8:
-                index = self.textarea.index(tk.INSERT)
+            while self.textarea.compare(index,"<=", last):
                 self.textarea.insert(index, '\t')
-            else:
-                index = self.textarea.index("insert linestart")
-                if self.textarea.get(index, 'end')[:1] == "\t":
-                    self.textarea.delete(index)
-
+                index = self.textarea.index("%s + 1 line" % index)
+        else:
+            index = self.textarea.index(tk.INSERT)
+            self.textarea.insert(index, '\t')
         return "break"
 
 
@@ -615,6 +601,7 @@ class QuietText(tk.Frame):
         text.bind('<BackSpace>', self.backspace_situations)
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
         text.bind('<Control-L>', self.toggle_linenumbers)
+        text.bind('<KeyPress-Tab>', self.tab_text)
 
 
 if __name__ == '__main__':
