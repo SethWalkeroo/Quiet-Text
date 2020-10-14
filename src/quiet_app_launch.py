@@ -591,6 +591,8 @@ class QuietText(tk.Frame):
         text.bind('<Control-r>', self.run)
         text.bind('<Control-q>', self.enter_quiet_mode)
         text.bind('<Control-f>', self.show_find_window)
+        text.bind('<Control-z>', self.textarea.edit_undo())
+        text.bind('<Control-Shift-z', self.textarea.edit_redo())
         text.bind('<Escape>', self.leave_quiet_mode)
         text.bind('<<Change>>', self._on_change)
         text.bind('<Configure>', self._on_change)
