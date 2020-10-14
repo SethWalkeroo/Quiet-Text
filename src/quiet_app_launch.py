@@ -118,7 +118,7 @@ class QuietText(tk.Frame):
         self._tab_width = self._font.measure(' ' * self.tab_size_spaces)
         self.textarea.config(tabs=(self._tab_width,))
 
-        self.menu_hidden = 1
+        self.menu_hidden = False
         self.context_menu = ContextMenu(self)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
@@ -532,12 +532,11 @@ class QuietText(tk.Frame):
             self.textarea.delete(index, end_second_pos)
 
     def hide_and_unhide_menubar(self, key_event):
-        if self.menu_hidden % 2 == 0:
+        if self.menu_hidden:
             self.menubar.show_menu()
-            self.menu_hidden += 1
         else:
             self.menubar.hide_menu()
-            self.menu_hidden += 1
+        self.menu_hidden = not self.menu_hidden
 
     def tab_text(self, event):
         index = self.textarea.index("sel.first linestart")

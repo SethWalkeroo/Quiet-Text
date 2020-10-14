@@ -1,7 +1,7 @@
 import tkinter as tk
 import yaml
 from tkinter.colorchooser import askcolor
-from quiet_zutilityfuncs import load_settings_data
+from quiet_zutilityfuncs import load_settings_data, store_settings_data
 from quiet_syntax_highlighting import SyntaxHighlighting
 
 class Menu(tk.Menu):
@@ -22,6 +22,7 @@ class Menubar:
         self._parent = parent
         self.syntax = parent.syntax_highlighter
         self.settings = load_settings_data()
+        self.border_on = True if self.settings['textarea_border'] > 0 else False
         font_specs = ('Droid Sans Fallback', 12)
 
         # setting up basic features in menubar
@@ -80,6 +81,9 @@ class Menubar:
         view_dropdown.add_command(label='Toggle Line Numbers',
                                   accelerator='Ctrl+Shift+L',
                                   command=parent.toggle_linenumbers)
+
+        view_dropdown.add_command(label='Toggle Text Border',
+                                  command=self.toggle_text_border)
 
         view_dropdown.add_command(label='Enter Quiet Mode',
                                   accelerator='Ctrl+Q',
@@ -144,6 +148,17 @@ class Menubar:
     # color to different text tye can be set here
     def open_color_picker(self):
         return askcolor(title='Color Menu', initialcolor='#d5c4a1')[1]
+
+    def toggle_text_border(self):
+        settings = load_settings_data()
+        if self.border_on:
+          self._parent.textarea.configure(bd=0)
+          settings['textarea_border'] = 0
+        else:
+          self._parent.textarea.configure(bd=0.5)
+          settings['textarea_border'] = 0.5
+        self.border_on = not self.border_on
+        store_settings_data(settings)
 
     # quiet mode is defined here
     def enter_quiet_mode(self):
