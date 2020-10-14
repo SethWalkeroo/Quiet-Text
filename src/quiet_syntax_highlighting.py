@@ -99,6 +99,7 @@ class SyntaxHighlighting():
         self.function_color = new_config['function_color']
         self.class_color = new_config['class_self_color']
         self.object_color = new_config['object_color']
+        self.text_color = new_config['font_color']
         
         settings = self.parent.loader.load_settings_data()
         settings['menu_fg'] = new_config['comment_color']

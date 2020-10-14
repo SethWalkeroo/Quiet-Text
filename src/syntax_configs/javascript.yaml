@@ -16,5 +16,6 @@ functions:
 - "Token.Keyword.Declaration"
 class_self:
 text:
-
+- "Token.Text"
+- "Token.Name"
 
