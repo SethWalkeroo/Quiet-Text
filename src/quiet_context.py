@@ -1,14 +1,13 @@
 import tkinter as tk
 import tkinter.font as tk_font
 import os
-from quiet_zutilityfuncs import load_settings_data
 
 class ContextMenu(tk.Listbox):
 
     def __init__(self, parent, *args, **kwargs):
         tk.Listbox.__init__(self, parent, *args, **kwargs)
 
-        self.settings = load_settings_data()
+        self.settings = parent.loader.load_settings_data()
         self.font_family = self.settings['font_family']
         self.parent = parent
 

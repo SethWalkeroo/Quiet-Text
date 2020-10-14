@@ -1,13 +1,14 @@
 import tkinter as tk
 import yaml
 from tkinter.colorchooser import askcolor
-from quiet_zutilityfuncs import load_settings_data, store_settings_data
 from quiet_syntax_highlighting import SyntaxHighlighting
+from quiet_loaders import QuietLoaders
 
 class Menu(tk.Menu):
     # menu method and its initializatipn from config/settings.yaml
     def __init__(self, *args, **kwargs):
-        settings = load_settings_data()
+        loader = QuietLoaders()
+        settings = loader.load_settings_data()
         super().__init__(bg=settings["menu_bg"],
                          fg=settings['menu_fg'],
                          activeforeground=settings['menu_active_fg'],
@@ -21,7 +22,7 @@ class Menubar:
     def __init__(self, parent):
         self._parent = parent
         self.syntax = parent.syntax_highlighter
-        self.settings = load_settings_data()
+        self.settings = parent.loader.load_settings_data()
         self.border_on = True if self.settings['textarea_border'] > 0 else False
         font_specs = ('Droid Sans Fallback', 12)
 
@@ -99,39 +100,46 @@ class Menubar:
                                    accelerator='Ctrl+R',
                                    command=parent.run)
 
-        #syntax dropdown menu
-        syntax_dropdown = Menu(menubar, font=font_specs, tearoff=0)
-        syntax_dropdown.add_command(label='Monokai',
+        #theme dropdown menu
+        theme_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        theme_dropdown.add_command(label='Monokai',
                                     command=self.load_monokai)
 
-        syntax_dropdown.add_command(label='Monokai Pro',
+        theme_dropdown.add_command(label='Monokai Pro',
                                     command=self.load_monokai_pro)
 
-        syntax_dropdown.add_command(label='Gruvbox',
+        theme_dropdown.add_command(label='Gruvbox',
                                     command=self.load_gruvbox)
 
-        syntax_dropdown.add_command(label='Solarized',
+        theme_dropdown.add_command(label='Solarized',
                                     command=self.load_solarized)
         
-        syntax_dropdown.add_command(label='Dark Heart',
+        theme_dropdown.add_command(label='Dark Heart',
                                     command=self.load_darkheart)
 
-        syntax_dropdown.add_command(label='Githubly', command=self.load_githubly)
+        theme_dropdown.add_command(label='Githubly', command=self.load_githubly)
+
+
+        syntax_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        syntax_dropdown.add_command(label='Python3')
+        syntax_dropdown.add_command(label='JavaScript')
+        syntax_dropdown.add_command(label='C')
 
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='View', menu=view_dropdown)
         menubar.add_cascade(label='Settings', menu=settings_dropdown)
         menubar.add_cascade(label='Tools', menu=tools_dropdown)
-        menubar.add_cascade(label='Color Schemes', menu=syntax_dropdown)
+        menubar.add_cascade(label='Syntax', menu=syntax_dropdown)
+        menubar.add_cascade(label='Color Schemes', menu=theme_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
         
         self.menu_fields = [field for field in (file_dropdown, view_dropdown,
-                                                settings_dropdown, tools_dropdown, syntax_dropdown)]
+                                                settings_dropdown, tools_dropdown, theme_dropdown)]
 
         # Settings reconfiguration function
     def reconfigure_settings(self):
-        settings = load_settings_data()
+        settings = self._parent.loader.load_settings_data()
         for field in self.menu_fields:
             field.configure(bg=settings['menu_bg'],
                             fg=settings['menu_fg'],
@@ -150,7 +158,7 @@ class Menubar:
         return askcolor(title='Color Menu', initialcolor='#d5c4a1')[1]
 
     def toggle_text_border(self):
-        settings = load_settings_data()
+        settings = self._parent.loader.load_settings_data()
         if self.border_on:
           self._parent.textarea.configure(bd=0)
           settings['textarea_border'] = 0

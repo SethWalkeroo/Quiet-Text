@@ -14,7 +14,7 @@ from quiet_linenumbers import TextLineNumbers
 from quiet_textarea import CustomText
 from quiet_find import FindWindow
 from quiet_context import ContextMenu
-from quiet_zutilityfuncs import load_settings_data, store_settings_data
+from quiet_loaders import QuietLoaders
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -22,10 +22,10 @@ class QuietText(tk.Frame):
         master.title('untitled - Quiet Text')
         # defined size of the editer window
         master.geometry('1920x1080')
+        self.loader = QuietLoaders()
 
         # start editor according to defined settings in settings.yaml
-        self.settings = load_settings_data()
-
+        self.settings = self.loader.load_settings_data()
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['textarea_background_color']
@@ -162,9 +162,9 @@ class QuietText(tk.Frame):
     #function used to reload settings after the user changes in settings.yaml
     def reconfigure_settings(self, overwrite_with_default=False):
             if overwrite_with_default:
-                _settings = load_settings_data(default=True)
+                _settings = self.loader.load_settings_data(default=True)
             else:
-                _settings = load_settings_data()
+                _settings = self.loader.load_settings_data()
             font_family = _settings['font_family']
             bg_color = _settings['textarea_background_color']
             font_color = _settings['font_color']
@@ -214,7 +214,7 @@ class QuietText(tk.Frame):
                                                    'Are you sure you want to reset the editor settings to their default value?',
                                                     icon='warning')
                 if MsgBox == 'yes':
-                    store_settings_data(_settings)
+                    self.loader.store_settings_data(_settings)
                 else:
                     self.save('config/settings.yaml')
 
@@ -428,9 +428,9 @@ class QuietText(tk.Frame):
         self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
         self.set_new_tab_width()
         
-        _settings = load_settings_data()
+        _settings = self.loader.load_settings_data()
         _settings['font_size'] = self.font_size
-        store_settings_data(_settings)
+        self.loader.store_settings_data(_settings)
 
         if self.filename == 'config/settings.yaml':
             self.clear_and_replace_textarea()
