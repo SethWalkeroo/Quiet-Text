@@ -1,0 +1,1 @@
+python3 quiet_app_launch.py
