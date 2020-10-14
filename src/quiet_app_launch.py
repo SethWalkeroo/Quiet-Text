@@ -491,6 +491,17 @@ class QuietText(tk.Frame):
     def auto_indentation(self, event):
         text = self.textarea
         line = text.get('insert linestart', 'insert lineend')
+        new_indent = self.get_indent_level(line) * 4
+        text.insert('insert', '\n' + ' ' * new_indent)
+        return 'break'
+
+    def get_indent_level(self, line):
+        num_leading_whitespaces = len(line) - len(line.lstrip())
+        return num_leading_whitespaces // 4
+
+    def auto_block_indentation(self, event):
+        text = self.textarea
+        line = text.get('insert linestart', 'insert lineend')
         match = re.match(r'^(\s+)', line)
         current_indent = len(match.group(0)) if match else 0
         new_indent = current_indent + 4
@@ -571,7 +582,8 @@ class QuietText(tk.Frame):
         text.bind('<quoteright>', self.autoclose_single_quotes)
         text.bind('<quotedbl>', self.autoclose_double_quotes)
         text.bind('<braceleft>', self.autoclose_curly_brackets)
-        text.bind('<Shift-colon>', self.auto_indentation)
+        text.bind('<Return>', self.auto_indentation)
+        text.bind('<Shift-colon>', self.auto_block_indentation)
         text.bind('<BackSpace>', self.backspace_situations)
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
         text.bind('<Control-L>', self.toggle_linenumbers)
