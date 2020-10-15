@@ -13,6 +13,7 @@ class FindWindow(tk.Toplevel):
         self.transient(self.master)
         self.configure(bg=self.master.bg_color)
         self.style = ttk.Style()
+        self.style.theme_use('clam')
 
         self.text_to_find = tk.StringVar()
         self.text_to_replace_with = tk.StringVar()
@@ -21,11 +22,22 @@ class FindWindow(tk.Toplevel):
         middle_frame = tk.Frame(self, bg=self.master.bg_color)
         bottom_frame = tk.Frame(self, bg=self.master.bg_color)
 
+        self.style.configure('editor.TLabel',
+                background=self.master.bg_color,
+                foreground='#ffffff')
+
         find_entry_label = ttk.Label(top_frame, text="Find: ", style="editor.TLabel")
         self.find_entry = ttk.Entry(top_frame, textvar=self.text_to_find)
 
         replace_entry_label = ttk.Label(middle_frame, text="Replace: ", style="editor.TLabel")
         self.replace_entry = ttk.Entry(middle_frame, textvar=self.text_to_replace_with)
+
+        self.style.configure('editor.TButton',
+                background=self.master.bg_color,
+                foreground='#ffffff')
+
+        self.style.map('editor.TButton',
+                background=[('pressed', '#3e4037'), ('active', '#3e4037')])
 
         self.find_button = ttk.Button(bottom_frame, text="Find", command=self.on_find, style="editor.TButton")
         self.replace_button = ttk.Button(bottom_frame, text="Replace", command=self.on_replace, style="editor.TButton")
