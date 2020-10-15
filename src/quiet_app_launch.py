@@ -504,26 +504,36 @@ class QuietText(tk.Frame):
         if self.autoclose_singlequotes:
             self.autoclose_base("'")
 
-    def auto_indentation(self, event):
-        text = self.textarea
-        line = text.get('insert linestart', 'insert lineend')
-        new_indent = self.get_indent_level(line) * 4
-        text.insert('insert', '\n' + ' ' * new_indent)
-        return 'break'
-
     def get_indent_level(self, line):
         num_leading_whitespaces = len(line) - len(line.lstrip())
         return num_leading_whitespaces // 4
 
-    def auto_block_indentation(self, event):
+
+    def auto_indentation(self):
         text = self.textarea
         line = text.get('insert linestart', 'insert lineend')
-        match = re.match(r'^(\s+)', line)
-        current_indent = len(match.group(0)) if match else 0
-        new_indent = current_indent + 4
-        text.insert('insert', event.char + '\n' + ' ' * new_indent)
-        return 'break'
+        new_indent = self.get_indent_level(line) * 4
+        text.insert('insert', '\n' + ' ' * new_indent)
 
+    def auto_block_indentation(self, event):
+        previous_character = self.get_previous_char()
+        if previous_character == ':':
+            text = self.textarea
+            line = text.get('insert linestart', 'insert lineend')
+            match = re.match(r'^(\s+)', line)
+            current_indent = len(match.group(0)) if match else 0
+            new_indent = current_indent + 4
+            text.insert('insert', '\n' + ' ' * new_indent)
+            return 'break'
+        else:
+            self.auto_indentation()
+            return 'break'
+
+    def get_previous_char(self):
+        index = self.textarea.index(tk.INSERT)
+        previous_pos = f'{str(index)}-1c'
+        previous_char = self.textarea.get(previous_pos, index)
+        return previous_char
 
     def get_chars_in_front_and_back(self):
         index = self.textarea.index(tk.INSERT)
@@ -580,8 +590,7 @@ class QuietText(tk.Frame):
         text.bind('<Control-r>', self.run)
         text.bind('<Control-q>', self.enter_quiet_mode)
         text.bind('<Control-f>', self.show_find_window)
-        text.bind('<Control-z>', self.textarea.edit_undo())
-        text.bind('<Control-Shift-z', self.textarea.edit_redo())
+        text.bind('<Control-Shift-z>', self.textarea.edit_redo)
         text.bind('<Escape>', self.leave_quiet_mode)
         text.bind('<<Change>>', self._on_change)
         text.bind('<Configure>', self._on_change)
@@ -599,8 +608,7 @@ class QuietText(tk.Frame):
         text.bind('<quoteright>', self.autoclose_single_quotes)
         text.bind('<quotedbl>', self.autoclose_double_quotes)
         text.bind('<braceleft>', self.autoclose_curly_brackets)
-        text.bind('<Return>', self.auto_indentation)
-        text.bind('<Shift-colon>', self.auto_block_indentation)
+        text.bind('<Return>', self.auto_block_indentation)
         text.bind('<BackSpace>', self.backspace_situations)
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
         text.bind('<Control-L>', self.toggle_linenumbers)
