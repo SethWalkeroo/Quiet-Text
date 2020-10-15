@@ -150,6 +150,7 @@ class QuietText(tk.Frame):
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
+        self.syntax_highlighter.initial_highlight()
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, tk.END)
@@ -523,7 +524,6 @@ class QuietText(tk.Frame):
         num_leading_whitespaces = len(line) - len(line.lstrip())
         return num_leading_whitespaces // 4
 
-
     def auto_indentation(self):
         text = self.textarea
         line = text.get('insert linestart', 'insert lineend')
@@ -531,24 +531,27 @@ class QuietText(tk.Frame):
         text.insert('insert', '\n' + ' ' * new_indent)
 
     def auto_block_indentation(self, event):
-        previous_character = self.get_previous_char()
+        previous_character, second_char, _, _ = self.get_chars_in_front_and_back()
+        text = self.textarea
         if previous_character == ':':
-            text = self.textarea
             line = text.get('insert linestart', 'insert lineend')
             match = re.match(r'^(\s+)', line)
             current_indent = len(match.group(0)) if match else 0
             new_indent = current_indent + 4
+            tab_count = new_indent // 4
             text.insert('insert', '\n' + ' ' * new_indent)
             return 'break'
+        elif previous_character == '{' and second_char == '}':
+            line = text.get('insert linestart', 'insert lineend')
+            match = re.match(r'^(\s+)', line)
+            current_indent = len(match.group(0)) if match else 0
+            new_indent = current_indent + 4
+            text.insert('insert', '\n')
+            text.mark_set('insert', 'insert-1c')
+            text.insert('insert', ' ' * new_indent)
         else:
             self.auto_indentation()
             return 'break'
-
-    def get_previous_char(self):
-        index = self.textarea.index(tk.INSERT)
-        previous_pos = f'{str(index)}-1c'
-        previous_char = self.textarea.get(previous_pos, index)
-        return previous_char
 
     def get_chars_in_front_and_back(self):
         index = self.textarea.index(tk.INSERT)
