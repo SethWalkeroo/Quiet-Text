@@ -317,7 +317,7 @@ class QuietText(tk.Frame):
                     self.reconfigure_settings()
                     self.menubar.reconfigure_settings()
             except Exception as e:
-                print(e)
+                pass
         else:
             self.save_as()
 
@@ -365,18 +365,23 @@ class QuietText(tk.Frame):
 
     # running the python file
     def run(self, *args):
-        ptrn = r'[^\/]+$'
-        file_from_path = re.search(ptrn, self.filename)
-        filename = file_from_path.group(0)
-        file_path = self.filename[:-len(filename)]
         try:
+            ptrn = r'[^\/]+$'
+            file_from_path = re.search(ptrn, self.filename)
+            filename = file_from_path.group(0)
+            file_path = self.filename[:-len(filename)]
             if filename[-3:] == '.py':
                 #run separate commands for different os
                 if os.name == 'nt':
-                    os.system(f'start cmd.exe @cmd /k "python {self.filename}"')
+                    cmd = f'start cmd.exe @cmd /k "python {self.filename}"'
+                    os.system(cmd)
                 else:
                     cmd = f"gnome-terminal -- bash -c 'python3 {self.filename}; read'"
-            elif self.filename[-2:] == '.c':
+                    os.system(cmd)
+            elif filename[-3:] == '.js':
+                cmd = f"gnome-terminal -- bash -c 'node {self.filename}; read'"
+                os.system(cmd)
+            elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
                 run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"

@@ -141,4 +141,5 @@ cython_debug/
 TEST_FILE.txt
 test.py
 test.c
+test.js
 .vscode
