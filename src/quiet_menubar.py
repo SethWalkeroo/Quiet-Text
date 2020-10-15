@@ -149,7 +149,7 @@ class Menubar:
         menubar.add_cascade(label='Color Schemes', menu=theme_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
         
-        self.menu_fields = [field for field in (file_dropdown, view_dropdown,
+        self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown,
                                                 settings_dropdown, tools_dropdown, theme_dropdown)]
 
         # Settings reconfiguration function
