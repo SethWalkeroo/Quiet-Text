@@ -50,7 +50,7 @@ class QuietText(tk.Frame):
         self.insertion_color = self.settings['insertion_color']
         self.tab_size_spaces = self.settings['tab_size']
         self.text_wrap = self.settings['text_wrap']
-        self.autoclose_parens = self.settings['autoclose_parentheses']
+        self.autoclose_parentheses = self.settings['autoclose_parentheses']
         self.autoclose_curlybraces = self.settings['autoclose_curlybraces']
         self.autoclose_squarebrackets = self.settings['autoclose_squarebrackets']
         self.autoclose_singlequotes = self.settings['autoclose_singlequotes']
@@ -195,6 +195,11 @@ class QuietText(tk.Frame):
             scrollx_active_bg = _settings['horizontal_scrollbar_active_bg']
             menu_fg = _settings['menu_fg']
             menu_bg = _settings['menu_bg']
+            self.autoclose_parentheses = _settings['autoclose_parentheses']
+            self.autoclose_curlybraces = _settings['autoclose_curlybraces']
+            self.autoclose_squarebrackets = _settings['autoclose_squarebrackets']
+            self.autoclose_singlequotes = _settings['autoclose_singlequotes']
+            self.autoclose_doublequotes = _settings['autoclose_doublequotes']
 
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
@@ -479,7 +484,7 @@ class QuietText(tk.Frame):
         self.textarea.insert(index, symbol)
         self.textarea.mark_set(tk.INSERT, index)
 
-    def autoclose_parentheses(self, event):
+    def autoclose_parens(self, event):
         if self.autoclose_parentheses:
             self.autoclose_base(')')
 
@@ -589,7 +594,7 @@ class QuietText(tk.Frame):
         text.bind_all('<<Paste>>', self.context_menu.paste)
         text.bind('<Shift-asciitilde>', self.syntax_highlighter.initial_highlight)
         text.bind('<Control-Shift-KeyRelease>', self.syntax_highlighter.initial_highlight)
-        text.bind('<Shift-parenleft>', self.autoclose_parentheses)
+        text.bind('<Shift-parenleft>', self.autoclose_parens)
         text.bind('<bracketleft>', self.autoclose_square_brackets)
         text.bind('<quoteright>', self.autoclose_single_quotes)
         text.bind('<quotedbl>', self.autoclose_double_quotes)
