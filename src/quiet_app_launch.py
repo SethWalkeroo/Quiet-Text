@@ -6,7 +6,6 @@ import tkinter as tk
 import tkinter.font as tk_font
 import re
 
-from platform import system
 from tkinter import (filedialog, messagebox, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menu, Menubar
@@ -24,7 +23,6 @@ class QuietText(tk.Frame):
         # defined size of the editer window
         master.geometry('1920x1080')
         self.loader = QuietLoaders()
-        user_operating_system = system()
 
         # start editor according to defined settings in settings.yaml
         self.settings = self.loader.load_settings_data()
@@ -144,7 +142,7 @@ class QuietText(tk.Frame):
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
         
-        self.textarea.tag_configure('find_match', background='#75715e')
+        self.textarea.tag_configure('find_match', background='#4378ab')
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
 

@@ -73,8 +73,6 @@ class SyntaxHighlighting():
 
 
     def initial_highlight(self, *args):
-        for tag in self.text.tag_names():
-            self.text.tag_delete(tag)
 
         content = self.text.get("1.0", tk.END)
         self.text.mark_set("range_start", "1.0")
@@ -118,6 +116,10 @@ class SyntaxHighlighting():
         self.initial_highlight()
 
 
+    def clear_existing_tags(self):
+        for tag in self.text.tag_names():
+            self.text.tag_delete(tag)
+
     def load_new_tokens(self, new_syntax):
         self.comment_tokens = new_syntax['comments']
         self.string_tokens = new_syntax['strings']
@@ -127,6 +129,7 @@ class SyntaxHighlighting():
         self.class_tokens = new_syntax['class_self']
         self.object_tokens = new_syntax['object_names']
         self.text_tokens = new_syntax['text']
+        self.clear_existing_tags()
         self.initial_highlight()
 
     def load_python3_syntax(self):
