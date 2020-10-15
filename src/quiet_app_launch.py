@@ -21,7 +21,7 @@ class QuietText(tk.Frame):
         tk.Frame.__init__(self, *args, **kwargs)
         master.title('untitled - Quiet Text')
         # defined size of the editer window
-        master.geometry('1920x1080')
+        master.geometry('1280x720')
         self.loader = QuietLoaders()
 
         # start editor according to defined settings in settings.yaml
@@ -365,13 +365,23 @@ class QuietText(tk.Frame):
 
     # running the python file
     def run(self, *args):
+        ptrn = r'[^\/]+$'
+        file_from_path = re.search(ptrn, self.filename)
+        filename = file_from_path.group(0)
+        file_path = self.filename[:-len(filename)]
         try:
-            if self.filename[-3:] == '.py':
+            if filename[-3:] == '.py':
                 #run separate commands for different os
                 if os.name == 'nt':
                     os.system(f'start cmd.exe @cmd /k "python {self.filename}"')
                 else:
-                    os.system(f"gnome-terminal -- python3.8 {self.filename}")
+                    cmd = f"gnome-terminal -- bash -c 'python3 {self.filename}; read'"
+            elif self.filename[-2:] == '.c':
+                compiled_name = filename[:-2]
+                compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
+                run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                os.system(compile_cmd)
+                os.system(run_cmd)
             else:
                 self.statusbar.update_status('no python')
         except TypeError:
