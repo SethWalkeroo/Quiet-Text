@@ -30,7 +30,7 @@ class Menubar:
         self.default_theme = parent.loader.load_default_theme()
         self.settings = parent.loader.load_settings_data()
         self.settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
-        self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
+        self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']
         self.settings['menu_fg'] = self.default_theme['comment_color']
         self.settings['menu_bg'] = self.default_theme['bg_color']
         self.border_on = True if self.settings['textarea_border'] > 0 else False
@@ -68,7 +68,7 @@ class Menubar:
                                    command=parent.save_as)
         # exit feature
         file_dropdown.add_separator()
-        file_dropdown.add_command(label='Exit', 
+        file_dropdown.add_command(label='Exit',
                                   command=parent.on_closing)
 
         # adding featues to settings dropdown in menubar
@@ -88,7 +88,7 @@ class Menubar:
 
         view_dropdown.add_command(label='Hide Status Bar',
                                   command=parent.hide_status_bar)
-        
+
         view_dropdown.add_command(label='Toggle Line Numbers',
                                   accelerator='Ctrl+Shift+L',
                                   command=parent.toggle_linenumbers)
@@ -113,21 +113,28 @@ class Menubar:
         #theme dropdown menu
         theme_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         theme_dropdown.add_command(label='Monokai',
-                                    command=self.load_monokai)
+                                   command=self.load_monokai)
 
         theme_dropdown.add_command(label='Monokai Pro',
-                                    command=self.load_monokai_pro)
+                                   command=self.load_monokai_pro)
 
         theme_dropdown.add_command(label='Gruvbox',
-                                    command=self.load_gruvbox)
+                                   command=self.load_gruvbox)
 
         theme_dropdown.add_command(label='Solarized',
-                                    command=self.load_solarized)
-        
-        theme_dropdown.add_command(label='Dark Heart',
-                                    command=self.load_darkheart)
+                                   command=self.load_solarized)
 
-        theme_dropdown.add_command(label='Githubly', command=self.load_githubly)
+        theme_dropdown.add_command(label='Dark Heart',
+                                   command=self.load_darkheart)
+
+        theme_dropdown.add_command(label='Githubly',
+                                   command=self.load_githubly)
+
+        theme_dropdown.add_command(label='Dracula',
+                                   command=self.load_dracula)
+
+        theme_dropdown.add_command(label='Pumpkin',
+                                   command=self.load_pumpkin)
 
 
         syntax_dropdown = Menu(menubar, font=font_specs, tearoff=0)
@@ -136,7 +143,7 @@ class Menubar:
 
         syntax_dropdown.add_command(label='JavaScript',
                                     command=self.syntax.load_javascript_syntax)
-        
+
         syntax_dropdown.add_command(label='C',
                                     command=self.syntax.load_c_syntax)
 
@@ -148,7 +155,7 @@ class Menubar:
         menubar.add_cascade(label='Syntax', menu=syntax_dropdown)
         menubar.add_cascade(label='Color Schemes', menu=theme_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
-        
+
         self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown,
                                                 settings_dropdown, tools_dropdown, theme_dropdown)]
 
@@ -210,7 +217,12 @@ class Menubar:
 
     def load_darkheart(self):
         self.syntax.load_new_theme('theme_configs/Python3/dark-heart.yaml')
-    
+
     def load_githubly(self):
         self.syntax.load_new_theme('theme_configs/Python3/githubly.yaml')
 
+    def load_dracula(self):
+        self.syntax.load_new_theme('theme_configs/Python3/dracula.yaml')
+
+    def load_pumpkin(self):
+        self.syntax.load_new_theme('theme_configs/Python3/pumpkin.yaml')
