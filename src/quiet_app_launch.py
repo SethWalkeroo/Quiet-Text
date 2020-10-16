@@ -70,11 +70,6 @@ class QuietText(tk.Frame):
         self.menu_bg = self.settings['menu_bg']
 
 
-
-        # master.tk_setPalette(background=self.bg_color, foreground='black')
-        # self.font_style = tk_font.Font(family=self.font_family,
-        #                                size=self.settings['font_size'])
-
         #configuration of the file dialog text colors.
 
         self.italics = tk_font.Font(family=self.font_family, slant='italic')

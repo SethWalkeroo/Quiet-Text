@@ -5,7 +5,7 @@ from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_loaders import QuietLoaders
 
 
-class Menubar(tk.Menu):
+class Menubar():
     # initialising the menu bar of editor
     def __init__(self, parent):
         self._parent = parent
@@ -17,12 +17,6 @@ class Menubar(tk.Menu):
         self.settings['menu_fg'] = self.default_theme['comment_color']
         self.settings['menu_bg'] = self.default_theme['bg_color']
         font_specs = ('Droid Sans Fallback', 12)
-        super().__init__(bg=self.settings["menu_bg"],
-                 fg=self.settings['menu_fg'],
-                 activeforeground=self.settings['menu_active_fg'],
-                 activebackground=self.settings['menu_active_bg'],
-                 activeborderwidth=0,
-                 bd=0,)
 
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
