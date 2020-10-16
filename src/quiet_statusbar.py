@@ -15,7 +15,7 @@ class Statusbar:
         label = tk.Label(parent.textarea,
                          textvariable=self.status,
                          fg=self._parent.font_color,
-                         bg=self._parent.bg_color,
+                         bg='#fff',
                          anchor='se',
                          font=font_specs)
         

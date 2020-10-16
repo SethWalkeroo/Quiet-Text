@@ -4,25 +4,8 @@ from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_loaders import QuietLoaders
 
-class Menu(tk.Menu):
-    # menu method and its initializatipn from config/settings.yaml
-    def __init__(self, *args, **kwargs):
-        loader = QuietLoaders()
-        default_theme = loader.load_default_theme()
-        settings = loader.load_settings_data()
-        settings['menu_active_bg'] = default_theme['menu_bg_active']
-        settings['menu_active_fg'] = default_theme['menu_fg_active']
-        settings['menu_fg'] = default_theme['comment_color']
-        settings['menu_bg'] = default_theme['bg_color']
-        super().__init__(bg=settings["menu_bg"],
-                         fg=settings['menu_fg'],
-                         activeforeground=settings['menu_active_fg'],
-                         activebackground=settings['menu_active_bg'],
-                         activeborderwidth=0,
-                         bd=0,
-                         *args, **kwargs)
 
-class Menubar:
+class Menubar(tk.Menu):
     # initialising the menu bar of editor
     def __init__(self, parent):
         self._parent = parent
@@ -33,8 +16,13 @@ class Menubar:
         self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']
         self.settings['menu_fg'] = self.default_theme['comment_color']
         self.settings['menu_bg'] = self.default_theme['bg_color']
-        self.border_on = True if self.settings['textarea_border'] > 0 else False
         font_specs = ('Droid Sans Fallback', 12)
+        super().__init__(bg=self.settings["menu_bg"],
+                 fg=self.settings['menu_fg'],
+                 activeforeground=self.settings['menu_active_fg'],
+                 activebackground=self.settings['menu_active_bg'],
+                 activeborderwidth=0,
+                 bd=0,)
 
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
@@ -49,7 +37,7 @@ class Menubar:
         parent.master.config(menu=menubar)
         self._menubar = menubar
         # adding features file dropdown in menubar
-        file_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        file_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         # new file creation feature
         file_dropdown.add_command(label='New File',
                                    accelerator='Ctrl+N',
@@ -73,7 +61,7 @@ class Menubar:
 
         # adding featues to settings dropdown in menubar
         # Edit settings feature
-        settings_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        settings_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         settings_dropdown.add_command(label='Edit Settings',
                                       command=parent.open_settings_file)
         # reset settings feature
@@ -81,7 +69,7 @@ class Menubar:
                                       command=parent.reset_settings_file)
 
         #view dropdown menu
-        view_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        view_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         view_dropdown.add_command(label='Hide Menu Bar',
                                   accelerator='Alt',
                                   command=self.hide_menu)
@@ -101,7 +89,7 @@ class Menubar:
                                   command=self.enter_quiet_mode)
 
         #tools dropdown menu
-        tools_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        tools_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)
@@ -111,7 +99,7 @@ class Menubar:
                                    command=parent.run)
 
         #theme dropdown menu
-        theme_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         theme_dropdown.add_command(label='Monokai',
                                    command=self.load_monokai)
 
@@ -137,7 +125,7 @@ class Menubar:
                                    command=self.load_pumpkin)
 
 
-        syntax_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         syntax_dropdown.add_command(label='Python3',
                                     command=self.syntax.load_python3_syntax)
 
@@ -158,6 +146,13 @@ class Menubar:
 
         self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown,
                                                 settings_dropdown, tools_dropdown, theme_dropdown)]
+
+        for field in self.menu_fields:
+            field.configure(bg=self.settings['menu_bg'],
+                            fg=self.settings['menu_fg'],
+                            activeforeground=self.settings['menu_active_fg'],
+                            activebackground=self.settings['menu_active_bg'],
+                            background = self.settings['textarea_background_color'],)
 
         # Settings reconfiguration function
     def reconfigure_settings(self):
@@ -181,13 +176,13 @@ class Menubar:
 
     def toggle_text_border(self):
         settings = self._parent.loader.load_settings_data()
-        if self.border_on:
-          self._parent.textarea.configure(bd=0)
-          settings['textarea_border'] = 0
-        else:
+        border_status = settings['textarea_border']
+        if border_status == 0:
           self._parent.textarea.configure(bd=0.5)
           settings['textarea_border'] = 0.5
-        self.border_on = not self.border_on
+        elif border_status > 0:
+          self._parent.textarea.configure(bd=0)
+          settings['textarea_border'] = 0
         self._parent.loader.store_settings_data(settings)
 
     # quiet mode is defined here

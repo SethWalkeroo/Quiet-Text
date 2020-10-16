@@ -7,6 +7,7 @@ class TextLineNumbers(tk.Canvas):
         self._parent = parent
         self.textwidget = parent.textarea
         self.font_color = parent.menu_fg
+        self.bg_color = parent.bg_color
 
     def attach(self, text_widget):
         self.textwidget = text_widget
@@ -17,8 +18,8 @@ class TextLineNumbers(tk.Canvas):
             return
 
         self.delete('all')
-        self.config(width=(self._parent.font_size * 3),
-                    bd=0)
+        self.config(width=(self._parent.font_size * 3), 
+                    bd=0, bg=self.bg_color, highlightthickness=0)
 
         i = self.textwidget.index('@0,0')
         while True :

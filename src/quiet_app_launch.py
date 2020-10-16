@@ -8,13 +8,14 @@ import re
 
 from tkinter import (filedialog, messagebox, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
-from quiet_menubar import Menu, Menubar
+from quiet_menubar import Menubar
 from quiet_statusbar import Statusbar
 from quiet_linenumbers import TextLineNumbers
 from quiet_textarea import CustomText
 from quiet_find import FindWindow
 from quiet_context import ContextMenu
 from quiet_loaders import QuietLoaders
+
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -70,9 +71,9 @@ class QuietText(tk.Frame):
 
 
 
-        master.tk_setPalette(background=self.bg_color, foreground='black')
-        self.font_style = tk_font.Font(family=self.font_family,
-                                       size=self.settings['font_size'])
+        # master.tk_setPalette(background=self.bg_color, foreground='black')
+        # self.font_style = tk_font.Font(family=self.font_family,
+        #                                size=self.settings['font_size'])
 
         #configuration of the file dialog text colors.
 
@@ -150,7 +151,6 @@ class QuietText(tk.Frame):
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
-        self.syntax_highlighter.initial_highlight()
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, tk.END)
@@ -222,8 +222,8 @@ class QuietText(tk.Frame):
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
             self.linenumbers.font_color = menu_fg
-            self.linenumbers.config(bg=bg_color, highlightbackground=bg_color)
-            self.statusbar._label.config(bg=bg_color)
+            self.linenumbers.bg_color = bg_color
+            self.linenumbers._text_font = font_family
             self.linenumbers.redraw()
 
             if overwrite_with_default:
@@ -661,6 +661,8 @@ if __name__ == '__main__':
         qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
+
 
 
 
