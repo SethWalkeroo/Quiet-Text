@@ -5,7 +5,7 @@ autoclose_singlequotes: true
 autoclose_squarebrackets: true
 font_color: '#f8f8f2'
 font_family: consolas
-font_size: 13
+font_size: 18
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_trough_color: '#2e2724'
@@ -19,9 +19,9 @@ menu_fg: '#6272a4'
 menubar_active_bg: '#282a36'
 menubar_active_fg: '#50fa7b'
 tab_size: 4
-text_bottom_lineheight: '3'
+text_bottom_lineheight: '6'
 text_selection_bg: '#1b444f'
-text_top_lineheight: '3'
+text_top_lineheight: '0'
 text_wrap: none
 textarea_background_color: '#282a36'
 textarea_border: 0

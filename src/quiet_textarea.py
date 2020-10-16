@@ -10,7 +10,6 @@ class CustomText(tk.Text):
         self._orig = self._w + '_orig'
         self.tk.call('rename', self._w, self._orig)
         self.tk.createcommand(self._w, self._proxy)
-        self.bg_color = '#272822'
 
     def _proxy(self, *args):
         # let the actual widget perform the requested action
