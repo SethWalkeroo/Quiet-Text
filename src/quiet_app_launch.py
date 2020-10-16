@@ -5,6 +5,7 @@ import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
 import re
+import platform
 
 from tkinter import (filedialog, messagebox, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
@@ -24,6 +25,7 @@ class QuietText(tk.Frame):
         # defined size of the editer window
         master.geometry('1280x720')
         self.loader = QuietLoaders()
+        self.operating_system = platform.system()
 
         # start editor according to defined settings in settings.yaml
         self.settings = self.loader.load_settings_data()
@@ -638,7 +640,10 @@ class QuietText(tk.Frame):
         text.bind('<Alt_L>', self.hide_and_unhide_menubar)
         text.bind('<Control-L>', self.toggle_linenumbers)
         text.bind('<KeyPress-Tab>', self.tab_text)
-        text.bind('<Shift-ISO_Left_Tab>', self.tab_text)
+        if self.operating_system == 'Windows':
+            text.bind('<Shift-Tab>', self.tab_text)
+        else:
+            text.bind('<Shift-ISO_Left_Tab>', self.tab_text)
 
 
 if __name__ == '__main__':
