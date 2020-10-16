@@ -33,8 +33,6 @@ class QuietText(tk.Frame):
         self.settings['textarea_background_color'] = self.default_theme['bg_color']
         self.settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
         self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
-        self.settings['menu_active_bg'] = self.default_theme['menu_bg_active']
-        self.settings['menu_active_fg'] = self.default_theme['menu_fg_active']
         self.settings['menu_bg'] = self.default_theme['bg_color']
         self.settings['font_color'] = self.default_theme['font_color']
 

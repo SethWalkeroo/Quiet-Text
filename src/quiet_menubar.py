@@ -141,12 +141,12 @@ class Menubar():
         self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown,
                                                 settings_dropdown, tools_dropdown, theme_dropdown)]
 
+        self.default_settings = parent.default_theme
         for field in self.menu_fields:
-            field.configure(bg=self.settings['menu_bg'],
+            field.configure(bg=parent.default_theme['bg_color'],
                             fg=self.settings['menu_fg'],
-                            activeforeground=self.settings['menu_active_fg'],
-                            activebackground=self.settings['menu_active_bg'],
-                            background = self.settings['textarea_background_color'],)
+                            activeforeground=parent.default_theme['menu_fg_active'],
+                            activebackground=parent.default_theme['menu_bg_active'])
 
         # Settings reconfiguration function
     def reconfigure_settings(self):
