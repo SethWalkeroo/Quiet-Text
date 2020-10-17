@@ -36,7 +36,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 
 ## Quick Start
-If you just want to use the text editor, just download the project and launch Quiet-Text.exe located inside either linux_dist or windows_dist (depending on your operating system).
+If you just want to use the text editor, just download the project and **launch Quiet-Text.exe located inside either linux_dist or windows_dist** (depending on your operating system).
 
 
 ## Installation
