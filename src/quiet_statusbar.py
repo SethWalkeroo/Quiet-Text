@@ -30,7 +30,7 @@ class Statusbar:
         elif event == 'no file':
             self.display_status_message('No file detected. Create or open a file.')
         elif event == 'no python':
-            self.display_status_message('You can only run Python files.')
+            self.display_status_message('You cannot run this type of file.')
         elif event == 'no txt bold':
             self.display_status_message('You can only bold text in text files.')
         elif event == 'no txt high':

@@ -64,20 +64,20 @@ class Menubar():
 
         #view dropdown menu
         view_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        view_dropdown.add_command(label='Hide Menu Bar',
+        view_dropdown.add_command(label='Toggle Menu Bar',
                                   accelerator='Alt',
                                   command=self.hide_menu)
-
         view_dropdown.add_command(label='Hide Status Bar',
                                   command=parent.hide_status_bar)
-
         view_dropdown.add_command(label='Toggle Line Numbers',
                                   accelerator='Ctrl+Shift+L',
                                   command=parent.toggle_linenumbers)
-
         view_dropdown.add_command(label='Toggle Text Border',
                                   command=self.toggle_text_border)
-
+        view_dropdown.add_command(label='Toggle Horizontal Scrollbar',
+                                  command=self.toggle_scroll_x)
+        view_dropdown.add_command(label='Toggle Vertical Scrollbar',
+                                  command=self.toggle_scroll_y)
         view_dropdown.add_command(label='Enter Quiet Mode',
                                   accelerator='Ctrl+Q',
                                   command=self.enter_quiet_mode)
@@ -87,7 +87,6 @@ class Menubar():
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)
-
         tools_dropdown.add_command(label='Run Selected File',
                                    accelerator='Ctrl+R',
                                    command=parent.run)
@@ -96,25 +95,18 @@ class Menubar():
         theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         theme_dropdown.add_command(label='Monokai',
                                    command=self.load_monokai)
-
         theme_dropdown.add_command(label='Monokai Pro',
                                    command=self.load_monokai_pro)
-
         theme_dropdown.add_command(label='Gruvbox',
                                    command=self.load_gruvbox)
-
         theme_dropdown.add_command(label='Solarized',
                                    command=self.load_solarized)
-
         theme_dropdown.add_command(label='Dark Heart',
                                    command=self.load_darkheart)
-
         theme_dropdown.add_command(label='Githubly',
                                    command=self.load_githubly)
-
         theme_dropdown.add_command(label='Dracula',
                                    command=self.load_dracula)
-
         theme_dropdown.add_command(label='Pumpkin',
                                    command=self.load_pumpkin)
 
@@ -122,10 +114,8 @@ class Menubar():
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         syntax_dropdown.add_command(label='Python3',
                                     command=self.syntax.load_python3_syntax)
-
         syntax_dropdown.add_command(label='JavaScript',
                                     command=self.syntax.load_javascript_syntax)
-
         syntax_dropdown.add_command(label='C',
                                     command=self.syntax.load_c_syntax)
 
@@ -179,14 +169,35 @@ class Menubar():
           settings['textarea_border'] = 0
         self._parent.loader.store_settings_data(settings)
 
+    def toggle_scroll_x(self):
+        settings = self._parent.loader.load_settings_data()
+        scrollx_width = settings['horizontal_scrollbar_width']
+        if scrollx_width > 0:
+          self._parent.scrollx.configure(width=0)
+          settings['horizontal_scrollbar_width'] = 0
+        elif scrollx_width == 0:
+          self._parent.scrollx.configure(width=8)
+          settings['horizontal_scrollbar_width'] = 8
+        self._parent.loader.store_settings_data(settings)
+
+    def toggle_scroll_y(self):
+        settings = self._parent.loader.load_settings_data()
+        scrolly_width = settings['vertical_scrollbar_width']
+        if scrolly_width > 0:
+          self._parent.scrolly.configure(width=0)
+          settings['vertical_scrollbar_width'] = 0
+        elif scrolly_width == 0:
+          self._parent.scrolly.configure(width=8)
+          settings['vertical_scrollbar_width'] = 8
+        self._parent.loader.store_settings_data(settings)
+
     # quiet mode is defined here
     def enter_quiet_mode(self):
         self._parent.enter_quiet_mode()
 
     # hiding the menubar
     def hide_menu(self):
-        empty_menu = tk.Menu(self._parent.master)
-        self._parent.master.config(menu=empty_menu)
+        self._parent.master.config(menu='')
 
     # display the menubar
     def show_menu(self):

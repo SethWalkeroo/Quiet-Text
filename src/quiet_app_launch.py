@@ -150,8 +150,9 @@ class QuietText(tk.Frame):
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, tk.END)
             try:
-                with open(self.filename, 'r') as f:
-                    self.textarea.insert(1.0, f.read())
+                if self.filename:
+                    with open(self.filename, 'r') as f:
+                        self.textarea.insert(1.0, f.read())
             except TypeError:
                 pass
 
