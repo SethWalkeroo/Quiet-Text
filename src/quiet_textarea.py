@@ -1,11 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
+from quiet_loaders import QuietLoaders
 
 class CustomText(tk.Text):
     def __init__(self, *args, **kwargs):
         tk.Text.__init__(self, *args, **kwargs)
 
+        self.loader = QuietLoaders()
         # create a proxy for the underlying widget
+        self.settings = self.loader.load_settings_data()
+        self.bg_color = self.settings['textarea_background_color']
         self.isControlPressed = False
         self._orig = self._w + '_orig'
         self.tk.call('rename', self._w, self._orig)
@@ -76,3 +80,7 @@ class CustomText(tk.Text):
         self.find_match_index = None
         self.tag_remove('find_match', 1.0, tk.END)
 
+
+    def reload_text_settings(self):
+        settings = self.loader.load_settings_data()
+        self.bg_color = settings['textarea_background_color']

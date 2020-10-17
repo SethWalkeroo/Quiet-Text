@@ -16,5 +16,6 @@ functions:
 class_self:
 - Token.Keyword.Type
 text:
-
+bold:
+italic:
 

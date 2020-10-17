@@ -1,0 +1,17 @@
+comments:
+strings:
+object_names: 
+numbers: 
+keywords: 
+- Token.Keyword
+functions:
+class_self:
+text:
+bold:
+- Token.Generic.Heading
+- Token.Generic.Subheading
+- Token.Generic.Strong
+italic:
+- Token.Generic.Emph
+
+

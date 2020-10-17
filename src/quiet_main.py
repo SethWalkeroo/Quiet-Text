@@ -24,6 +24,10 @@ class QuietText(tk.Frame):
         master.title('untitled - Quiet Text')
         # defined size of the editer window
         master.geometry('1280x720')
+
+        self.style = ttk.Style()
+        self.style.theme_use('clam')
+
         self.loader = QuietLoaders()
         self.operating_system = platform.system()
 
@@ -43,6 +47,7 @@ class QuietText(tk.Frame):
         self.settings['font_color'] = self.default_theme['font_color']
         self.settings['menu_fg'] = self.default_theme['comment_color']
 
+        self.browser = self.settings['web_browser']
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['textarea_background_color']
         self.font_color = self.settings['font_color']
@@ -78,6 +83,7 @@ class QuietText(tk.Frame):
         #configuration of the file dialog text colors.
 
         self.italics = tk_font.Font(family=self.font_family, slant='italic')
+        self.bold = tk_font.Font(family=self.font_family, weight='bold')
         self.master = master
         self.filename = None
                                 
@@ -220,6 +226,7 @@ class QuietText(tk.Frame):
                                     highlightthickness=border,
                                     wrap=text_wrap)
 
+            self.textarea.reload_text_settings()
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
             self.linenumbers.font_color = menu_fg
@@ -293,8 +300,28 @@ class QuietText(tk.Frame):
 
         if self.filename:
             self.clear_and_replace_textarea()
+            if self.filename[-4:] == '.txt' or self.filename[-3:] == '.md':
+                self.syntax_highlighter.load_markdown_syntax()
+            elif self.filename[-2:] == '.c':
+                self.syntax_highlighter.load_c_syntax()
+            elif self.filename[-3:] == '.py':
+                self.syntax_highlighter.load_python3_syntax()
+            elif self.filename[-3:] == '.js':
+                self.syntax_highlighter.load_javascript_syntax()
+            elif self.filename[-5:] == '.html':
+                self.syntax_highlighter.load_html_syntax()
+            elif self.filename[-4:] == '.css':
+                self.syntax_highlighter.load_css_syntax()
+            elif self.filename[-4:] == '.cpp':
+                self.syntax_highlighter.load_cpp_synatx()
+            elif self.filename[-3:] == '.go':
+                self.syntax_highlighter.load_go_syntax()
+            elif self.filename[-5:] == '.yaml':
+                self.syntax_highlighter.load_yaml_syntax()
+            else:
+                self.syntax_highlighter.initial_highlight()
             self.set_window_title(name=self.filename)
-            self.syntax_highlighter.initial_highlight()
+
 
     # opening an existing file without TK filedialog
     def open_file_without_dialog(self, path):
@@ -386,12 +413,25 @@ class QuietText(tk.Frame):
                 else:
                     cmd = f"gnome-terminal -- bash -c 'python3 {self.filename}; read'"
                     os.system(cmd)
+            elif filename[-5:] == '.html':
+                if self.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c '{self.browser} {self.filename}; read'"
+                os.system(cmd)
             elif filename[-3:] == '.js':
                 cmd = f"gnome-terminal -- bash -c 'node {self.filename}; read'"
+                os.system(cmd)
+            elif filename[-3:] == '.go':
+                cmd = f"gnome-terminal -- bash -c 'go run {self.filename}; read'"
                 os.system(cmd)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
+                run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                os.system(compile_cmd)
+                os.system(run_cmd)
+            elif filename[-4:] == '.cpp':
+                compiled_name = filename[:-4]
+                compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
                 run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
                 os.system(compile_cmd)
                 os.system(run_cmd)
@@ -402,6 +442,7 @@ class QuietText(tk.Frame):
 
     # opens the main setting file of the editor
     def open_settings_file(self):
+        self.syntax_highlighter.load_yaml_syntax()
         self.filename = self.loader.settings_path
         self.textarea.delete(1.0, tk.END)
         with open(self.filename, 'r') as f:
@@ -456,6 +497,7 @@ class QuietText(tk.Frame):
         self.font_size = self.font_size + delta
         min_font_size = 6
         self.font_size = min_font_size if self.font_size < min_font_size else self.font_size
+
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.font_size)
 
@@ -463,8 +505,15 @@ class QuietText(tk.Frame):
                                     size=self.font_size,
                                     slant='italic')
 
+        self.bold = tk_font.Font(family=self.font_family,
+                                 size = self.font_size,
+                                 weight='bold')
+
         self.textarea.configure(font=self.font_style)
         self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
+        self.syntax_highlighter.text.tag_configure("Token.Name.Attribute",font=self.italics)
+        self.syntax_highlighter.text.tag_configure("Token.Generic.Emph",font=self.italics)
+        self.syntax_highlighter.text.tag_configure("Token.Generic.Strong",font=self.bold)
         self.set_new_tab_width()
         
         _settings = self.loader.load_settings_data()

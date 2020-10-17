@@ -27,6 +27,8 @@ class SyntaxHighlighting():
         self.class_tokens = self.syntax['class_self']
         self.object_tokens = self.syntax['object_names']
         self.text_tokens = self.syntax['text']
+        self.italic_tokens = self.syntax['italic']
+        self.bold_tokens = self.syntax['bold']
 
         self.comment_color = self.default_theme['comment_color']
         self.string_color = self.default_theme['string_color']
@@ -49,6 +51,7 @@ class SyntaxHighlighting():
             data = self.text.get(row + ".0", row + "." + str(len(lines[int(row) - 1])))
 
             for token, content in lex(data, self.lexer):
+                print(token)
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
@@ -69,7 +72,13 @@ class SyntaxHighlighting():
         configure_tokens(self.text_tokens, self.text_color)
         if self.class_tokens:
             for token in self.class_tokens:
-                self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics, size=self.font_size)
+                self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics)
+        if self.bold_tokens:
+            for token in self.italic_tokens:
+                self.text.tag_configure(token, font=self.parent.italics)
+        if self.italic_tokens:
+            for token in self.bold_tokens:
+                self.text.tag_configure(token, font=self.parent.bold)
 
 
     def initial_highlight(self, *args):
@@ -130,6 +139,8 @@ class SyntaxHighlighting():
         self.class_tokens = new_syntax['class_self']
         self.object_tokens = new_syntax['object_names']
         self.text_tokens = new_syntax['text']
+        self.italic_tokens = new_syntax['italic']
+        self.bold_tokens = new_syntax['bold']
         self.clear_existing_tags()
         self.initial_highlight()
 
@@ -166,6 +177,16 @@ class SyntaxHighlighting():
     def load_go_syntax(self):
         new_syntax = self.parent.loader.load_go_syntax()
         self.lexer = get_lexer_by_name('go')
+        self.load_new_tokens(new_syntax)
+
+    def load_markdown_syntax(self):
+        new_syntax = self.parent.loader.load_markdown_syntax()
+        self.lexer = get_lexer_by_name('md')
+        self.load_new_tokens(new_syntax)
+
+    def load_yaml_syntax(self):
+        new_syntax = self.parent.loader.load_yaml_syntax()
+        self.lexer = get_lexer_by_name('yaml')
         self.load_new_tokens(new_syntax)
 
 

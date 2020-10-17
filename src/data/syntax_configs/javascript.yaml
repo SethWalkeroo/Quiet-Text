@@ -17,4 +17,5 @@ functions:
 class_self:
 text:
 - "Token.Text"
-
+bold:
+italic:

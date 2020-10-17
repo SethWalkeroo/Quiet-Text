@@ -20,3 +20,5 @@ functions:
 class_self:
 - "Token.Name.Label"
 text:
+bold:
+italic:

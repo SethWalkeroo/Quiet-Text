@@ -1,0 +1,15 @@
+comments:
+- Token.Comment.Single
+strings:
+- Token.Literal.String
+object_names: 
+numbers:
+- Token.Literal.Scalar.Plain 
+keywords:
+- Token.Name.Tag 
+functions:
+- Token.Punctuation.Indicator
+class_self:
+text:
+bold:
+italic:

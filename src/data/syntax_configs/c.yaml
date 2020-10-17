@@ -19,5 +19,6 @@ class_self:
 text:
 - "Token.Text"
 - "Token.Name"
-
+bold:
+italic:
 

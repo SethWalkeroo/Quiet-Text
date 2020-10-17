@@ -1,4 +1,5 @@
 comments:
+- Token.Comment
 strings:
 - "Token.Literal.String.Single"
 - "Token.Literal.String"
@@ -11,5 +12,6 @@ functions:
 class_self:
 - "Token.Name.Attribute"
 text:
-
+bold:
+italic:
 

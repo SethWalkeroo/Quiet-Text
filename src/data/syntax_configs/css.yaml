@@ -12,5 +12,6 @@ functions:
 class_self:
 - "Token.Name.Tag"
 text:
-
+bold:
+italic:
 

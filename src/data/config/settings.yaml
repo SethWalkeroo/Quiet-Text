@@ -5,7 +5,7 @@ autoclose_singlequotes: true
 autoclose_squarebrackets: true
 font_color: '#f8f8f2'
 font_family: consolas
-font_size: 12
+font_size: 13
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_trough_color: '#2e2724'
@@ -31,3 +31,4 @@ vertical_scrollbar_active_bg: '#8a7575'
 vertical_scrollbar_color: '#383030'
 vertical_scrollbar_trough_color: '#2e2724'
 vertical_scrollbar_width: 8
+web_browser: chromium
