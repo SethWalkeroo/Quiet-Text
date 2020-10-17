@@ -1,16 +1,22 @@
 import yaml
+import sys, os
 
 
 class QuietLoaders:
 
+	def resource_path(self, relative):
+		if hasattr(sys, "_MEIPASS"):
+			return os.path.join(sys._MEIPASS, relative)
+		return os.path.join(relative)
+
 	def __init__(self):
-		self.settings_path = 'config/settings.yaml'
-		self.default_settings_path = 'config/settings-default.yaml'
-		self.default_syntax_path = 'syntax_configs/default.yaml'
-		self.default_theme_path = 'theme_configs/default.yaml'
-		self.python3_syntax_path = 'syntax_configs/python3.yaml'
-		self.javascript_syntax_path = 'syntax_configs/javascript.yaml'
-		self.c_syntax_path = 'syntax_configs/c.yaml'
+		self.settings_path = self.resource_path(os.path.join('data', 'config/settings.yaml'))
+		self.default_settings_path = self.resource_path(os.path.join('data', 'config/settings-default.yaml'))
+		self.default_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/default.yaml'))
+		self.default_theme_path = self.resource_path(os.path.join('data', 'theme_configs/default.yaml'))
+		self.python3_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/python3.yaml'))
+		self.javascript_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/javascript.yaml'))
+		self.c_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/c.yaml'))
 
 
 	def load_settings_data(self, default=False):

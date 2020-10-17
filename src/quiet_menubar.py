@@ -1,8 +1,8 @@
 import tkinter as tk
 import yaml
+import os, sys
 from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting
-from quiet_loaders import QuietLoaders
 
 
 class Menubar():
@@ -204,25 +204,33 @@ class Menubar():
         self._parent.master.config(menu=self._menubar)
 
     def load_monokai_pro(self):
-        self.syntax.load_new_theme('theme_configs/Python3/monokai_pro.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/monokai_pro.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_monokai(self):
-        self.syntax.load_new_theme('theme_configs/Python3/monokai.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/monokai.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_gruvbox(self):
-        self.syntax.load_new_theme('theme_configs/Python3/gruvbox.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/gruvbox.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_solarized(self):
-        self.syntax.load_new_theme('theme_configs/Python3/solarized.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/solarized.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_darkheart(self):
-        self.syntax.load_new_theme('theme_configs/Python3/dark-heart.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/dark-heart.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_githubly(self):
-        self.syntax.load_new_theme('theme_configs/Python3/githubly.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/githubly.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_dracula(self):
-        self.syntax.load_new_theme('theme_configs/Python3/dracula.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/dracula.yaml'))
+        self.syntax.load_new_theme(theme)
 
     def load_pumpkin(self):
-        self.syntax.load_new_theme('theme_configs/Python3/pumpkin.yaml')
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/pumpkin.yaml'))
+        self.syntax.load_new_theme(theme)

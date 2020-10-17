@@ -1,0 +1,20 @@
+comments:
+- "Token.Comment.Single"
+strings:
+- "Token.Literal.String.Double"
+- "Token.Literal.String.Single"
+object_names: 
+numbers: 
+- "Token.Literal.Number.Float"
+- "Token.Literal.Number.Oct"
+- "Token.Keyword.Constant"
+keywords: 
+- "Token.Keyword.Reserved"
+- "Token.Keyword"
+- "Token.Operator"
+functions: 
+- "Token.Keyword.Declaration"
+class_self:
+text:
+- "Token.Text"
+

@@ -230,7 +230,7 @@ class QuietText(tk.Frame):
                 if MsgBox == 'yes':
                     self.loader.store_settings_data(_settings)
                 else:
-                    self.save('config/settings.yaml')
+                    self.save(self.loader.settings_path)
 
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
@@ -311,7 +311,7 @@ class QuietText(tk.Frame):
                 with open(self.filename, 'w') as f:
                     f.write(textarea_content)
                 self.statusbar.update_status('saved')
-                if self.filename == 'config/settings.yaml':
+                if self.filename == self.loader.settings_path:
                     self.reconfigure_settings()
                     self.menubar.reconfigure_settings()
             except Exception as e:
@@ -349,7 +349,7 @@ class QuietText(tk.Frame):
             self.save()          
         except:
             self.save_as()
-        quit()
+        sys.exit()
                         
 
     def on_closing(self):
@@ -357,7 +357,7 @@ class QuietText(tk.Frame):
         if message == True:
             self.quit_save()
         elif message == False:
-            quit()
+            sys.exit()
         else:
             return
 
@@ -392,7 +392,7 @@ class QuietText(tk.Frame):
 
     # opens the main setting file of the editor
     def open_settings_file(self):
-        self.filename = 'config/settings.yaml'
+        self.filename = self.loader.settings_path
         self.textarea.delete(1.0, tk.END)
         with open(self.filename, 'r') as f:
             self.textarea.insert(1.0, f.read())
@@ -433,13 +433,13 @@ class QuietText(tk.Frame):
     def _on_linux_scroll_up(self, _):
         if self.control_key:
             self.change_font_size(1)
-            if self.filename == 'config/settings.yaml':
+            if self.filename == self.loader.settings_path:
                 self.syntax_highlighter.initial_highlight()
 
     def _on_linux_scroll_down(self, _):
         if self.control_key:
             self.change_font_size(-1)
-            if self.filename == 'config/settings.yaml':
+            if self.filename == self.loader.settings_path:
                 self.syntax_highlighter.initial_highlight()
 
     def change_font_size(self, delta):
@@ -461,7 +461,7 @@ class QuietText(tk.Frame):
         _settings['font_size'] = self.font_size
         self.loader.store_settings_data(_settings)
 
-        if self.filename == 'config/settings.yaml':
+        if self.filename == self.loader.settings_path:
             self.clear_and_replace_textarea()
 
 
@@ -650,11 +650,6 @@ class QuietText(tk.Frame):
 
 if __name__ == '__main__':
     master = tk.Tk()
-    try:
-        p1 = tk.PhotoImage(file='../images/q.png')
-        master.iconphoto(False, p1)
-    except Exception as e:
-        print(e)
     qt = QuietText(master)
     qt.pack(side='top', fill='both', expand=True)
     if len(sys.argv) > 1:
