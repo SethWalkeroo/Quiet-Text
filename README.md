@@ -163,11 +163,11 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 ## Goals
 
 - [x] Create a visually pleasing text editor! ;)
-- [ ] Add syntax highlighting for Python.
+- [x] Add syntax highlighting for Python.
 - [ ] Allow user's to launch the terminal and run their scripts from any platform.
 - [ ] Add special markdown for making lists and notetaking.
-- [ ] Allow full customization of the editor's theme and colors.
-- [ ] Add helpful features for programming like autoclosing brackets and parenthesis.
+- [x] Allow full customization of the editor's theme and colors.
+- [x] Add helpful features for programming like autoclosing brackets and parenthesis.
 
 #### suggestions are welcome!
 
