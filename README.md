@@ -17,7 +17,7 @@
 </p>
 
 
-## Preview Images
+## Preview Image
 
 <img src="images/themepic1.png" alt="there should be an image here...">
 
