@@ -20,8 +20,6 @@
 ## Preview Images
 
 <img src="images/themepic1.png" alt="there should be an image here...">
-<img src="images/themepic2.png" alt="there should be an image here...">
-<img src="images/themepic3.png" alt="there should be an image here...">
 
 ## About
 
@@ -30,11 +28,15 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 
 ## Table of contents
+- [Quick Start](#quick-start)
 - [Installation/Setup](#installation)
 - [Keyboard Shortcuts and Usage](#keyboard-shortcuts-and-usage)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 
+
+## Quick Start
+If you just want to use the text editor, just download the project and launch Quiet-Text.exe located inside either linux_dist or windows_dist (depending on your operating system).
 
 
 ## Installation
