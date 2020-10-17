@@ -36,7 +36,7 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 
 ## Quick Start
-If you just want to use the text editor, just download the project and **launch Quiet-Text.exe located inside either linux_dist or windows_dist** (depending on your operating system).
+Just launch one of the release binaries for your operating system :)
 
 
 ## Installation
@@ -82,7 +82,7 @@ cd src
 ```
 
 ```sh
-python3 quiet_app_launch.py
+python3 quiet_main.py
 ```
 
 This project also requires a Python3 interpreter with Tkinter support.
@@ -139,17 +139,6 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | Indent | <kbd>tab</kbd> | Indent one or multiple lines |
 | Unindent | <kbd>shift</kbd>+<kbd>tab</kbd> | Unindent one or multiple lines |
 
-**IMPORTANT:** If you don't want your teminal to close when using the <kbd>ctrl</kbd>+<kbd>r</kbd> run command, add an input field at the end of your script.
-
-_for example..._
-
-```python3
-for i in range(10):
-	print('hello world')
-
-
-input()
-```
 
 
 ## <a href="CONTRIBUTING.md">Contributing</a>
