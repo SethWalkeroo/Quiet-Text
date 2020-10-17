@@ -1,0 +1,16 @@
+comments:
+- "Token.Comment"
+strings:
+- "Token.Literal.String.Double"
+object_names:
+- "Token.Name.Namespace" 
+numbers:
+keywords:
+- "Token.Operator"
+functions:
+- "Token.Name.Class"
+class_self:
+- "Token.Name.Tag"
+text:
+
+

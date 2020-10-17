@@ -114,10 +114,18 @@ class Menubar():
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         syntax_dropdown.add_command(label='Python3',
                                     command=self.syntax.load_python3_syntax)
+        syntax_dropdown.add_command(label='HTML',
+                                    command=self.syntax.load_html_syntax)
+        syntax_dropdown.add_command(label='CSS',
+                                    command=self.syntax.load_css_syntax)
         syntax_dropdown.add_command(label='JavaScript',
                                     command=self.syntax.load_javascript_syntax)
         syntax_dropdown.add_command(label='C',
                                     command=self.syntax.load_c_syntax)
+        syntax_dropdown.add_command(label='C++',
+                                    command=self.syntax.load_cpp_syntax)
+        syntax_dropdown.add_command(label='Go',
+                                    command=self.syntax.load_go_syntax)
 
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)

@@ -17,6 +17,10 @@ class QuietLoaders:
 		self.python3_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/python3.yaml'))
 		self.javascript_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/javascript.yaml'))
 		self.c_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/c.yaml'))
+		self.cpp_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/cpp.yaml'))
+		self.html_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/html-django.yaml'))
+		self.css_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/css.yaml'))
+		self.go_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/go.yaml'))
 
 
 	def load_settings_data(self, default=False):
@@ -49,6 +53,22 @@ class QuietLoaders:
 
 	def load_c_syntax(self):
 		with open(self.c_syntax_path, 'r') as some_config:
+			return yaml.load(some_config, Loader=yaml.FullLoader)
+
+	def load_cpp_syntax(self):
+		with open(self.cpp_syntax_path, 'r') as some_config:
+			return yaml.load(some_config, Loader=yaml.FullLoader)
+
+	def load_html_syntax(self):
+		with open(self.html_syntax_path, 'r') as some_config:
+			return yaml.load(some_config, Loader=yaml.FullLoader)
+
+	def load_css_syntax(self):
+		with open(self.css_syntax_path, 'r') as some_config:
+			return yaml.load(some_config, Loader=yaml.FullLoader)
+
+	def load_go_syntax(self):
+		with open(self.go_syntax_path, 'r') as some_config:
 			return yaml.load(some_config, Loader=yaml.FullLoader)
 
 

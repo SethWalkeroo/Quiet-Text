@@ -1,0 +1,20 @@
+comments:
+strings:
+- Token.Literal.String
+object_names:
+- Token.Name.Other 
+numbers:
+- Token.Literal.Number.Float
+- Token.Literal.Number.Integer 
+keywords:
+- Token.Keyword 
+- Token.Operator
+- Token.Keyword.Namespace
+functions:
+- Token.Keyword.Declaration
+- Token.Keyword.Constant
+class_self:
+- Token.Keyword.Type
+text:
+
+

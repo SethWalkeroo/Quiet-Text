@@ -1,0 +1,22 @@
+comments:
+- "Token.Comment.Single"
+- "Token.Comment.Multiline"
+- "Token.Comment.Preproc"
+- "Token.Comment.PreprocFile"
+strings:
+- "Token.Literal.String"
+- "Token.Literal.String.Double"
+- "Token.Literal.String.Char"
+object_names:
+- "Token.Name.Class" 
+numbers: 
+- "Token.Literal.Number.Integer"
+- "Token.Literal.Number.Float"
+keywords: 
+- "Token.Operator"
+- "Token.Keyword"
+functions:
+- "Token.Keyword.Type"
+class_self:
+- "Token.Name.Label"
+text:

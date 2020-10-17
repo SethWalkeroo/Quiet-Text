@@ -110,11 +110,10 @@ class SyntaxHighlighting():
         settings['menubar_active_bg'] = new_config['menu_bg_active']
         settings['menubar_active_fg'] = new_config['menu_fg_active']  
         settings['menu_active_bg'] = new_config['menu_bg_active']
-        settings['menu_active_fg'] = new_config['menu_fg_active']  
+        settings['menu_active_fg'] = new_config['menu_fg_active']
+
         self.parent.loader.store_settings_data(settings)
         self.parent.reconfigure_settings()
-        self.parent.clear_and_replace_textarea()
-
         self.initial_highlight()
 
 
@@ -149,6 +148,25 @@ class SyntaxHighlighting():
         self.lexer = get_lexer_by_name('javascript')
         self.load_new_tokens(new_syntax)
 
+    def load_cpp_syntax(self):
+        new_syntax = self.parent.loader.load_cpp_syntax()
+        self.lexer = get_lexer_by_name('cpp')
+        self.load_new_tokens(new_syntax)
+
+    def load_html_syntax(self):
+        new_syntax = self.parent.loader.load_html_syntax()
+        self.lexer = get_lexer_by_name('html+django')
+        self.load_new_tokens(new_syntax)
+
+    def load_css_syntax(self):
+        new_syntax = self.parent.loader.load_css_syntax()
+        self.lexer = get_lexer_by_name('css')
+        self.load_new_tokens(new_syntax)
+
+    def load_go_syntax(self):
+        new_syntax = self.parent.loader.load_go_syntax()
+        self.lexer = get_lexer_by_name('go')
+        self.load_new_tokens(new_syntax)
 
 
 

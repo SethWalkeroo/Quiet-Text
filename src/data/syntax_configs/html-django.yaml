@@ -1,0 +1,15 @@
+comments:
+strings:
+- "Token.Literal.String.Single"
+- "Token.Literal.String"
+object_names: 
+numbers:
+- "Token.Comment.Preproc" 
+keywords:
+- "Token.Name.Tag" 
+functions:
+class_self:
+- "Token.Name.Attribute"
+text:
+
+

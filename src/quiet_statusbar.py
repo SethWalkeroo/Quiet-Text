@@ -1,6 +1,5 @@
 import tkinter as tk
 
-
 class Statusbar:
 
     # initialising the status bar

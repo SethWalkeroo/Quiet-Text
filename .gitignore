@@ -143,4 +143,8 @@ test.py
 test.c
 test.js
 test.txt
+test.cpp
+test.css
+test.html
+test.go
 .vscode
