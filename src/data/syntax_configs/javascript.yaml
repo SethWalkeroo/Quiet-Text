@@ -19,3 +19,5 @@ text:
 - "Token.Text"
 bold:
 italic:
+heading:
+subheading:

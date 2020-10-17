@@ -84,6 +84,9 @@ class QuietText(tk.Frame):
 
         self.italics = tk_font.Font(family=self.font_family, slant='italic')
         self.bold = tk_font.Font(family=self.font_family, weight='bold')
+        self.header1 = tk_font.Font(family=self.font_family, weight='bold')
+        self.header2 = tk_font.Font(family=self.font_family, weight='bold')
+
         self.master = master
         self.filename = None
                                 
@@ -509,11 +512,21 @@ class QuietText(tk.Frame):
                                  size = self.font_size,
                                  weight='bold')
 
+        self.header1 = tk_font.Font(family=self.font_family,
+                                    size = self.font_size + 15,
+                                    weight='bold')
+
+        self.header2 = tk_font.Font(family=self.font_family,
+                                    size = self.font_size + 7,
+                                    weight='bold')
+
         self.textarea.configure(font=self.font_style)
         self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Name.Attribute",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Emph",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Strong",font=self.bold)
+        self.syntax_highlighter.text.tag_configure("Token.Generic.Heading",font=self.header1)
+        self.syntax_highlighter.text.tag_configure("Token.Generic.Subheading",font=self.header2)
         self.set_new_tab_width()
         
         _settings = self.loader.load_settings_data()

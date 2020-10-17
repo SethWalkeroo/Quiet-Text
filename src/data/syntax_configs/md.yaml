@@ -8,10 +8,11 @@ functions:
 class_self:
 text:
 bold:
-- Token.Generic.Heading
-- Token.Generic.Subheading
 - Token.Generic.Strong
 italic:
 - Token.Generic.Emph
-
+heading:
+- Token.Generic.Heading
+subheading:
+- Token.Generic.Subheading
 

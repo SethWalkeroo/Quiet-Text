@@ -29,6 +29,8 @@ class SyntaxHighlighting():
         self.text_tokens = self.syntax['text']
         self.italic_tokens = self.syntax['italic']
         self.bold_tokens = self.syntax['bold']
+        self.heading_tokens = self.syntax['heading']
+        self.subheading_tokens = self.syntax['subheading']
 
         self.comment_color = self.default_theme['comment_color']
         self.string_color = self.default_theme['string_color']
@@ -51,7 +53,6 @@ class SyntaxHighlighting():
             data = self.text.get(row + ".0", row + "." + str(len(lines[int(row) - 1])))
 
             for token, content in lex(data, self.lexer):
-                print(token)
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
@@ -79,6 +80,12 @@ class SyntaxHighlighting():
         if self.italic_tokens:
             for token in self.bold_tokens:
                 self.text.tag_configure(token, font=self.parent.bold)
+        if self.heading_tokens:
+            for token in self.heading_tokens:
+                self.text.tag_configure(token, font=self.parent.header1)
+        if self.subheading_tokens:
+            for token in self.subheading_tokens:
+                self.text.tag_configure(token, font=self.parent.header2)
 
 
     def initial_highlight(self, *args):
@@ -141,6 +148,8 @@ class SyntaxHighlighting():
         self.text_tokens = new_syntax['text']
         self.italic_tokens = new_syntax['italic']
         self.bold_tokens = new_syntax['bold']
+        self.heading_tokens = new_syntax['heading']
+        self.subheading_tokens = new_syntax['subheading']
         self.clear_existing_tags()
         self.initial_highlight()
 

@@ -22,3 +22,5 @@ class_self:
 text:
 bold:
 italic:
+heading:
+subheading:
