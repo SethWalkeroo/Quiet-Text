@@ -37,6 +37,7 @@ class QuietText(tk.Frame):
         self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
         self.settings['menu_bg'] = self.default_theme['bg_color']
         self.settings['font_color'] = self.default_theme['font_color']
+        self.settings['menu_fg'] = self.default_theme['comment_color']
 
         self.font_family = self.settings['font_family']
         self.bg_color = self.settings['textarea_background_color']

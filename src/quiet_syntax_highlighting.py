@@ -101,6 +101,8 @@ class SyntaxHighlighting():
         self.text_color = new_config['font_color']
         
         settings = self.parent.loader.load_settings_data()
+        settings['text_selection_bg'] = new_config['selection_color']
+        settings['insertion_color'] = new_config['font_color']
         settings['menu_fg'] = new_config['comment_color']
         settings['menu_bg'] = new_config['bg_color']
         settings['font_color'] = new_config['font_color']
