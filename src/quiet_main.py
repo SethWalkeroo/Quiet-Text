@@ -227,6 +227,7 @@ class QuietText(tk.Frame):
                                     highlightthickness=border,
                                     wrap=text_wrap)
 
+            self.browser = _settings['web_browser']
             self.text_selection_bg = text_selection_bg
             self.textarea.reload_text_settings()
             self.set_new_tab_width(tab_size_spaces)
