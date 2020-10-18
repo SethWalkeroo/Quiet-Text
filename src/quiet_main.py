@@ -565,16 +565,16 @@ class QuietText(tk.Frame):
         text.insert('insert', '\n' + ' ' * new_indent)
 
     def auto_block_indentation(self, event):
-        previous_character, second_char, _, _ = self.get_chars_in_front_and_back()
+        prev_char, second_char, _, _ = self.get_chars_in_front_and_back()
         text = self.textarea
-        if previous_character == ':':
+        if prev_char == ':':
             line = text.get('insert linestart', 'insert lineend')
             match = re.match(r'^(\s+)', line)
             current_indent = len(match.group(0)) if match else 0
             new_indent = current_indent + 4
             text.insert('insert', '\n' + ' ' * new_indent)
             return 'break'
-        elif previous_character == '{' and second_char == '}':
+        elif prev_char == '{' and second_char == '}' or prev_char == '(' and second_char == ')':
             line = text.get('insert linestart', 'insert lineend')
             match = re.match(r'^(\s+)', line)
             current_indent = len(match.group(0)) if match else 0

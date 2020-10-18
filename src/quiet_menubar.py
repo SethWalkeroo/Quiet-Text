@@ -9,6 +9,7 @@ from quiet_syntax_highlighting import SyntaxHighlighting
 class Menubar():
     # initialising the menu bar of editor
     def __init__(self, parent):
+        self.current_theme = None
         self._parent = parent
         self.syntax = parent.syntax_highlighter
         self.default_theme = parent.loader.load_default_theme()
@@ -19,6 +20,15 @@ class Menubar():
         self.settings['menu_bg'] = self.default_theme['bg_color']
         font_specs = ('Droid Sans Fallback', 12)
 
+        self.monokaipro_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai_pro.yaml'))
+        self.monokai_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai.yaml'))
+        self.gruvbox_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/gruvbox.yaml'))
+        self.solarized_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/solarized.yaml'))
+        self.darkheart_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dark-heart.yaml'))
+        self.githubly_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/githubly.yaml'))
+        self.dracula_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dracula.yaml'))
+        self.pumpkin_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/pumpkin.yaml'))
+        self.material_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/material.yaml'))
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
                           font=font_specs,
@@ -109,6 +119,8 @@ class Menubar():
                                    command=self.load_dracula)
         theme_dropdown.add_command(label='Pumpkin',
                                    command=self.load_pumpkin)
+        theme_dropdown.add_command(label='Set Current Theme as Default',
+                                   command=self.set_default_theme)
 
 
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
@@ -352,38 +364,55 @@ class Menubar():
             self._parent.statusbar.update_status('no file run')
 
 
+    def set_default_theme(self):
+        themes = {'monokai pro':self.monokaipro_theme_path,
+                  'monokai':self.monokai_theme_path,
+                  'gruvbox':self.gruvbox_theme_path,
+                  'solarized':self.solarized_theme_path,
+                  'darkheart':self.darkheart_theme_path,
+                  'githubly':self.githubly_theme_path,
+                  'dracula':self.dracula_theme_path,
+                  'pumpkin':self.pumpkin_theme_path,
+                  'material':self.material_theme_path}
+        new_default_theme_path = themes[self.current_theme]
+        with open(new_default_theme_path, 'r') as new_theme_data:
+            new_theme = yaml.load(new_theme_data, Loader=yaml.FullLoader)
+        with open(self._parent.loader.default_theme_path, 'w') as default_theme:
+            yaml.dump(new_theme, default_theme)
+
+
     def load_monokai_pro(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai_pro.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.monokaipro_theme_path)
+        self.current_theme = 'monokai pro'
 
     def load_monokai(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.monokai_theme_path)
+        self.current_theme = 'monokai'
 
     def load_gruvbox(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/gruvbox.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.gruvbox_theme_path)
+        self.current_theme = 'gruvbox'
 
     def load_solarized(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/solarized.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.solarized_theme_path)
+        self.current_theme = 'solarized'
 
     def load_darkheart(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dark-heart.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.darkheart_theme_path)
+        self.current_theme = 'darkheart'
 
     def load_githubly(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/githubly.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.githubly_theme_path)
+        self.current_theme = 'githubly'
 
     def load_dracula(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dracula.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.dracula_theme_path)
+        self.current_theme = 'dracula'
 
     def load_pumpkin(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/pumpkin.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.pumpkin_theme_path)
+        self.current_theme = 'pumpkin'
 
     def load_material(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/material.yaml'))
-        self.syntax.load_new_theme(theme)
+        self.syntax.load_new_theme(self.material_theme_path)
+        self.current_theme = 'material'
