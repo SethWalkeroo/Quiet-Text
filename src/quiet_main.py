@@ -80,6 +80,8 @@ class QuietText(tk.Frame):
 
 
         #configuration of the file dialog text colors.
+        self.font_style = tk_font.Font(family=self.font_family,
+                                       size=self.font_size)
 
         self.italics = tk_font.Font(family=self.font_family, slant='italic')
         self.bold = tk_font.Font(family=self.font_family, weight='bold')
@@ -124,7 +126,7 @@ class QuietText(tk.Frame):
                                 bd=self.border,
                                 highlightthickness=self.border,
                                 highlightbackground='black',
-                                font=self.font_family,
+                                font=self.font_style,
                                 undo=True,
                                 autoseparators=True,
                                 maxundo=-1,
