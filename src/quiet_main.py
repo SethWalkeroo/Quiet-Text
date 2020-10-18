@@ -406,64 +406,6 @@ class QuietText(tk.Frame):
         else:
             return
 
-    # running the python file
-    def run(self, *args):
-        try:
-            ptrn = r'[^\/]+$'
-            file_from_path = re.search(ptrn, self.filename)
-            filename = file_from_path.group(0)
-            file_path = self.filename[:-len(filename)]
-            if filename[-3:] == '.py':
-                #run separate commands for different os
-                if self.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "python {self.filename}"'
-                    os.system(cmd)
-                elif self.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c 'python3 {self.filename}; read'"
-                    os.system(cmd)
-            elif filename[-5:] == '.html':
-                if self.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c '{self.browser} {self.filename}; read'"
-                elif self.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "{self.browser} {self.filename}"'
-                os.system(cmd)
-            elif filename[-3:] == '.js':
-                if self.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c 'node {self.filename}; read'"
-                elif self.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k " node {self.filename}"'
-                os.system(cmd)
-            elif filename[-3:] == '.go':
-                if self.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c 'go run {self.filename}; read'"
-                elif self.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "go run {self.filename}"'
-                os.system(cmd)
-            elif filename[-2:] == '.c':
-                compiled_name = filename[:-2]
-                if self.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
-                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
-                elif self.operating_system == 'Windows':
-                    compile_cmd = f'start cmd.exe @cmd /k "cd {file_path}; cc {filename} -o {compiled_name}"'
-                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
-                os.system(compile_cmd)
-                os.system(run_cmd)
-            elif filename[-4:] == '.cpp':
-                compiled_name = filename[:-4]
-                if self.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
-                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
-                elif self.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; g++ -o {compiled_name} {filename}'"
-                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
-                os.system(compile_cmd)
-                os.system(run_cmd)
-            else:
-                self.statusbar.update_status('no python')
-        except TypeError:
-            self.statusbar.update_status('no file run')
-
     # opens the main setting file of the editor
     def open_settings_file(self):
         self.syntax_highlighter.load_yaml_syntax()
@@ -711,7 +653,7 @@ class QuietText(tk.Frame):
         text.bind('<Control-h>', self.context_menu.hightlight)
         text.bind('<Control-a>', self.select_all_text)
         text.bind('<Control-m>', self.apply_hex_color)
-        text.bind('<Control-r>', self.run)
+        text.bind('<Control-r>', self.menubar.run)
         text.bind('<Control-q>', self.enter_quiet_mode)
         text.bind('<Control-f>', self.show_find_window)
         text.bind('<Control-Shift-z>', self.textarea.edit_redo)

@@ -1,6 +1,7 @@
 import tkinter as tk
 import yaml
 import os, sys
+import re
 from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting
 
@@ -87,9 +88,6 @@ class Menubar():
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)
-        tools_dropdown.add_command(label='Run Selected File',
-                                   accelerator='Ctrl+R',
-                                   command=parent.run)
 
         #theme dropdown menu
         theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
@@ -133,6 +131,15 @@ class Menubar():
         syntax_dropdown.add_command(label='Yaml',
                                     command=self.syntax.load_yaml_syntax)
 
+        build_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        build_dropdown.add_command(label='Build',
+                                   comman=self.build)
+        build_dropdown.add_command(label='Run',
+                                   accelerator='Ctrl+R',
+                                   command=self.run)
+        build_dropdown.add_command(label='Build+Run',
+                                   command=self.build_run)
+
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)
         menubar.add_cascade(label='View', menu=view_dropdown)
@@ -140,10 +147,10 @@ class Menubar():
         menubar.add_cascade(label='Tools', menu=tools_dropdown)
         menubar.add_cascade(label='Syntax', menu=syntax_dropdown)
         menubar.add_cascade(label='Themes', menu=theme_dropdown)
-        menubar.add_command(label='Run', command=parent.run)
+        menubar.add_cascade(label='Build Options', menu=build_dropdown)
         # menubar.add_cascade(label='About', menu=about_dropdown)
 
-        self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown,
+        self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown, build_dropdown,
                                                 settings_dropdown, tools_dropdown, theme_dropdown)]
 
         self.default_settings = parent.default_theme
@@ -217,6 +224,133 @@ class Menubar():
     # display the menubar
     def show_menu(self):
         self._parent.master.config(menu=self._menubar)
+
+
+    def build(self, *args):
+        try:
+            ptrn = r'[^\/]+$'
+            file_from_path = re.search(ptrn, self._parent.filename)
+            filename = file_from_path.group(0)
+            file_path = self._parent.filename[:-len(filename)]
+            if filename[-3:] == '.go':
+                if self._parent.operating_system == 'Linux':
+                    build = f"gnome-terminal -- bash -c 'go build {self._parent.filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
+                os.system(build)
+            elif filename[-2:] == '.c':
+                compiled_name = filename[:-2]
+                if self._parent.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    compile_cmd = f'start cmd.exe @cmd /k "cd {file_path}; cc {filename} -o {compiled_name}"'
+                os.system(compile_cmd)
+            elif filename[-4:] == '.cpp':
+                compiled_name = filename[:-4]
+                if self._parent.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; g++ -o {compiled_name} {filename}'"
+                os.system(compile_cmd)
+            else:
+                self._parent.statusbar.update_status('no python')
+        except TypeError:
+            self._parent.statusbar.update_status('no file run')
+
+
+
+    def run(self, *args):
+        try:
+            ptrn = r'[^\/]+$'
+            file_from_path = re.search(ptrn, self._parent.filename)
+            filename = file_from_path.group(0)
+            file_path = self._parent.filename[:-len(filename)]
+            if self._parent.filename[-3:] == '.py':
+                #run separate commands for different os
+                if self._parent.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k "python {self._parent.filename}"'
+                elif self._parent.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c 'python3 {self._parent.filename}; read'"
+                os.system(cmd)
+            elif self._parent.filename[-5:] == '.html':
+                if self._parent.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c '{self._parent.browser} {self._parent.filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k "{self._parent.browser} {self._parent.filename}"'
+                os.system(cmd)
+            elif self._parent.filename[-3:] == '.js':
+                if self._parent.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c 'node {self._parent.filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k " node {self._parent.filename}"'
+                os.system(cmd)
+            elif self._parent.filename[-3:] == '.go':
+                if self._parent.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c 'go run {self._parent.filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k "go run {self._parent.filename}"'
+                os.system(cmd)
+            elif self._parent.filename[-2:] == '.c':
+                compiled_name = filename[:-2]
+                if self._parent.operating_system == 'Linux':
+                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
+                os.system(run_cmd)
+            elif self._parent.filename[-4:] == '.cpp':
+                compiled_name = filename[:-4]
+                if self._parent.operating_system == 'Linux':
+                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
+                os.system(run_cmd)
+            else:
+                self._parent.statusbar.update_status('no python')
+        except TypeError:
+            self._parent.statusbar.update_status('no file run')
+
+    # running the python file
+    def build_run(self, *args):
+        try:
+            ptrn = r'[^\/]+$'
+            file_from_path = re.search(ptrn, self._parent.filename)
+            filename = file_from_path.group(0)
+            file_path = self._parent.filename[:-len(filename)]
+            if filename[-3:] == '.go':
+                compiled_name = filename[:-3]
+                if self._parent.operating_system == 'Linux':
+                    build = f"gnome-terminal -- bash -c 'go build {self._parent.filename}; read'"
+                    run = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
+                    run = f'start cmd.exe @cmd /k "./{compiled_name}"'
+                os.system(build)
+                os.system(run)
+            elif filename[-2:] == '.c':
+                compiled_name = filename[:-2]
+                if self._parent.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    compile_cmd = f'start cmd.exe @cmd /k "cd {file_path}; cc {filename} -o {compiled_name}"'
+                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
+                os.system(compile_cmd)
+                os.system(run_cmd)
+            elif filename[-4:] == '.cpp':
+                compiled_name = filename[:-4]
+                if self._parent.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; g++ -o {compiled_name} {filename}'"
+                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
+                os.system(compile_cmd)
+                os.system(run_cmd)
+            else:
+                self._parent.statusbar.update_status('no python')
+        except TypeError:
+            self._parent.statusbar.update_status('no file run')
+
 
     def load_monokai_pro(self):
         theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai_pro.yaml'))
