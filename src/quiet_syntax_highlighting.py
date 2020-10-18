@@ -57,7 +57,6 @@ class SyntaxHighlighting():
             data = self.text.get(row + ".0", row + "." + str(len(lines[int(row) - 1])))
 
             for token, content in lex(data, self.lexer):
-                print(token)
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
