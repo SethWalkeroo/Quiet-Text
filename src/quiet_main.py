@@ -13,7 +13,7 @@ from quiet_menubar import Menubar
 from quiet_statusbar import Statusbar
 from quiet_linenumbers import TextLineNumbers
 from quiet_textarea import CustomText
-from quiet_find import FindWindow
+from quiet_find import FindWindow 
 from quiet_context import ContextMenu
 from quiet_loaders import QuietLoaders
 
@@ -142,9 +142,9 @@ class QuietText(tk.Frame):
 
         self.menu_hidden = False
         self.context_menu = ContextMenu(self)
+        self.syntax_highlighter = SyntaxHighlighting(self, self.textarea, self.initial_content)
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
-        self.syntax_highlighter = SyntaxHighlighting(self, self.textarea, self.initial_content)
         self.menubar = Menubar(self)
 
         self.linenumbers.attach(self.textarea)
@@ -696,6 +696,7 @@ if __name__ == '__main__':
         qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 

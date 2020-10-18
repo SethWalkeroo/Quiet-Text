@@ -266,9 +266,9 @@ class Menubar():
                     compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; g++ -o {compiled_name} {filename}'"
                 os.system(compile_cmd)
             else:
-                self._parent.statusbar.update_status('no python')
+                self._parent.statusbar.update_status('cant build')
         except TypeError:
-            self._parent.statusbar.update_status('no file run')
+            self._parent.statusbar.update_status('cant build')
 
 
 

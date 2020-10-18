@@ -5,7 +5,10 @@ class Statusbar:
     # initialising the status bar
     def __init__(self, parent):
         self._parent = parent
-
+        self.save_bg = parent.syntax_highlighter.string_color
+        self.status_fg = parent.bg_color
+        self.error_bg = parent.syntax_highlighter.number_color
+        self.hint_bg = parent.syntax_highlighter.function_color
         # setting up the status bar
         font_specs = ('Droid Sans Fallback', 10)
 
@@ -25,7 +28,9 @@ class Statusbar:
         if event == 'saved':
             self.display_status_message('changes saved', msg_type='save')
         elif event == 'no file run':
-            self.display_status_message('Cannot run. No Python file selected.')
+            self.display_status_message('Cannot run. No file selected.')
+        elif event == 'cant build':
+            self.display_status_message('Cannot build this type of file.')
         elif event == 'no file':
             self.display_status_message('No file detected. Create or open a file.')
         elif event == 'no python':
@@ -50,13 +55,13 @@ class Statusbar:
             self.error_color()
 
     def error_color(self):
-        self._label.config(bg='#fb4934', fg='#282828')
+        self._label.config(bg=self.error_bg, fg=self.status_fg)
 
     def save_color(self):
-        self._label.config(bg='#b8bb26', fg='#282828')
+        self._label.config(bg=self.save_bg, fg=self.status_fg)
 
     def hint_color(self):
-        self._label.config(bg='#8ec07c', fg='#282828')
+        self._label.config(bg=self.hint_bg, fg=self.status_fg)
 
     # hiding the status bar while in quiet mode
     def hide_status_bar(self):
