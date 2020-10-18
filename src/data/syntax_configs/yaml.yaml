@@ -7,9 +7,11 @@ numbers:
 - Token.Literal.Scalar.Plain 
 keywords:
 - Token.Name.Tag 
+operators:
 functions:
 - Token.Punctuation.Indicator
 class_self:
+namespace:
 text:
 bold:
 italic:

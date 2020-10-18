@@ -8,9 +8,11 @@ numbers:
 - "Token.Comment.Preproc" 
 keywords:
 - "Token.Name.Tag" 
+operators:
 functions:
 class_self:
 - "Token.Name.Attribute"
+namespace:
 text:
 bold:
 italic:

@@ -13,12 +13,14 @@ numbers:
 - "Token.Literal.Number.Integer"
 - "Token.Literal.Number.Float"
 keywords: 
-- "Token.Operator"
 - "Token.Keyword"
+operators:
+- "Token.Operator"
 functions:
 - "Token.Keyword.Type"
 class_self:
 - "Token.Name.Label"
+namespace:
 text:
 bold:
 italic:

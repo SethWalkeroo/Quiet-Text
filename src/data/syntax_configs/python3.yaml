@@ -15,10 +15,11 @@ numbers:
 - "Token.Literal.Number.Integer"
 - "Token.Literal.Number.Float"
 - "Token.Name.Decorator"
-keywords: 
-- "Token.Operator"
+keywords:
+- "Token.Keyword" 
+operators:
 - "Token.Operator.Word"
-- "Token.Keyword.Namespace"
+- "Token.Operator"
 functions: 
 - "Token.Keyword"
 - "Token.Name.Builtin"
@@ -26,6 +27,8 @@ functions:
 - "Token.Name.Function.Magic"
 class_self:
 - "Token.Name.Builtin.Pseudo"
+namespace:
+- "Token.Keyword.Namespace"
 text:
 - "Token.Text"
 bold:

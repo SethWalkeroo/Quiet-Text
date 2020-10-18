@@ -16,9 +16,10 @@ numbers:
 - "Token.Literal.Number.Float"
 - "Token.Name.Decorator"
 keywords: 
-- "Token.Operator"
 - "Token.Operator.Word"
 - "Token.Keyword.Namespace"
+operators:
+- "Token.Operator"
 functions: 
 - "Token.Keyword"
 - "Token.Name.Builtin"
@@ -26,6 +27,7 @@ functions:
 - "Token.Name.Function.Magic"
 class_self:
 - "Token.Name.Builtin.Pseudo"
+namespace:
 text:
 - "Token.Text"
 bold:

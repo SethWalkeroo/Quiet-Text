@@ -4,8 +4,10 @@ object_names:
 numbers: 
 keywords: 
 - Token.Keyword
+operators:
 functions:
 class_self:
+namespace:
 text:
 bold:
 - Token.Generic.Strong

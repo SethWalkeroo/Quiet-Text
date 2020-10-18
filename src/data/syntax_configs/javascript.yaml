@@ -11,10 +11,12 @@ numbers:
 keywords: 
 - "Token.Keyword.Reserved"
 - "Token.Keyword"
+operators:
 - "Token.Operator"
 functions: 
 - "Token.Keyword.Declaration"
 class_self:
+namespace:
 text:
 - "Token.Text"
 bold:

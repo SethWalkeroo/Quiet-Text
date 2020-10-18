@@ -23,8 +23,10 @@ class SyntaxHighlighting():
         self.string_tokens = self.syntax['strings']
         self.number_tokens = self.syntax['numbers']
         self.keyword_tokens = self.syntax['keywords']
+        self.operator_tokens = self.syntax['operators']
         self.function_tokens = self.syntax['functions']
         self.class_tokens = self.syntax['class_self']
+        self.namespace_tokens = self.syntax['namespace']
         self.object_tokens = self.syntax['object_names']
         self.text_tokens = self.syntax['text']
         self.italic_tokens = self.syntax['italic']
@@ -36,8 +38,10 @@ class SyntaxHighlighting():
         self.string_color = self.default_theme['string_color']
         self.number_color = self.default_theme['number_color']
         self.keyword_color = self.default_theme['keyword_color']
+        self.operator_color = self.default_theme['operator_color']
         self.function_color = self.default_theme['function_color']
         self.class_color = self.default_theme['class_self_color']
+        self.namespace_color = self.default_theme['namespace_color']
         self.object_color = self.default_theme['object_color']
         self.text_color = parent.font_color
 
@@ -53,6 +57,7 @@ class SyntaxHighlighting():
             data = self.text.get(row + ".0", row + "." + str(len(lines[int(row) - 1])))
 
             for token, content in lex(data, self.lexer):
+                print(token)
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
@@ -68,9 +73,11 @@ class SyntaxHighlighting():
         configure_tokens(self.string_tokens, self.string_color)
         configure_tokens(self.number_tokens, self.number_color)
         configure_tokens(self.keyword_tokens, self.keyword_color)
+        configure_tokens(self.operator_tokens, self.operator_color)
         configure_tokens(self.function_tokens, self.function_color)
         configure_tokens(self.object_tokens, self.object_color)
         configure_tokens(self.text_tokens, self.text_color)
+        configure_tokens(self.namespace_tokens, self.namespace_color)
         if self.class_tokens:
             for token in self.class_tokens:
                 self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics)
@@ -111,8 +118,10 @@ class SyntaxHighlighting():
         self.string_color = new_config['string_color']
         self.number_color = new_config['number_color']
         self.keyword_color = new_config['keyword_color']
+        self.operator_color = new_config['operator_color']
         self.function_color = new_config['function_color']
         self.class_color = new_config['class_self_color']
+        self.namespace_color = new_config['namespace_color']
         self.object_color = new_config['object_color']
         self.text_color = new_config['font_color']
         
@@ -142,8 +151,10 @@ class SyntaxHighlighting():
         self.string_tokens = new_syntax['strings']
         self.number_tokens = new_syntax['numbers']
         self.keyword_tokens = new_syntax['keywords']
+        self.keyword_tokens = new_syntax['operators']
         self.function_tokens = new_syntax['functions']
         self.class_tokens = new_syntax['class_self']
+        self.namespace_tokens = new_syntax['namespace']
         self.object_tokens = new_syntax['object_names']
         self.text_tokens = new_syntax['text']
         self.italic_tokens = new_syntax['italic']

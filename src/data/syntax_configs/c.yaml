@@ -12,10 +12,12 @@ numbers:
 keywords: 
 - "Token.Keyword.Type"
 - "Token.Keyword"
+operators:
 - "Token.Operator"
 functions:
 - "Token.Name" 
 class_self:
+namespace:
 text:
 - "Token.Text"
 - "Token.Name"

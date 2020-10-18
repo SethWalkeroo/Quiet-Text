@@ -97,6 +97,8 @@ class Menubar():
                                    command=self.load_monokai)
         theme_dropdown.add_command(label='Monokai Pro',
                                    command=self.load_monokai_pro)
+        theme_dropdown.add_command(label='Material',
+                                   command=self.load_material)
         theme_dropdown.add_command(label='Gruvbox',
                                    command=self.load_gruvbox)
         theme_dropdown.add_command(label='Solarized',
@@ -216,33 +218,37 @@ class Menubar():
         self._parent.master.config(menu=self._menubar)
 
     def load_monokai_pro(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/monokai_pro.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai_pro.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_monokai(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/monokai.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_gruvbox(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/gruvbox.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/gruvbox.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_solarized(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/solarized.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/solarized.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_darkheart(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/dark-heart.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dark-heart.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_githubly(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/githubly.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/githubly.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_dracula(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/dracula.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dracula.yaml'))
         self.syntax.load_new_theme(theme)
 
     def load_pumpkin(self):
-        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/Python3/pumpkin.yaml'))
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/pumpkin.yaml'))
+        self.syntax.load_new_theme(theme)
+
+    def load_material(self):
+        theme = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/material.yaml'))
         self.syntax.load_new_theme(theme)

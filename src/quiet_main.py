@@ -17,7 +17,6 @@ from quiet_find import FindWindow
 from quiet_context import ContextMenu
 from quiet_loaders import QuietLoaders
 
-
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
@@ -749,6 +748,7 @@ if __name__ == '__main__':
         qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 
