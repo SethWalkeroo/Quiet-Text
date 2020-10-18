@@ -119,6 +119,7 @@ class Menubar():
                                    command=self.load_dracula)
         theme_dropdown.add_command(label='Pumpkin',
                                    command=self.load_pumpkin)
+        theme_dropdown.add_separator()
         theme_dropdown.add_command(label='Set Current Theme as Default',
                                    command=self.set_default_theme)
 
