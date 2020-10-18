@@ -23,9 +23,9 @@ class Statusbar:
     # status update of the status bar
     def update_status(self, event):
         if event == 'saved':
-            self.display_status_message('changes saved!', msg_type='save')
+            self.display_status_message('changes saved', msg_type='save')
         elif event == 'no file run':
-            self.display_status_message('Cannot run! No Python file selected.')
+            self.display_status_message('Cannot run. No Python file selected.')
         elif event == 'no file':
             self.display_status_message('No file detected. Create or open a file.')
         elif event == 'no python':

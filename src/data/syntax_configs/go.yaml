@@ -2,7 +2,6 @@ comments:
 strings:
 - Token.Literal.String
 object_names:
-- Token.Name.Other 
 numbers:
 - Token.Literal.Number.Float
 - Token.Literal.Number.Integer 

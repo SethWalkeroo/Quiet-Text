@@ -285,6 +285,31 @@ class QuietText(tk.Frame):
         self.filename = None
         self.set_window_title()
 
+
+    def initialize_syntax(self):
+        if self.filename:
+            self.clear_and_replace_textarea()
+            if self.filename[-4:] == '.txt' or self.filename[-3:] == '.md':
+                self.syntax_highlighter.load_markdown_syntax()
+            elif self.filename[-2:] == '.c':
+                self.syntax_highlighter.load_c_syntax()
+            elif self.filename[-3:] == '.py':
+                self.syntax_highlighter.load_python3_syntax()
+            elif self.filename[-3:] == '.js':
+                self.syntax_highlighter.load_javascript_syntax()
+            elif self.filename[-5:] == '.html':
+                self.syntax_highlighter.load_html_syntax()
+            elif self.filename[-4:] == '.css':
+                self.syntax_highlighter.load_css_syntax()
+            elif self.filename[-4:] == '.cpp':
+                self.syntax_highlighter.load_cpp_syntax()
+            elif self.filename[-3:] == '.go':
+                self.syntax_highlighter.load_go_syntax()
+            elif self.filename[-5:] == '.yaml':
+                self.syntax_highlighter.load_yaml_syntax()
+            else:
+                self.syntax_highlighter.initial_highlight()
+
     # opening an existing file in the editor
     def open_file(self, *args):
         # various file types that editor can support
@@ -301,29 +326,8 @@ class QuietText(tk.Frame):
                        ('C++ Files', '*.cpp'),
                        ('Go Files', '*.go')])
 
-        if self.filename:
-            self.clear_and_replace_textarea()
-            if self.filename[-4:] == '.txt' or self.filename[-3:] == '.md':
-                self.syntax_highlighter.load_markdown_syntax()
-            elif self.filename[-2:] == '.c':
-                self.syntax_highlighter.load_c_syntax()
-            elif self.filename[-3:] == '.py':
-                self.syntax_highlighter.load_python3_syntax()
-            elif self.filename[-3:] == '.js':
-                self.syntax_highlighter.load_javascript_syntax()
-            elif self.filename[-5:] == '.html':
-                self.syntax_highlighter.load_html_syntax()
-            elif self.filename[-4:] == '.css':
-                self.syntax_highlighter.load_css_syntax()
-            elif self.filename[-4:] == '.cpp':
-                self.syntax_highlighter.load_cpp_synatx()
-            elif self.filename[-3:] == '.go':
-                self.syntax_highlighter.load_go_syntax()
-            elif self.filename[-5:] == '.yaml':
-                self.syntax_highlighter.load_yaml_syntax()
-            else:
-                self.syntax_highlighter.initial_highlight()
-            self.set_window_title(name=self.filename)
+        self.initialize_syntax()
+        self.set_window_title(name=self.filename)
 
 
     # opening an existing file without TK filedialog
@@ -379,6 +383,7 @@ class QuietText(tk.Frame):
             self.filename = new_file
             self.set_window_title(self.filename)
             self.statusbar.update_status('saved')
+            self.initialize_syntax()
         except Exception as e:
             print(e)
             
@@ -410,32 +415,48 @@ class QuietText(tk.Frame):
             file_path = self.filename[:-len(filename)]
             if filename[-3:] == '.py':
                 #run separate commands for different os
-                if os.name == 'nt':
+                if self.operating_system == 'Windows':
                     cmd = f'start cmd.exe @cmd /k "python {self.filename}"'
                     os.system(cmd)
-                else:
+                elif self.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c 'python3 {self.filename}; read'"
                     os.system(cmd)
             elif filename[-5:] == '.html':
                 if self.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c '{self.browser} {self.filename}; read'"
+                elif self.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k "{self.browser} {self.filename}"'
                 os.system(cmd)
             elif filename[-3:] == '.js':
-                cmd = f"gnome-terminal -- bash -c 'node {self.filename}; read'"
+                if self.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c 'node {self.filename}; read'"
+                elif self.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k " node {self.filename}"'
                 os.system(cmd)
             elif filename[-3:] == '.go':
-                cmd = f"gnome-terminal -- bash -c 'go run {self.filename}; read'"
+                if self.operating_system == 'Linux':
+                    cmd = f"gnome-terminal -- bash -c 'go run {self.filename}; read'"
+                elif self.operating_system == 'Windows':
+                    cmd = f'start cmd.exe @cmd /k "go run {self.filename}"'
                 os.system(cmd)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
-                compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
-                run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                if self.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self.operating_system == 'Windows':
+                    compile_cmd = f'start cmd.exe @cmd /k "cd {file_path}; cc {filename} -o {compiled_name}"'
+                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
                 os.system(compile_cmd)
                 os.system(run_cmd)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
-                compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
-                run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                if self.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                elif self.operating_system == 'Windows':
+                    compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; g++ -o {compiled_name} {filename}'"
+                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path}; ./{compiled_name}'"
                 os.system(compile_cmd)
                 os.system(run_cmd)
             else:
