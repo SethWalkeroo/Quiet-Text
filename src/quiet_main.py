@@ -151,7 +151,7 @@ class QuietText(tk.Frame):
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
         
-        self.textarea.tag_configure('find_match', background='#4378ab')
+        self.textarea.tag_configure('find_match', background=self.text_selection_bg)
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
 
@@ -228,6 +228,7 @@ class QuietText(tk.Frame):
                                     highlightthickness=border,
                                     wrap=text_wrap)
 
+            self.text_selection_bg = text_selection_bg
             self.textarea.reload_text_settings()
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
@@ -577,6 +578,7 @@ class QuietText(tk.Frame):
         self.textarea.isControlPressed = False
 
     def show_find_window(self, event=None):
+        self.textarea.tag_configure('find_match', background=self.text_selection_bg)
         FindWindow(self.textarea)
         self.control_key = False
         self.textarea.isControlPressed = False
