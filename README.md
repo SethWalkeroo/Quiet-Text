@@ -25,15 +25,42 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 
 ## Table of contents
+- [Keyboard Shortcuts and Usage](#keyboard-shortcuts)
 - [Quick Start](#quick-start)
 - [Installation/Setup](#installation)
-- [Keyboard Shortcuts and Usage](#keyboard-shortcuts-and-usage)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 
 
+## Keyboard Shortcuts
+
+
+Quiet Text has shortcuts for most commonly performed actions. The list of all the shortcuts is presented bellow:
+
+| Command | KeyBinding | Description |
+| ------- | ---------- | ----------- |
+| Copy | <kbd>ctrl</kbd>+<kbd>c</kbd> | Copy selected text |
+| Cut | <kbd>ctrl</kbd>+<kbd>x</kbd> | Cut selected text |
+| Paste | <kbd>ctrl</kbd>+<kbd>v</kbd> | Paste text from the clipboard |
+| Bold | <kbd>ctrl</kbd>+<kbd>b</kbd> | Bold selected text |
+| Find and Replace | <kbd>ctrl</kbd>+<kbd>f</kbd> | Find and replace specified text |
+| Highlight | <kbd>ctrl</kbd>+<kbd>h</kbg> | Highlight selected text |
+| Hide Menu | <kbd>alt</kbd> | Hides menu bar from view in the text editor |
+| Hide Line Numbers | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> | Hides line numbers from text area |
+| New File | <kbd>ctrl</kbd>+<kbd>n</kbd> | Open a new empty file |
+| Open File | <kbd>ctrl</kbd>+<kbd>o</kbd> | Open an existing file |
+| Color Menu | <kbd>ctrl</kbd>+<kbd>m</kbd> | Opens color menu |
+| Run File | <kbd>ctrl</kbd>+<kbd>r</kbd> | Run the currently active file |
+| Save | <kbd>ctrl</kbd>+<kbd>s</kbd> | Save the currently active file |
+| Save As | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>s</kbd> | Save the currently active file under a different name |
+| Change Font Size | <kbd>ctrl</kbd>+<kbd>mousewheel</kbd> | Increases or decrease font size |
+| Indent | <kbd>tab</kbd> | Indent one or multiple lines |
+| Unindent | <kbd>shift</kbd>+<kbd>tab</kbd> | Unindent one or multiple lines |
+
+
 ## Quick Start
 Just launch one of the release binaries for your operating system :)
+
 
 
 ## Installation
@@ -110,31 +137,6 @@ docker run --network=host --rm -e DISPLAY=$DISPLAY -v $XAUTH:/root/.Xauthority q
 Be aware, that the Docker container has full access to your machine! So you better trust the executed code.
 
 
-
-## Keyboard Shortcuts and Usage
-
-
-Quiet Text has shortcuts for most commonly performed actions. The list of all the shortcuts is presented bellow:
-
-| Command | KeyBinding | Description |
-| ------- | ---------- | ----------- |
-| Copy | <kbd>ctrl</kbd>+<kbd>c</kbd> | Copy selected text |
-| Cut | <kbd>ctrl</kbd>+<kbd>x</kbd> | Cut selected text |
-| Paste | <kbd>ctrl</kbd>+<kbd>v</kbd> | Paste text from the clipboard |
-| Bold | <kbd>ctrl</kbd>+<kbd>b</kbd> | Bold selected text |
-| Find and Replace | <kbd>ctrl</kbd>+<kbd>f</kbd> | Find and replace specified text |
-| Highlight | <kbd>ctrl</kbd>+<kbd>h</kbg> | Highlight selected text |
-| Hide Menu | <kbd>alt</kbd> | Hides menu bar from view in the text editor |
-| Hide Line Numbers | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> | Hides line numbers from text area |
-| New File | <kbd>ctrl</kbd>+<kbd>n</kbd> | Open a new empty file |
-| Open File | <kbd>ctrl</kbd>+<kbd>o</kbd> | Open an existing file |
-| Color Menu | <kbd>ctrl</kbd>+<kbd>m</kbd> | Opens color menu |
-| Run File | <kbd>ctrl</kbd>+<kbd>r</kbd> | Run the currently active file |
-| Save | <kbd>ctrl</kbd>+<kbd>s</kbd> | Save the currently active file |
-| Save As | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>s</kbd> | Save the currently active file under a different name |
-| Change Font Size | <kbd>ctrl</kbd>+<kbd>mousewheel</kbd> | Increases or decrease font size |
-| Indent | <kbd>tab</kbd> | Indent one or multiple lines |
-| Unindent | <kbd>shift</kbd>+<kbd>tab</kbd> | Unindent one or multiple lines |
 
 
 
