@@ -19,7 +19,7 @@
 
 ## Preview Image
 
-<img src="images/themepic1.png" alt="there should be an image here...">
+<img src="images/quiet6.png" alt="there should be an image here...">
 
 ## About
 
