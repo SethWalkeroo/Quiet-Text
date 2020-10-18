@@ -572,7 +572,6 @@ class QuietText(tk.Frame):
             match = re.match(r'^(\s+)', line)
             current_indent = len(match.group(0)) if match else 0
             new_indent = current_indent + 4
-            tab_count = new_indent // 4
             text.insert('insert', '\n' + ' ' * new_indent)
             return 'break'
         elif previous_character == '{' and second_char == '}':
@@ -580,9 +579,11 @@ class QuietText(tk.Frame):
             match = re.match(r'^(\s+)', line)
             current_indent = len(match.group(0)) if match else 0
             new_indent = current_indent + 4
-            text.insert('insert', '\n')
+            text.insert('insert', '\n\n')
+            index = text.index(tk.INSERT)
             text.mark_set('insert', 'insert-1c')
             text.insert('insert', ' ' * new_indent)
+            return 'break'
         else:
             self.auto_indentation()
             return 'break'
