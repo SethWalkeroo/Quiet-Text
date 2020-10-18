@@ -65,10 +65,16 @@ class SyntaxHighlighting():
         self.previousContent = self.text.get("1.0", tk.END)
 
     def syntax_theme_configuration(self):
-        def configure_tokens(tokens, token_color):
+
+        def configure_tokens(tokens, token_attr, font='nope'):
             if tokens:
-                for token in tokens:
-                    self.text.tag_configure(token, foreground=token_color)
+                if font == 'nope':
+                    for token in tokens:
+                        self.text.tag_configure(token, foreground=token_attr)
+                else:
+                    for token in tokens:
+                        self.text.tag_configure(token, font=token_attr)
+
         configure_tokens(self.comment_tokens, self.comment_color)
         configure_tokens(self.string_tokens, self.string_color)
         configure_tokens(self.number_tokens, self.number_color)
@@ -78,21 +84,14 @@ class SyntaxHighlighting():
         configure_tokens(self.object_tokens, self.object_color)
         configure_tokens(self.text_tokens, self.text_color)
         configure_tokens(self.namespace_tokens, self.namespace_color)
+        configure_tokens(self.italic_tokens, self.parent.italics, font='yes')
+        configure_tokens(self.bold_tokens, self.parent.bold, font='yes')
+        configure_tokens(self.heading_tokens, self.parent.header1, font='yes')
+        configure_tokens(self.subheading_tokens, self.parent.header2, font='yes')
+
         if self.class_tokens:
             for token in self.class_tokens:
                 self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics)
-        if self.bold_tokens:
-            for token in self.italic_tokens:
-                self.text.tag_configure(token, font=self.parent.italics)
-        if self.italic_tokens:
-            for token in self.bold_tokens:
-                self.text.tag_configure(token, font=self.parent.bold)
-        if self.heading_tokens:
-            for token in self.heading_tokens:
-                self.text.tag_configure(token, font=self.parent.header1)
-        if self.subheading_tokens:
-            for token in self.subheading_tokens:
-                self.text.tag_configure(token, font=self.parent.header2)
 
 
     def initial_highlight(self, *args):

@@ -3,19 +3,19 @@ strings:
 - Token.Literal.String
 object_names:
 numbers:
+- Token.Keyword.Constant
 - Token.Literal.Number.Float
 - Token.Literal.Number.Integer 
 keywords:
-- Token.Keyword 
-- Token.Keyword.Namespace
 operators:
 - Token.Operator
 functions:
+- Token.Keyword 
 - Token.Keyword.Declaration
-- Token.Keyword.Constant
 class_self:
 - Token.Keyword.Type
 namespace:
+- Token.Keyword.Namespace
 text:
 bold:
 italic:

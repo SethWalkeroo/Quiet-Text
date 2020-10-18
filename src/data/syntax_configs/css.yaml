@@ -5,13 +5,13 @@ strings:
 object_names:
 - "Token.Name.Namespace" 
 numbers:
-keywords:
-- "Token.Operator"
-operators:
-functions:
 - "Token.Name.Class"
+keywords:
+operators:
+- "Token.Operator"
+functions:
+- Token.Name.Tag
 class_self:
-- "Token.Name.Tag"
 namespace:
 text:
 bold:

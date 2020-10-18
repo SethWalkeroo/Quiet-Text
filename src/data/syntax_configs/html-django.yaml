@@ -3,16 +3,17 @@ comments:
 strings:
 - "Token.Literal.String.Single"
 - "Token.Literal.String"
-object_names: 
+object_names:
 numbers:
 - "Token.Comment.Preproc" 
 keywords:
-- "Token.Name.Tag" 
 operators:
 functions:
+- Token.Operator  
 class_self:
 - "Token.Name.Attribute"
 namespace:
+- "Token.Name.Tag" 
 text:
 bold:
 italic:

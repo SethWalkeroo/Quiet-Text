@@ -151,7 +151,6 @@ class QuietText(tk.Frame):
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
         
-        self.textarea.tag_configure('find_match', background=self.text_selection_bg)
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
 
@@ -574,6 +573,7 @@ class QuietText(tk.Frame):
         self.syntax_highlighter.default_highlight()
         if not self.tags_configured:
             self.syntax_highlighter.syntax_theme_configuration()
+            self.tags_configured = True
         self.control_key = False
         self.textarea.isControlPressed = False
 
