@@ -80,11 +80,11 @@ On Windows you may run into a similar issue, but the Windows gui will let your "
 chmod u+x (name of .exe file)
 ```
 
-## Launch using python
+### Launch using python
 The second fastest way would be to install the dependencies through **requirements.txt** and then launch the application through **src/quiet_main.py**.
 You can see instructions for this method [below](#installation).
 
-###Create your own binary
+### Create your own binary
 If the release binary is not up to date with the current development branch, then you can just create your own binary with **pyinstaller**. I'll walk you through the process real quick.
 
 1. Clone source files off github into your preferred directory
