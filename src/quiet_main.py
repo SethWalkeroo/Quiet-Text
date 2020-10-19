@@ -85,11 +85,12 @@ class QuietText(tk.Frame):
 
         self.italics = tk_font.Font(family=self.font_family, slant='italic')
         self.bold = tk_font.Font(family=self.font_family, weight='bold')
-        self.header1 = tk_font.Font(family=self.font_family, weight='bold')
-        self.header2 = tk_font.Font(family=self.font_family, weight='bold')
+        self.header1 = tk_font.Font(family=self.font_family, weight='bold', size=self.font_size + 15)
+        self.header2 = tk_font.Font(family=self.font_family, weight='bold', size=self.font_size + 7)
 
         self.master = master
         self.filename = None
+        self.previous_file = None
                                 
         self.textarea = CustomText(self)
 
@@ -167,8 +168,11 @@ class QuietText(tk.Frame):
                 if self.filename:
                     with open(self.filename, 'r') as f:
                         self.textarea.insert(1.0, f.read())
+                self.syntax_highlighter.initial_highlight()
             except TypeError:
                 pass
+
+
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
@@ -280,13 +284,44 @@ class QuietText(tk.Frame):
         else:
             self.master.title('Untitled - QuietText')
 
+
+    def load_previous_file(self, key_event):
+        if self.previous_file:
+            previous = self.filename
+            self.filename = self.previous_file
+            self.previous_file = previous
+            self.set_window_title(name=self.filename)
+            self.initialize_syntax()
+            self.clear_and_replace_textarea()
+
     # new file creating in the editor feature
     #Deletes all of the text in the current area and sets window title to default.
     def new_file(self, *args):
         self.textarea.delete(1.0, tk.END)
-        self.filename = None
-        self.set_window_title()
-
+        try:
+            new_file = filedialog.asksaveasfilename(
+                initialfile='untitled.txt',
+                defaultextension='.txt',
+                filetypes=[('All Files', '*.*'),
+                           ('Text Files', '*.txt'),
+                           ('Python Scripts', '*.py'),
+                           ('Markdown Documents', '*.md'),
+                           ('Javascript Files', '*.js'),
+                           ('HTML Documents', '*.js'),
+                           ('CSS Documents', '*.css'),
+                           ('C Files', '*.c'),
+                           ('C++ Files', '*.cpp'),
+                           ('Go Files', '*.go')])
+            self.previous_file = self.filename
+            self.filename = new_file
+            textarea_content = self.textarea.get(1.0, tk.END)
+            with open(new_file, 'w') as f:
+                f.write(textarea_content)
+            self.set_window_title(self.filename)
+            self.statusbar.update_status('created')
+            self.initialize_syntax()
+        except Exception as e:
+            pass
 
     def initialize_syntax(self):
         if self.filename:
@@ -309,12 +344,11 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.load_go_syntax()
             elif self.filename[-5:] == '.yaml':
                 self.syntax_highlighter.load_yaml_syntax()
-            else:
-                self.syntax_highlighter.initial_highlight()
 
     # opening an existing file in the editor
     def open_file(self, *args):
         # various file types that editor can support
+        self.previous_file = self.filename
         self.filename = filedialog.askopenfilename(
             defaultextension='.txt',
             filetypes=[('All Files', '*.*'),
@@ -344,7 +378,6 @@ class QuietText(tk.Frame):
 
         self.filename = path
         self.clear_and_replace_textarea()
-        self.syntax_highlighter.initial_highlight()
 
     # saving changes made in the file
     def save(self,*args):
@@ -387,7 +420,7 @@ class QuietText(tk.Frame):
             self.statusbar.update_status('saved')
             self.initialize_syntax()
         except Exception as e:
-            print(e)
+            pass
             
     #On exiting the Program
     def quit_save(self):
@@ -411,6 +444,7 @@ class QuietText(tk.Frame):
     # opens the main setting file of the editor
     def open_settings_file(self):
         self.syntax_highlighter.load_yaml_syntax()
+        self.previous_file = self.filename
         self.filename = self.loader.settings_path
         self.textarea.delete(1.0, tk.END)
         with open(self.filename, 'r') as f:
@@ -422,7 +456,6 @@ class QuietText(tk.Frame):
     def reset_settings_file(self):
         self.reconfigure_settings(overwrite_with_default=True)
         self.clear_and_replace_textarea()
-        self.syntax_highlighter.initial_highlight()
 
     # select all written text in the editor
     def select_all_text(self, *args):
@@ -658,6 +691,7 @@ class QuietText(tk.Frame):
         text.bind('<Control-r>', self.menubar.run)
         text.bind('<Control-q>', self.enter_quiet_mode)
         text.bind('<Control-f>', self.show_find_window)
+        text.bind('<Control-p>', self.load_previous_file)
         text.bind('<Control-Shift-z>', self.textarea.edit_redo)
         text.bind('<Escape>', self.leave_quiet_mode)
         text.bind('<<Change>>', self._on_change)
@@ -670,7 +704,6 @@ class QuietText(tk.Frame):
         text.bind('<KeyRelease>', self.syntax_highlight)
         text.bind_all('<<Paste>>', self.context_menu.paste)
         text.bind('<Shift-asciitilde>', self.syntax_highlighter.initial_highlight)
-        text.bind('<Control-Shift-KeyRelease>', self.syntax_highlighter.initial_highlight)
         text.bind('<Shift-parenleft>', self.autoclose_parens)
         text.bind('<bracketleft>', self.autoclose_square_brackets)
         text.bind('<quoteright>', self.autoclose_single_quotes)

@@ -43,6 +43,9 @@ class Menubar():
         self._menubar = menubar
         # adding features file dropdown in menubar
         file_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        file_dropdown.add_command(label='Load Previous File',
+                                  accelerator='Ctrl+P',
+                                  command=parent.load_previous_file)
         # new file creation feature
         file_dropdown.add_command(label='New File',
                                    accelerator='Ctrl+N',

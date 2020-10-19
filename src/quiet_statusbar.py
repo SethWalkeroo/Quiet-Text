@@ -26,7 +26,7 @@ class Statusbar:
     # status update of the status bar
     def update_status(self, event):
         if event == 'saved':
-            self.display_status_message('changes saved', msg_type='save')
+            self.display_status_message('Changes saved', msg_type='save')
         elif event == 'no file run':
             self.display_status_message('Cannot run. No file selected.')
         elif event == 'cant build':
@@ -41,6 +41,8 @@ class Statusbar:
             self.display_status_message('You can only highlight text in text files.')
         elif event == 'quiet':
             self.display_status_message('You can leave quiet mode by pressing "escape"', msg_type='hint')
+        elif event == 'created':
+            self.display_status_message('File created', msg_type='hint')
         else:
             self.hide_status_bar()
 
