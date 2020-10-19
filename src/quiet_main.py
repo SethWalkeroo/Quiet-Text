@@ -523,6 +523,7 @@ class QuietText(tk.Frame):
 
         self.textarea.configure(font=self.font_style)
         self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
+        self.syntax_highlighter.text.tag_configure("Token.Keyword.Type",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Name.Attribute",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Emph",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Strong",font=self.bold)
