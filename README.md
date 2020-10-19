@@ -104,7 +104,7 @@ pyinstaller --icon=q.png --onefile quiet_main.py
 
 4. Edit the quiet_main.spec file to include the projects resource tree (configs, themes, syntax, etc.)
 
-(image coming soon)
+![](https://media.giphy.com/media/ZS6SKVVCrB6UHzmY6S/giphy.gif)
 
 5. Use pyinstaller again on your new quiet_main.spec file
 
