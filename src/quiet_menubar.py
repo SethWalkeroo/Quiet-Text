@@ -313,7 +313,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(run_cmd)
             elif self._parent.filename[-4:] == '.cpp':
@@ -321,7 +321,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(run_cmd)
             else:
@@ -343,7 +343,7 @@ class Menubar():
                     run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
                     build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
-                    run = f'start cmd.exe @cmd /k "./{compiled_name}"'
+                    run = f'start cmd.exe @cmd /k "{compiled_name}"'
                 os.chdir(file_path)
                 os.system(build)
                 os.system(run)
@@ -354,7 +354,7 @@ class Menubar():
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
                     compile_cmd = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
-                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(compile_cmd)
                 os.system(run_cmd)
@@ -365,7 +365,7 @@ class Menubar():
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
                     compile_cmd = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
-                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(compile_cmd)
                 os.system(run_cmd)

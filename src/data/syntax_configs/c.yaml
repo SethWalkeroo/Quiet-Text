@@ -1,26 +1,23 @@
 comments:
-- "Token.Comment.Preproc"
-- "Token.Comment.PreprocFile"
+- "Token.Comment.Single"
 - "Token.Comment.Multiline"
 strings:
 - "Token.Literal.String"
 - "Token.Literal.String.Char"
-object_names: 
+object_names:
 numbers: 
 - "Token.Literal.Number.Integer"
 - "Token.Name.Builtin"
 keywords: 
-- "Token.Keyword.Type"
-- "Token.Keyword"
 operators:
 - "Token.Operator"
 functions:
-- "Token.Name" 
+- "Token.Keyword" 
 class_self:
+- "Token.Keyword.Type"
 namespace:
+- "Token.Comment.PreprocFile"
 text:
-- "Token.Text"
-- "Token.Name"
 bold:
 italic:
 heading:
