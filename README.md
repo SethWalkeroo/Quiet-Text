@@ -49,6 +49,7 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | Hide Menu | <kbd>alt</kbd> | Hides menu bar from view in the text editor |
 | Hide Line Numbers | <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> | Hides line numbers from text area |
 | New File | <kbd>ctrl</kbd>+<kbd>n</kbd> | Open a new empty file |
+| Load Previous File | <kbd>ctrl</kbd>+<kbd>p</kbd> | Loads the last file you had open |
 | Open File | <kbd>ctrl</kbd>+<kbd>o</kbd> | Open an existing file |
 | Color Menu | <kbd>ctrl</kbd>+<kbd>m</kbd> | Opens color menu |
 | Run File | <kbd>ctrl</kbd>+<kbd>r</kbd> | Run the currently active file |
