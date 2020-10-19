@@ -69,13 +69,56 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 
 
 ## Quick Start
-Just launch one of the release binaries for your operating system :)
+
+### Use the release binaries (.exe)
+
+The fastest way to use the program is to just launch one of the release binaries on your system.
+If you are on Linux and the binary is not opening you may need to allow permission first. Type in the following command **if you trust this program**.
+On Windows you may run into a similar issue, but the Windows gui will let your "run anyway" if you choose. 
+
+```sh
+chmod u+x (name of .exe file)
+```
+
+## Launch using python
+The second fastest way would be to install the dependencies through **requirements.txt** and then launch the application through **src/quiet_main.py**.
+You can see instructions for this method [below](#installation).
+
+###Create your own binary
+If the release binary is not up to date with the current development branch, then you can just create your own binary with **pyinstaller**. I'll walk you through the process real quick.
+
+1. Clone source files off github into your preferred directory
+```sh
+git clone https://github.com/SethWalkeroo/Quiet-Text.git
+```
+
+2. Install pyinstaller
+```sh
+pip install pyinstaller
+```
+
+3. Cd into the src directory and use pyinstaller on quiet_main.py
+```sh
+pyinstaller --icon=q.png --onefile quiet_main.py
+```
+
+4. Edit the quiet_main.spec file to include the projects resource tree (configs, themes, syntax, etc.)
+
+(image coming soon)
+
+5. Use pyinstaller again on your new quiet_main.spec file
+
+```sh
+pyinstaller quiet_main.spec
+```
+
+6. Check the dist directory for your binary file and you should be good to go!
 
 
 
 ## Installation
 This project requires **Pygments** as well as **PyYAML**. Both of these packages can be installed through a virtual environment with **requirements.txt**.
-After you install the dependencies, you can simply head into the **src** directory and launch the editor from **quiet_app_launch.py**.
+After you install the dependencies, you can simply head into the **src** directory and launch the editor from **src/quiet_main.py**.
 
 **Mac and Linux installation:**
 
