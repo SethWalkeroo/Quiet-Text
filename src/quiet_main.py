@@ -174,8 +174,6 @@ class QuietText(tk.Frame):
             except TypeError:
                 pass
 
-
-
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
         if tab_spaces == 'default':
@@ -286,7 +284,7 @@ class QuietText(tk.Frame):
         if name:
             self.master.title(f'{name} - Quiet Text')
         else:
-            self.master.title('Untitled - Quiet Text')
+            self.master.title('untitled - Quiet Text')
 
 
     def load_previous_file(self, *args):
@@ -319,7 +317,7 @@ class QuietText(tk.Frame):
             self.previous_file = self.filename
             self.filename = new_file
             textarea_content = self.textarea.get(1.0, tk.END)
-            self.set_window_title('untitled - Quiet Text')
+            self.set_window_title('untitled')
             with open(new_file, 'w') as f:
                 f.write(textarea_content)
             self.set_window_title(self.filename)
