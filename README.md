@@ -19,9 +19,8 @@
 <img src="images/quiet6.png" alt="there should be an image here...">
 
 
-
-
 ## Table of contents
+- [Notable Features](#notable-features)
 - [Keyboard Shortcuts and Usage](#keyboard-shortcuts)
 - [Quick Start](#quick-start)
 - [Installation/Setup](#installation)
@@ -31,6 +30,15 @@
 ## About
 
 Quiet Text aims to give you a **clean and simple** text editor experience. Everything is right in front of you and all completely customizable to your preferences. Too many text editors clutter their ui with unnecessary tooling that overwhelms their users. It isn't uncommon for somebody to lose hours of their precious work day mulling over and disabling irritating configuration settings in their text editor/ide. We want to eliminate the annoyances of a noisy/busy text editing environment and bring you an environment that has the **main goal of increasing focus and eliminating distractions**.
+
+## Notable Features
+
+- Autocompletion for parenthesis, brackets (square and curly), single quotes, and double quotes.
+- Auto indentation for code blocks and brackets (when creating lists or creating functions).
+- Syntax highlighting for 9 different languages and more to come (Go, Python, C, C++, JavaScript, HTML, CSS, Yaml, Markdown).
+- Ability to compile and run your code from the editor. 
+- 9 different themes and color schemes to chose from (and more to come).
+- Customization options like font, text color, line height, and many more. 
 
 
 ## Keyboard Shortcuts
