@@ -284,9 +284,9 @@ class QuietText(tk.Frame):
     #Renames the window title bar to the name of the current file.
     def set_window_title(self, name=None):
         if name:
-            self.master.title(f'{name} - QuietText')
+            self.master.title(f'{name} - Quiet Text')
         else:
-            self.master.title('Untitled - QuietText')
+            self.master.title('Untitled - Quiet Text')
 
 
     def load_previous_file(self, *args):
