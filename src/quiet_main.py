@@ -556,35 +556,34 @@ class QuietText(tk.Frame):
         if self.autoclose_singlequotes:
             self.autoclose_base("'")
 
-    def get_indent_level(self, line):
-        num_leading_whitespaces = len(line) - len(line.lstrip())
-        return num_leading_whitespaces // 4
+    def get_indent_level(self):
+        text = self.textarea
+        line = text.get('insert linestart', 'insert lineend')
+        match = re.match(r'^(\s+)', line)
+        current_indent = len(match.group(0)) if match else 0
+        return current_indent
 
     def auto_indentation(self):
         text = self.textarea
-        line = text.get('insert linestart', 'insert lineend')
-        new_indent = self.get_indent_level(line) * 4
-        text.insert('insert', '\n' + ' ' * new_indent)
+        new_indent = self.get_indent_level()
+        text.insert('insert', '\n' + '\t' * new_indent)
 
     def auto_block_indentation(self, event):
         prev_char, second_char, _, _ = self.get_chars_in_front_and_back()
         text = self.textarea
         if prev_char == ':':
-            line = text.get('insert linestart', 'insert lineend')
-            match = re.match(r'^(\s+)', line)
-            current_indent = len(match.group(0)) if match else 0
-            new_indent = current_indent + 4
-            text.insert('insert', '\n' + ' ' * new_indent)
+            current_indent = self.get_indent_level()
+            new_indent = current_indent + 1
+            text.insert('insert', '\n' + '\t' * new_indent)
             return 'break'
-        elif prev_char == '{' and second_char == '}' or prev_char == '(' and second_char == ')':
-            line = text.get('insert linestart', 'insert lineend')
-            match = re.match(r'^(\s+)', line)
-            current_indent = len(match.group(0)) if match else 0
-            new_indent = current_indent + 4
+        elif prev_char == '{' and second_char == '}' or prev_char == '(' and second_char == ')' or prev_char ==  '[' and second_char == ']':
+            current_indent = self.get_indent_level()
+            new_indent = current_indent + 1
             text.insert('insert', '\n\n')
+            text.insert('insert', '\t' * current_indent)
             index = text.index(tk.INSERT)
-            text.mark_set('insert', 'insert-1c')
-            text.insert('insert', ' ' * new_indent)
+            text.mark_set('insert', str(round(float(index) - 1, 1)))
+            text.insert('insert', '\t' * new_indent)
             return 'break'
         else:
             self.auto_indentation()
