@@ -26,7 +26,10 @@ class TextLineNumbers(tk.Canvas):
             dline= self.textwidget.dlineinfo(i)
             if dline is None: break
             y = dline[1]
-            linenum = str(i).split('.')[0]
+            if float(i) >= 10:
+                linenum = str(i).split('.')[0]
+            else:
+                linenum = ' ' + str(i).split('.')[0]
             self.create_text(2, y, anchor='nw',
                              text=linenum,
                              font=(self._text_font, self._parent.font_size),
