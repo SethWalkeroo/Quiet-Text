@@ -74,7 +74,7 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 
 The fastest way to use the program is to just launch one of the release binaries on your system.
 If you are on Linux and the binary is not opening you may need to allow permission first. Type in the following command **if you trust this program**.
-On Windows you may run into a similar issue, but the Windows gui will let your "run anyway" if you choose. 
+On Windows you may run into a similar issue, but the Windows gui will let you "run anyway" if you allow it. 
 
 ```sh
 chmod u+x (name of .exe file)
@@ -114,6 +114,7 @@ pyinstaller quiet_main.spec
 
 6. Check the dist directory for your binary file and you should be good to go!
 
+(image/gif coming soon)
 
 
 ## Installation
