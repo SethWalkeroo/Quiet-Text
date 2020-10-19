@@ -1,8 +1,6 @@
 comments:
 - "Token.Comment.Single"
 - "Token.Comment.Multiline"
-- "Token.Comment.Preproc"
-- "Token.Comment.PreprocFile"
 strings:
 - "Token.Literal.String"
 - "Token.Literal.String.Double"
@@ -21,6 +19,7 @@ functions:
 class_self:
 - "Token.Name.Label"
 namespace:
+- "Token.Comment.PreprocFile"
 text:
 bold:
 italic:

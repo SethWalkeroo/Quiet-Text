@@ -85,8 +85,8 @@ class QuietText(tk.Frame):
         self.font_style = tk_font.Font(family=self.font_family,
                                        size=self.font_size)
 
-        self.italics = tk_font.Font(family=self.font_family, slant='italic')
-        self.bold = tk_font.Font(family=self.font_family, weight='bold')
+        self.italics = tk_font.Font(family=self.font_family, slant='italic', size=self.font_size)
+        self.bold = tk_font.Font(family=self.font_family, weight='bold', size=self.font_size)
         self.header1 = tk_font.Font(family=self.font_family, weight='bold', size=self.font_size + 15)
         self.header2 = tk_font.Font(family=self.font_family, weight='bold', size=self.font_size + 7)
 

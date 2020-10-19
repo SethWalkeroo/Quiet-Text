@@ -257,16 +257,18 @@ class Menubar():
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
+                    compile_cmd = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f'start cmd.exe @cmd /k "cd {file_path} && cc {filename} -o {compiled_name}"'
+                    compile_cmd = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
+                os.chdir(file_path)
                 os.system(compile_cmd)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
                 if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
+                    compile_cmd = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path} && g++ -o {compiled_name} {filename}'"
+                    compile_cmd = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
+                os.chdir(file_path)
                 os.system(compile_cmd)
             else:
                 self._parent.statusbar.update_status('cant build')
@@ -309,16 +311,18 @@ class Menubar():
             elif self._parent.filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
-                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path} && ./{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                os.chdir(file_path)
                 os.system(run_cmd)
             elif self._parent.filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
                 if self._parent.operating_system == 'Linux':
-                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path} && ./{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                os.chdir(file_path)
                 os.system(run_cmd)
             else:
                 self._parent.statusbar.update_status('no python')
@@ -336,30 +340,33 @@ class Menubar():
                 compiled_name = filename[:-3]
                 if self._parent.operating_system == 'Linux':
                     build = f"gnome-terminal -- bash -c 'go build {self._parent.filename}; read'"
-                    run = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
                     build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
-                    run = f'start cmd.exe @cmd /k "cd {file_path} && ./{compiled_name}"'
+                    run = f'start cmd.exe @cmd /k "./{compiled_name}"'
+                os.chdir(file_path)
                 os.system(build)
                 os.system(run)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; cc {filename} -o {compiled_name}; read'"
-                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                    compile_cmd = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f'start cmd.exe @cmd /k "cd {file_path} && cc {filename} -o {compiled_name}"'
-                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path} && ./{compiled_name}'"
+                    compile_cmd = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
+                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                os.chdir(file_path)
                 os.system(compile_cmd)
                 os.system(run_cmd)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
                 if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; g++ -o {compiled_name} {filename}; read'"
-                    run_cmd = f"gnome-terminal -- bash -c 'cd {file_path}; ./{compiled_name}; read'"
+                    compile_cmd = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
+                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'cd {file_path} && g++ -o {compiled_name} {filename}'"
-                    run_cmd = f"start cmd.exe @cmd /k 'cd {file_path} && ./{compiled_name}'"
+                    compile_cmd = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
+                    run_cmd = f"start cmd.exe @cmd /k './{compiled_name}'"
+                os.chdir(file_path)
                 os.system(compile_cmd)
                 os.system(run_cmd)
             else:
