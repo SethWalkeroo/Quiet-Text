@@ -77,6 +77,8 @@ class QuietText(tk.Frame):
         self.scrolly_active_bg = self.settings['vertical_scrollbar_active_bg']
         self.menu_fg = self.settings['menu_fg']
         self.menu_bg = self.settings['menu_bg']
+        self.current_line_symbol = self.settings['current_line_indicator_symbol']
+        self.current_line_indicator = self.settings['current_line_indicator']
 
 
         #configuration of the file dialog text colors.
@@ -215,6 +217,17 @@ class QuietText(tk.Frame):
             self.autoclose_squarebrackets = _settings['autoclose_squarebrackets']
             self.autoclose_singlequotes = _settings['autoclose_singlequotes']
             self.autoclose_doublequotes = _settings['autoclose_doublequotes']
+            self.linenumbers.current_line_symbol = _settings['current_line_indicator_symbol']
+            self.linenumbers.indicator_on = _settings['current_line_indicator']
+            self.browser = _settings['web_browser']
+            self.text_selection_bg = text_selection_bg
+            self.textarea.reload_text_settings()
+            self.set_new_tab_width(tab_size_spaces)
+            self.menubar.reconfigure_settings()
+            self.linenumbers.font_color = menu_fg
+            self.linenumbers.bg_color = bg_color
+            self.linenumbers._text_font = font_family
+            self.linenumbers.redraw()
 
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
@@ -233,15 +246,6 @@ class QuietText(tk.Frame):
                                     highlightthickness=border,
                                     wrap=text_wrap)
 
-            self.browser = _settings['web_browser']
-            self.text_selection_bg = text_selection_bg
-            self.textarea.reload_text_settings()
-            self.set_new_tab_width(tab_size_spaces)
-            self.menubar.reconfigure_settings()
-            self.linenumbers.font_color = menu_fg
-            self.linenumbers.bg_color = bg_color
-            self.linenumbers._text_font = font_family
-            self.linenumbers.redraw()
 
             if overwrite_with_default:
                 MsgBox = tk.messagebox.askquestion('Reset Settings?',
@@ -285,7 +289,7 @@ class QuietText(tk.Frame):
             self.master.title('Untitled - QuietText')
 
 
-    def load_previous_file(self, key_event):
+    def load_previous_file(self, *args):
         if self.previous_file:
             previous = self.filename
             self.filename = self.previous_file
@@ -315,6 +319,7 @@ class QuietText(tk.Frame):
             self.previous_file = self.filename
             self.filename = new_file
             textarea_content = self.textarea.get(1.0, tk.END)
+            self.set_window_title('untitled - Quiet Text')
             with open(new_file, 'w') as f:
                 f.write(textarea_content)
             self.set_window_title(self.filename)

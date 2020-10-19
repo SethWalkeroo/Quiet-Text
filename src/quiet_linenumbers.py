@@ -8,6 +8,9 @@ class TextLineNumbers(tk.Canvas):
         self.textwidget = parent.textarea
         self.font_color = parent.menu_fg
         self.bg_color = parent.bg_color
+        self.indicator_on = parent.current_line_indicator
+        self.current_line_symbol = parent.current_line_symbol
+
 
     def attach(self, text_widget):
         self.textwidget = text_widget
@@ -26,10 +29,16 @@ class TextLineNumbers(tk.Canvas):
             dline= self.textwidget.dlineinfo(i)
             if dline is None: break
             y = dline[1]
+            index = self.textwidget.index(tk.INSERT)
+            pos = index.split('.')[0]
             if float(i) >= 10:
                 linenum = str(i).split('.')[0]
+                if pos == linenum and self.indicator_on:
+                    linenum = linenum + self.current_line_symbol
             else:
                 linenum = ' ' + str(i).split('.')[0]
+                if ' ' + pos == linenum and self.indicator_on:
+                    linenum = linenum + self.current_line_symbol
             self.create_text(2, y, anchor='nw',
                              text=linenum,
                              font=(self._text_font, self._parent.font_size),

@@ -3,9 +3,11 @@ autoclose_doublequotes: true
 autoclose_parentheses: true
 autoclose_singlequotes: true
 autoclose_squarebrackets: true
+current_line_indicator: true
+current_line_indicator_symbol: ':'
 font_color: '#FFFFFF'
 font_family: consolas
-font_size: 14
+font_size: 17
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_trough_color: '#2e2724'
