@@ -22,7 +22,7 @@ class QuietText(tk.Frame):
         tk.Frame.__init__(self, *args, **kwargs)
         master.title('untitled - Quiet Text')
         # defined size of the editer window
-        master.geometry('1280x720')
+        master.geometry('700x785')
 
         self.style = ttk.Style()
         self.style.theme_use('clam')

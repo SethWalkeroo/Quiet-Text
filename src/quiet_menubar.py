@@ -2,6 +2,7 @@ import tkinter as tk
 import yaml
 import os, sys
 import re
+from time import sleep
 from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting
 
@@ -283,32 +284,32 @@ class Menubar():
             file_from_path = re.search(ptrn, self._parent.filename)
             filename = file_from_path.group(0)
             file_path = self._parent.filename[:-len(filename)]
-            if self._parent.filename[-3:] == '.py':
+            if filename[-3:] == '.py':
                 #run separate commands for different os
                 if self._parent.operating_system == 'Windows':
                     cmd = f'start cmd.exe @cmd /k "python {self._parent.filename}"'
                 elif self._parent.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c 'python3 {self._parent.filename}; read'"
                 os.system(cmd)
-            elif self._parent.filename[-5:] == '.html':
+            elif filename[-5:] == '.html':
                 if self._parent.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c '{self._parent.browser} {self._parent.filename}; read'"
+                    cmd = f"gnome-terminal -- bash -c '{self._parent.browser} {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "{self._parent.browser} {self._parent.filename}"'
+                    cmd = f'start cmd.exe @cmd /k "{self._parent.browser} {filename}"'
                 os.system(cmd)
-            elif self._parent.filename[-3:] == '.js':
+            elif filename[-3:] == '.js':
                 if self._parent.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c 'node {self._parent.filename}; read'"
                 elif self._parent.operating_system == 'Windows':
                     cmd = f'start cmd.exe @cmd /k " node {self._parent.filename}"'
                 os.system(cmd)
-            elif self._parent.filename[-3:] == '.go':
+            elif filename[-3:] == '.go':
                 if self._parent.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c 'go run {self._parent.filename}; read'"
                 elif self._parent.operating_system == 'Windows':
                     cmd = f'start cmd.exe @cmd /k "go run {self._parent.filename}"'
                 os.system(cmd)
-            elif self._parent.filename[-2:] == '.c':
+            elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
@@ -316,7 +317,7 @@ class Menubar():
                     run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(run_cmd)
-            elif self._parent.filename[-4:] == '.cpp':
+            elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
@@ -346,29 +347,32 @@ class Menubar():
                     run = f'start cmd.exe @cmd /k "{compiled_name}"'
                 os.chdir(file_path)
                 os.system(build)
+                sleep(.2)
                 os.system(run)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
-                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
+                    build = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
+                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
-                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    build = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
+                    run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
-                os.system(compile_cmd)
-                os.system(run_cmd)
+                os.system(build)
+                sleep(.2)
+                os.system(run)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
                 if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
-                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
+                    build = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
+                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
-                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    build = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
+                    run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
-                os.system(compile_cmd)
-                os.system(run_cmd)
+                os.system(build)
+                sleep(.2)
+                os.system(run)
             else:
                 self._parent.statusbar.update_status('no python')
         except TypeError:

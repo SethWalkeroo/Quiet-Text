@@ -4,6 +4,7 @@ strings:
 object_names:
 numbers:
 - Token.Keyword.Constant
+- Token.Literal.Number.Oct
 - Token.Literal.Number.Float
 - Token.Literal.Number.Integer 
 keywords:
