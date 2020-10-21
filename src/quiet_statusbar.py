@@ -14,12 +14,13 @@ class Statusbar:
 
         self.status = tk.StringVar()
 
-        label = tk.Label(parent.textarea,
-                         textvariable=self.status,
-                         fg=self._parent.font_color,
-                         bg='#fff',
-                         anchor='se',
-                         font=font_specs)
+        label = tk.Label(
+            parent.textarea,
+            textvariable=self.status,
+            fg=self._parent.font_color,
+            bg='#fff',
+            anchor='se',
+            font=font_specs)
         
         self._label = label
 

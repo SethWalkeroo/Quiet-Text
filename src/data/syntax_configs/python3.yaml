@@ -16,7 +16,6 @@ numbers:
 - "Token.Literal.Number.Float"
 - "Token.Name.Decorator"
 keywords:
-- "Token.Keyword" 
 operators:
 - "Token.Operator.Word"
 - "Token.Operator"

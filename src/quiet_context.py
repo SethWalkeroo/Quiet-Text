@@ -7,38 +7,48 @@ class ContextMenu(tk.Listbox):
     def __init__(self, parent, *args, **kwargs):
         tk.Listbox.__init__(self, parent, *args, **kwargs)
 
-        self.settings = parent.loader.load_settings_data()
-        self.font_family = self.settings['font_family']
+        self.font_family = parent.font_family
+        self.font_color = parent.menu_fg
+        self.bg_color = parent.bg_color
+        self.active_bg = parent.menubar_active_bg
+        self.active_fg = parent.menubar_active_fg
         self.parent = parent
 
         # setting tk.RIGHT click menu bar
-        self.right_click_menu = tk.Menu(parent,
-                                        font=self.font_family,
-                                        fg='#d5c4a1',
-                                        bg='#2e2724',
-                                        activebackground='#9c8383',
-                                        bd=0,
-                                        tearoff=0)
+        self.right_click_menu = tk.Menu(
+            parent,
+            font=self.font_family,
+            fg=self.font_color,
+            bg=self.bg_color,
+            activebackground=self.active_bg,
+            activeforeground=self.active_fg,
+            bd=0,
+            tearoff=0)
 
-        self.right_click_menu.add_command(label='Cut',
-                                          accelerator='Ctrl+X',
-                                          command=self.cut)
+        self.right_click_menu.add_command(
+            label='Cut',
+            accelerator='Ctrl+X',
+            command=self.cut)
 
-        self.right_click_menu.add_command(label='Copy',
-                                          accelerator='Ctrl+C',
-                                          command=self.copy)
+        self.right_click_menu.add_command(
+            label='Copy',
+            accelerator='Ctrl+C',
+            command=self.copy)
 
-        self.right_click_menu.add_command(label='Paste',
-                                          accelerator='Ctrl+V',
-                                          command=self.paste)
+        self.right_click_menu.add_command(
+            label='Paste',
+            accelerator='Ctrl+V',
+            command=self.paste)
 
-        self.right_click_menu.add_command(label='Bold',
-                                          accelerator='Ctrl+B',
-                                          command=self.bold)
+        self.right_click_menu.add_command(
+            label='Bold',
+            accelerator='Ctrl+B',
+            command=self.bold)
 
-        self.right_click_menu.add_command(label='Highlight',
-                                          accelerator='Ctrl+H',
-                                          command=self.hightlight)
+        self.right_click_menu.add_command(
+            label='Highlight',
+            accelerator='Ctrl+H',
+            command=self.hightlight)
 
     def popup(self, event):
         try:
@@ -97,7 +107,11 @@ class ContextMenu(tk.Listbox):
                     new_color = self.parent.menubar.open_color_picker()
                     current_tags = self.parent.textarea.tag_names("sel.first")
                     highlight_font = tk_font.Font(self.parent.textarea, self.parent.textarea.cget("font"))
-                    self.parent.textarea.tag_config(f"highlight_{new_color}", font = highlight_font, foreground = "black", background = new_color)
+                    self.parent.textarea.tag_config(
+                        f"highlight_{new_color}",
+                        font = highlight_font,
+                        foreground = "black",
+                        background = new_color)
                     if "highlight" in current_tags:
                         for tag in current_tags:
                             if "highlight" in tag:

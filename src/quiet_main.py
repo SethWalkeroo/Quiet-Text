@@ -16,6 +16,7 @@ from quiet_textarea import CustomText
 from quiet_find import FindWindow 
 from quiet_context import ContextMenu
 from quiet_loaders import QuietLoaders
+# from quiet_tree import TreeView
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -75,10 +76,13 @@ class QuietText(tk.Frame):
         self.troughy_clr = self.settings['vertical_scrollbar_trough_color']
         self.scrolly_width = self.settings['vertical_scrollbar_width']
         self.scrolly_active_bg = self.settings['vertical_scrollbar_active_bg']
+        self.menubar_active_fg = self.settings['menubar_active_fg']
+        self.menubar_active_bg = self.settings['menubar_active_bg']
         self.menu_fg = self.settings['menu_fg']
         self.menu_bg = self.settings['menu_bg']
         self.current_line_symbol = self.settings['current_line_indicator_symbol']
         self.current_line_indicator = self.settings['current_line_indicator']
+
 
 
         #configuration of the file dialog text colors.
@@ -96,45 +100,48 @@ class QuietText(tk.Frame):
                                 
         self.textarea = CustomText(self)
 
-        self.scrolly = tk.Scrollbar(master,
-                                    command=self.textarea.yview,
-                                    bg=self.scrolly_clr,
-                                    troughcolor=self.troughy_clr,
-                                    bd=0,
-                                    width=self.scrolly_width,
-                                    highlightthickness=0,
-                                    activebackground=self.scrolly_active_bg,
-                                    orient='vertical')
+        self.scrolly = tk.Scrollbar(
+            master,
+            command=self.textarea.yview,
+            bg=self.scrolly_clr,
+            troughcolor=self.troughy_clr,
+            bd=0,
+            width=self.scrolly_width,
+            highlightthickness=0,
+            activebackground=self.scrolly_active_bg,
+            orient='vertical')
 
-        self.scrollx = tk.Scrollbar(master,
-                                    command=self.textarea.xview,
-                                    bg=self.scrollx_clr,
-                                    troughcolor=self.troughx_clr,
-                                    bd=0,
-                                    width=self.scrollx_width,
-                                    highlightthickness=0,
-                                    activebackground=self.scrollx_active_bg,
-                                    orient='horizontal')
+        self.scrollx = tk.Scrollbar(
+            master,
+            command=self.textarea.xview,
+            bg=self.scrollx_clr,
+            troughcolor=self.troughx_clr,
+            bd=0,
+            width=self.scrollx_width,
+            highlightthickness=0,
+            activebackground=self.scrollx_active_bg,
+            orient='horizontal')
 
-        self.textarea.configure(yscrollcommand=self.scrolly.set,
-                                xscrollcommand=self.scrollx.set,
-                                bg=self.bg_color,
-                                fg=self.font_color,
-                                wrap= self.text_wrap,
-                                spacing1=self.top_spacing, 
-                                spacing3=self.bottom_spacing,
-                                selectbackground= self.text_selection_bg,
-                                insertbackground=self.insertion_color,
-                                insertofftime=self.insertion_blink,
-                                bd=self.border,
-                                highlightthickness=self.border,
-                                highlightbackground='black',
-                                font=self.font_style,
-                                undo=True,
-                                autoseparators=True,
-                                maxundo=-1,
-                                padx=self.padding_x,
-                                pady=self.padding_y)
+        self.textarea.configure(
+            yscrollcommand=self.scrolly.set,
+            xscrollcommand=self.scrollx.set,
+            bg=self.bg_color,
+            fg=self.font_color,
+            wrap= self.text_wrap,
+            spacing1=self.top_spacing, 
+            spacing3=self.bottom_spacing,
+            selectbackground= self.text_selection_bg,
+            insertbackground=self.insertion_color,
+            insertofftime=self.insertion_blink,
+            bd=self.border,
+            highlightthickness=self.border,
+            highlightbackground='black',
+            font=self.font_style,
+            undo=True,
+            autoseparators=True,
+            maxundo=-1,
+            padx=self.padding_x,
+            pady=self.padding_y)
 
         self.initial_content = self.textarea.get("1.0", tk.END)
 
@@ -149,11 +156,13 @@ class QuietText(tk.Frame):
         self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
         self.menubar = Menubar(self)
+        # self.tree_view = TreeView(self.textarea)
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollx.pack(side=tk.BOTTOM, fill='both')
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
+        # self.tree_view.tree.pack(side=tk.BOTTOM, fill=None, expand=False)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
         
         self.textarea.find_match_index = None
@@ -222,6 +231,8 @@ class QuietText(tk.Frame):
             self.textarea.reload_text_settings()
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
+            self.active_bg = _settings['menubar_active_bg']
+            self.active_fg = _settings['menubar_active_fg']
             self.linenumbers.font_color = menu_fg
             self.linenumbers.bg_color = bg_color
             self.linenumbers._text_font = font_family
@@ -230,19 +241,29 @@ class QuietText(tk.Frame):
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
 
-            self.textarea.configure(font=font_style,
-                                    bg=bg_color,
-                                    pady=padding_y,
-                                    padx=padding_x,
-                                    fg=font_color,
-                                    spacing1=top_spacing,
-                                    spacing3=bottom_spacing,
-                                    insertbackground=insertion_color,
-                                    selectbackground= text_selection_bg,
-                                    insertofftime=insertion_blink,
-                                    bd=border,
-                                    highlightthickness=border,
-                                    wrap=text_wrap)
+            self.context_menu.right_click_menu.configure(
+                                font=font_family,
+                                fg=menu_fg,
+                                bg=bg_color,
+                                activebackground=self.active_bg,
+                                activeforeground=self.active_fg,
+                                bd=0,
+                                tearoff=0)
+
+            self.textarea.configure(
+                font=font_style,
+                bg=bg_color,
+                pady=padding_y,
+                padx=padding_x,
+                fg=font_color,
+                spacing1=top_spacing,
+                spacing3=bottom_spacing,
+                insertbackground=insertion_color,
+                selectbackground= text_selection_bg,
+                insertofftime=insertion_blink,
+                bd=border,
+                highlightthickness=border,
+                wrap=text_wrap)
 
 
             if overwrite_with_default:
