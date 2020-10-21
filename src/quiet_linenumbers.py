@@ -36,8 +36,8 @@ class TextLineNumbers(tk.Canvas):
                 if pos == linenum and self.indicator_on:
                     linenum = linenum + self.current_line_symbol
             else:
-                linenum = ' ' + str(i).split('.')[0]
-                if ' ' + pos == linenum and self.indicator_on:
+                linenum = '~' + str(i).split('.')[0]
+                if '~' + pos == linenum and self.indicator_on:
                     linenum = linenum + self.current_line_symbol
             self.create_text(2, y, anchor='nw',
                              text=linenum,

@@ -100,6 +100,9 @@ class Menubar():
 
         #tools dropdown menu
         tools_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        tools_dropdown.add_command(label='Search and Replace',
+                                   accelerator='Ctrl+F',
+                                   command=parent.show_find_window)
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)
