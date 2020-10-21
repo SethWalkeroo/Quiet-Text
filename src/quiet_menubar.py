@@ -21,6 +21,7 @@ class Menubar():
         self.settings['menu_bg'] = self.default_theme['bg_color']
         font_specs = ('Droid Sans Fallback', 12)
 
+        self.default_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/default.yaml'))
         self.monokaipro_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai_pro.yaml'))
         self.monokai_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai.yaml'))
         self.gruvbox_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/gruvbox.yaml'))
@@ -105,6 +106,8 @@ class Menubar():
 
         #theme dropdown menu
         theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        theme_dropdown.add_command(label='Default',
+                                   command=self.load_default)
         theme_dropdown.add_command(label='Monokai',
                                    command=self.load_monokai)
         theme_dropdown.add_command(label='Monokai Pro',
@@ -380,21 +383,26 @@ class Menubar():
 
 
     def set_default_theme(self):
-        themes = {'monokai pro':self.monokaipro_theme_path,
-                  'monokai':self.monokai_theme_path,
-                  'gruvbox':self.gruvbox_theme_path,
-                  'solarized':self.solarized_theme_path,
-                  'darkheart':self.darkheart_theme_path,
-                  'githubly':self.githubly_theme_path,
-                  'dracula':self.dracula_theme_path,
-                  'pumpkin':self.pumpkin_theme_path,
-                  'material':self.material_theme_path}
+        themes = {
+        'default':self.default_theme_path,
+        'monokai pro':self.monokaipro_theme_path,
+        'monokai':self.monokai_theme_path,
+        'gruvbox':self.gruvbox_theme_path,
+        'solarized':self.solarized_theme_path,
+        'darkheart':self.darkheart_theme_path,
+        'githubly':self.githubly_theme_path,
+        'dracula':self.dracula_theme_path,
+        'pumpkin':self.pumpkin_theme_path,
+        'material':self.material_theme_path}
         new_default_theme_path = themes[self.current_theme]
         with open(new_default_theme_path, 'r') as new_theme_data:
             new_theme = yaml.load(new_theme_data, Loader=yaml.FullLoader)
         with open(self._parent.loader.default_theme_path, 'w') as default_theme:
             yaml.dump(new_theme, default_theme)
 
+    def load_default(self):
+      self.syntax.load_new_theme(self.default_theme_path)
+      self.current_theme = 'default'
 
     def load_monokai_pro(self):
         self.syntax.load_new_theme(self.monokaipro_theme_path)

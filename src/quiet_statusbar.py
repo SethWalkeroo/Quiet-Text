@@ -76,3 +76,4 @@ class Statusbar:
 
     def reconfigure_status_label(self):
         self._label.config()
+

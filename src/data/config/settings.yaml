@@ -11,11 +11,11 @@ font_size: 11
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_trough_color: '#2e2724'
-horizontal_scrollbar_width: 8
+horizontal_scrollbar_width: 0
 insertion_blink: false
-insertion_color: '#FFFFFF'
-menu_active_bg: '#323232'
-menu_active_fg: '#80cbc4'
+insertion_color: '#f8f8f2'
+menu_active_bg: '#36342c'
+menu_active_fg: '#a1efe4'
 menu_bg: '#212121'
 menu_fg: '#546e7a'
 menubar_active_bg: '#323232'

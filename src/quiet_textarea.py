@@ -10,6 +10,9 @@ class CustomText(tk.Text):
         # create a proxy for the underlying widget
         self.settings = self.loader.load_settings_data()
         self.bg_color = self.settings['textarea_background_color']
+        self.fg_color = self.settings['menu_fg']
+        self.active_fg = self.settings['menu_active_fg']
+        self.active_bg = self.settings['menu_active_bg']
         self.isControlPressed = False
         self._orig = self._w + '_orig'
         self.tk.call('rename', self._w, self._orig)
@@ -84,3 +87,7 @@ class CustomText(tk.Text):
     def reload_text_settings(self):
         settings = self.loader.load_settings_data()
         self.bg_color = settings['textarea_background_color']
+        self.bg_color = settings['textarea_background_color']
+        self.fg_color = settings['menu_fg']
+        self.active_fg = settings['menu_active_fg']
+        self.active_bg = settings['menu_active_bg']

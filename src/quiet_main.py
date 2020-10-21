@@ -36,16 +36,20 @@ class QuietText(tk.Frame):
         master.iconphoto(False, icon)
 
         # start editor according to defined settings in settings.yaml
-        self.settings = self.loader.load_settings_data()
+        self.initial_theme_settings = self.loader.load_settings_data()
         self.default_theme = self.loader.load_default_theme()
 
-        self.settings['font_color'] = self.default_theme['font_color']
-        self.settings['textarea_background_color'] = self.default_theme['bg_color']
-        self.settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
-        self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
-        self.settings['menu_bg'] = self.default_theme['bg_color']
-        self.settings['font_color'] = self.default_theme['font_color']
-        self.settings['menu_fg'] = self.default_theme['comment_color']
+        self.initial_theme_settings['font_color'] = self.default_theme['font_color']
+        self.initial_theme_settings['textarea_background_color'] = self.default_theme['bg_color']
+        self.initial_theme_settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
+        self.initial_theme_settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
+        self.initial_theme_settings['menu_bg'] = self.default_theme['bg_color']
+        self.initial_theme_settings['font_color'] = self.default_theme['font_color']
+        self.initial_theme_settings['menu_fg'] = self.default_theme['comment_color']
+        self.initial_theme_settings['text_selection_bg'] = self.default_theme['selection_color']
+
+        self.loader.store_settings_data(self.initial_theme_settings)
+        self.settings = self.loader.load_settings_data()
 
         self.browser = self.settings['web_browser']
         self.font_family = self.settings['font_family']
@@ -231,8 +235,10 @@ class QuietText(tk.Frame):
             self.textarea.reload_text_settings()
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
-            self.active_bg = _settings['menubar_active_bg']
-            self.active_fg = _settings['menubar_active_fg']
+            self.bg_color = bg_color
+            self.menu_fg = menu_fg
+            self.menubar_active_bg = _settings['menubar_active_bg']
+            self.menubar_active_fg = _settings['menubar_active_fg']
             self.linenumbers.font_color = menu_fg
             self.linenumbers.bg_color = bg_color
             self.linenumbers._text_font = font_family
@@ -241,12 +247,20 @@ class QuietText(tk.Frame):
             font_style = tk_font.Font(family=font_family,
                                       size=_settings['font_size'])
 
+            self.menubar._menubar.configure(
+                          fg=menu_fg,
+                          bg=menu_bg,
+                          activeforeground=self.menubar_active_fg,
+                          activebackground=self.menubar_active_bg,
+                          activeborderwidth=0,
+                          bd=0)
+
             self.context_menu.right_click_menu.configure(
                                 font=font_family,
                                 fg=menu_fg,
                                 bg=bg_color,
-                                activebackground=self.active_bg,
-                                activeforeground=self.active_fg,
+                                activebackground=self.menubar_active_bg,
+                                activeforeground=self.menubar_active_fg,
                                 bd=0,
                                 tearoff=0)
 
@@ -267,13 +281,17 @@ class QuietText(tk.Frame):
 
 
             if overwrite_with_default:
-                MsgBox = tk.messagebox.askquestion('Reset Settings?',
-                                                   'Are you sure you want to reset the editor settings to their default value?',
-                                                    icon='warning')
+                MsgBox = tk.messagebox.askquestion(
+                    'Reset Settings?',
+                    'Are you sure you want to reset the editor settings to their default value?',
+                    icon='warning')
                 if MsgBox == 'yes':
+                    self.menubar.load_default()
                     self.loader.store_settings_data(_settings)
                 else:
-                    self.save(self.loader.settings_path)
+                    if self.filename == self.loader.settings_path: 
+                        self.save(self.loader.settings_path)
+                    self.reconfigure_settings()
 
     # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
@@ -582,6 +600,10 @@ class QuietText(tk.Frame):
 
     def show_find_window(self, event=None):
         self.textarea.tag_configure('find_match', background=self.text_selection_bg)
+        self.textarea.bg_color = self.bg_color
+        self.textarea.fg_color = self.menu_fg
+        self.textarea.active_fg = self.menubar_active_fg
+        self.textarea.active_bg = self.menubar_active_bg
         FindWindow(self.textarea)
         self.control_key = False
         self.textarea.isControlPressed = False
@@ -753,6 +775,7 @@ if __name__ == '__main__':
         qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 
