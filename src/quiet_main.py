@@ -341,8 +341,7 @@ class QuietText(tk.Frame):
         self.textarea.delete(1.0, tk.END)
         try:
             new_file = filedialog.asksaveasfilename(
-                initialfile='untitled.txt',
-                defaultextension='.txt',
+                initialfile='untitled',
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
@@ -392,13 +391,14 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.load_rust_syntax()
             elif self.filename[-5:] == '.yaml':
                 self.syntax_highlighter.load_yaml_syntax()
+            elif self.filename[-10:] == 'Dockerfile':
+                self.syntax_highlighter.load_docker_syntax()
 
     # opening an existing file in the editor
     def open_file(self, *args):
         # various file types that editor can support
         self.previous_file = self.filename
         self.filename = filedialog.askopenfilename(
-            defaultextension='.txt',
             filetypes=[('All Files', '*.*'),
                        ('Text Files', '*.txt'),
                        ('Python Scripts', '*.py'),
@@ -450,7 +450,6 @@ class QuietText(tk.Frame):
         try:
             new_file = filedialog.asksaveasfilename(
                 initialfile='untitled.txt',
-                defaultextension='.txt',
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),

@@ -25,6 +25,7 @@ class QuietLoaders:
 		self.yaml_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/yaml.yaml'))
 		self.java_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/java.yaml'))
 		self.rust_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/rust.yaml'))
+		self.docker_syntax_path = self.resource_path(os.path.join('data', 'syntax_configs/docker.yaml'))
 
 
 	def load_settings_data(self, default=False):
@@ -89,6 +90,10 @@ class QuietLoaders:
 
 	def load_rust_syntax(self):
 		with open(self.rust_syntax_path, 'r') as some_config:
+			return yaml.load(some_config, Loader=yaml.FullLoader)
+
+	def load_docker_syntax(self):
+		with open(self.docker_syntax_path, 'r') as some_config:
 			return yaml.load(some_config, Loader=yaml.FullLoader)
 
 

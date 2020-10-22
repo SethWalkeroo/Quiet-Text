@@ -135,24 +135,26 @@ class Menubar():
 
 
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        syntax_dropdown.add_command(label='Markdown',
-                                    command=self.syntax.load_markdown_syntax)
-        syntax_dropdown.add_command(label='Python3',
-                                    command=self.syntax.load_python3_syntax)
-        syntax_dropdown.add_command(label='HTML/Django',
-                                    command=self.syntax.load_html_syntax)
-        syntax_dropdown.add_command(label='CSS',
-                                    command=self.syntax.load_css_syntax)
-        syntax_dropdown.add_command(label='JavaScript',
-                                    command=self.syntax.load_javascript_syntax)
-        syntax_dropdown.add_command(label='Java',
-                                    command=self.syntax.load_java_syntax)
         syntax_dropdown.add_command(label='C',
                                     command=self.syntax.load_c_syntax)
         syntax_dropdown.add_command(label='C++',
                                     command=self.syntax.load_cpp_syntax)
+        syntax_dropdown.add_command(label='CSS',
+                                    command=self.syntax.load_css_syntax)
+        syntax_dropdown.add_command(label='Dockerfile',
+                                    command=self.syntax.load_docker_syntax)
+        syntax_dropdown.add_command(label='HTML/Django',
+                                    command=self.syntax.load_html_syntax)
+        syntax_dropdown.add_command(label='JavaScript',
+                                    command=self.syntax.load_javascript_syntax)
+        syntax_dropdown.add_command(label='Java',
+                                    command=self.syntax.load_java_syntax)
         syntax_dropdown.add_command(label='Go',
                                     command=self.syntax.load_go_syntax)
+        syntax_dropdown.add_command(label='Markdown',
+                                    command=self.syntax.load_markdown_syntax)
+        syntax_dropdown.add_command(label='Python3',
+                                    command=self.syntax.load_python3_syntax)
         syntax_dropdown.add_command(label='Rust',
                                     command=self.syntax.load_rust_syntax)
         syntax_dropdown.add_command(label='Yaml',
