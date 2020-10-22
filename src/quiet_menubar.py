@@ -111,24 +111,24 @@ class Menubar():
         theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         theme_dropdown.add_command(label='Default',
                                    command=self.load_default)
+        theme_dropdown.add_command(label='Dark Heart',
+                                   command=self.load_darkheart)
+        theme_dropdown.add_command(label='Dracula',
+                                   command=self.load_dracula)
+        theme_dropdown.add_command(label='Githubly',
+                                   command=self.load_githubly)
+        theme_dropdown.add_command(label='Gruvbox',
+                                   command=self.load_gruvbox)
+        theme_dropdown.add_command(label='Material',
+                                   command=self.load_material)
         theme_dropdown.add_command(label='Monokai',
                                    command=self.load_monokai)
         theme_dropdown.add_command(label='Monokai Pro',
                                    command=self.load_monokai_pro)
-        theme_dropdown.add_command(label='Material',
-                                   command=self.load_material)
-        theme_dropdown.add_command(label='Gruvbox',
-                                   command=self.load_gruvbox)
-        theme_dropdown.add_command(label='Solarized',
-                                   command=self.load_solarized)
-        theme_dropdown.add_command(label='Dark Heart',
-                                   command=self.load_darkheart)
-        theme_dropdown.add_command(label='Githubly',
-                                   command=self.load_githubly)
-        theme_dropdown.add_command(label='Dracula',
-                                   command=self.load_dracula)
         theme_dropdown.add_command(label='Pumpkin',
                                    command=self.load_pumpkin)
+        theme_dropdown.add_command(label='Solarized',
+                                   command=self.load_solarized)
         theme_dropdown.add_separator()
         theme_dropdown.add_command(label='Set Current Theme as Default',
                                    command=self.set_default_theme)
