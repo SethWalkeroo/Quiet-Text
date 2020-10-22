@@ -207,7 +207,15 @@ class SyntaxHighlighting():
         self.lexer = get_lexer_by_name('yaml')
         self.load_new_tokens(new_syntax)
 
+    def load_java_syntax(self):
+        new_syntax = self.parent.loader.load_java_syntax()
+        self.lexer = get_lexer_by_name('java')
+        self.load_new_tokens(new_syntax)
 
+    def load_rust_syntax(self):
+        new_syntax = self.parent.loader.load_rust_syntax()
+        self.lexer = get_lexer_by_name('rust')
+        self.load_new_tokens(new_syntax)
 
 
 

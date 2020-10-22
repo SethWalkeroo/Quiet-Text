@@ -139,18 +139,22 @@ class Menubar():
                                     command=self.syntax.load_markdown_syntax)
         syntax_dropdown.add_command(label='Python3',
                                     command=self.syntax.load_python3_syntax)
-        syntax_dropdown.add_command(label='HTML',
+        syntax_dropdown.add_command(label='HTML/Django',
                                     command=self.syntax.load_html_syntax)
         syntax_dropdown.add_command(label='CSS',
                                     command=self.syntax.load_css_syntax)
         syntax_dropdown.add_command(label='JavaScript',
                                     command=self.syntax.load_javascript_syntax)
+        syntax_dropdown.add_command(label='Java',
+                                    command=self.syntax.load_java_syntax)
         syntax_dropdown.add_command(label='C',
                                     command=self.syntax.load_c_syntax)
         syntax_dropdown.add_command(label='C++',
                                     command=self.syntax.load_cpp_syntax)
         syntax_dropdown.add_command(label='Go',
                                     command=self.syntax.load_go_syntax)
+        syntax_dropdown.add_command(label='Rust',
+                                    command=self.syntax.load_rust_syntax)
         syntax_dropdown.add_command(label='Yaml',
                                     command=self.syntax.load_yaml_syntax)
 
@@ -277,6 +281,22 @@ class Menubar():
                     compile_cmd = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
                 os.chdir(file_path)
                 os.system(compile_cmd)
+            elif filename[-5:] == '.java':
+                compiled_name = filename[:-5]
+                if self._parent.operating_system == 'Linux':
+                      compile_cmd = f"gnome-terminal -- bash -c 'javac {filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                      compile_cmd = f"start cmd.exe @cmd /k 'javac {filename}'"
+                os.chdir(file_path)
+                os.system(compile_cmd)
+            elif filename[-3:] == '.rs':
+                compiled_name = filename[:-3]
+                if self._parent.operating_system == 'Linux':
+                    compile_cmd = f"gnome-terminal -- bash -c 'rustc {filename}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    compile_cmd = f"start cmd.exe @cmd /k 'rustc {filename}'"
+                os.chdir(file_path)
+                os.system(compile_cmd)
             else:
                 self._parent.statusbar.update_status('cant build')
         except TypeError:
@@ -331,6 +351,22 @@ class Menubar():
                     run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(run_cmd)
+            elif filename[-5:] == '.java':
+                compiled_name = filename[:-5]
+                if self._parent.operating_system == 'Linux':
+                    run_cmd = f"gnome-terminal -- bash -c 'java {compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    run_cmd = f"start cmd.exe @cmd /k 'java {compiled_name}'"
+                os.chdir(file_path)
+                os.system(run_cmd)
+            elif filename[-3:] == '.rs':
+                compiled_name = filename[:-3]
+                if self._parent.operating_system == 'Linux':
+                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
+                os.chdir(file_path)
+                os.system(run_cmd)
             else:
                 self._parent.statusbar.update_status('no python')
         except TypeError:
@@ -353,7 +389,7 @@ class Menubar():
                     run = f'start cmd.exe @cmd /k "{compiled_name}"'
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.2)
+                sleep(.5)
                 os.system(run)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
@@ -365,7 +401,7 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.2)
+                sleep(.5)
                 os.system(run)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
@@ -377,7 +413,31 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.2)
+                sleep(.5)
+                os.system(run)
+            elif filename[-5:] == '.java':
+                compiled_name = filename[:-5]
+                if self._parent.operating_system == 'Linux':
+                    build = f"gnome-terminal -- bash -c 'javac {filename}; read'"
+                    run = f"gnome-terminal -- bash -c 'java {compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    build = f"start cmd.exe @cmd /k 'javac {filename}'"
+                    run = f"start cmd.exe @cmd /k 'java {compiled_name}'"
+                os.chdir(file_path)
+                os.system(build)
+                sleep(.5)
+                os.system(run)
+            elif filename[-3:] == '.rs':
+                compiled_name = filename[:-3]
+                if self._parent.operating_system == 'Linux':
+                    build = f"gnome-terminal -- bash -c 'rustc {filename}; read'"
+                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
+                elif self._parent.operating_system == 'Windows':
+                    build = f"start cmd.exe @cmd /k 'rustc {filename}'"
+                    run = f"start cmd.exe @cmd /k '{compiled_name}'"
+                os.chdir(file_path)
+                os.system(build)
+                sleep(.5)
                 os.system(run)
             else:
                 self._parent.statusbar.update_status('no python')

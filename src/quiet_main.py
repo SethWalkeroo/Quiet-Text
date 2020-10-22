@@ -348,11 +348,13 @@ class QuietText(tk.Frame):
                            ('Python Scripts', '*.py'),
                            ('Markdown Documents', '*.md'),
                            ('Javascript Files', '*.js'),
+                           ('Java Files', '*.java'),
                            ('HTML Documents', '*.js'),
                            ('CSS Documents', '*.css'),
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
-                           ('Go Files', '*.go')])
+                           ('Go Files', '*.go'),
+                           ('Rust Files', '*.rs')])
             self.previous_file = self.filename
             self.filename = new_file
             textarea_content = self.textarea.get(1.0, tk.END)
@@ -376,6 +378,8 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.load_python3_syntax()
             elif self.filename[-3:] == '.js':
                 self.syntax_highlighter.load_javascript_syntax()
+            elif self.filename[-5:] == '.java':
+                self.syntax_highlighter.load_java_syntax()
             elif self.filename[-5:] == '.html':
                 self.syntax_highlighter.load_html_syntax()
             elif self.filename[-4:] == '.css':
@@ -384,6 +388,8 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.load_cpp_syntax()
             elif self.filename[-3:] == '.go':
                 self.syntax_highlighter.load_go_syntax()
+            elif self.filename[-3:] == '.rs':
+                self.syntax_highlighter.load_rust_syntax()
             elif self.filename[-5:] == '.yaml':
                 self.syntax_highlighter.load_yaml_syntax()
 
@@ -398,11 +404,13 @@ class QuietText(tk.Frame):
                        ('Python Scripts', '*.py'),
                        ('Markdown Documents', '*.md'),
                        ('Javascript Files', '*.js'),
+                       ('Java Files', '*.java'),
                        ('HTML Documents', '*.html'),
                        ('CSS Documents', '*.css'),
                        ('C Files', '*.c'),
                        ('C++ Files', '*.cpp'),
-                       ('Go Files', '*.go')])
+                       ('Go Files', '*.go'),
+                       ('Rust Files', '*.rs')])
 
         self.initialize_syntax()
         self.set_window_title(name=self.filename)

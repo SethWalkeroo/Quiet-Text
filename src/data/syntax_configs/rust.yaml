@@ -1,0 +1,23 @@
+comments:
+- Token.Comment.Single
+strings:
+- Token.Literal.String
+object_names:
+- Token.Name.Class
+- Token.Name.Function
+numbers:
+- Token.Literal.Number.Integer
+- Token.Literal.Number.Float
+keywords:
+operators:
+- Token.Operator
+functions:
+class_self:
+- Token.Keyword.Declaration
+namespace:
+- Token.Keyword
+text:
+bold:
+italic:
+heading:
+subheading:
