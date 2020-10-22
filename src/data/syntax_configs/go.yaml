@@ -1,4 +1,5 @@
 comments:
+- Token.Comment.Single
 strings:
 - Token.Literal.String
 - Token.Literal.String.Char
