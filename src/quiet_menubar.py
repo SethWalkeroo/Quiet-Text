@@ -56,6 +56,8 @@ class Menubar():
         file_dropdown.add_command(label='Open File',
                                    accelerator='Ctrl+O',
                                    command=parent.open_file)
+        file_dropdown.add_command(label='Open Directory',
+                                  command=parent.open_dir)
         # save file feature
         file_dropdown.add_command(label='Save',
                                    accelerator='Ctrl+S',
@@ -103,6 +105,9 @@ class Menubar():
         tools_dropdown.add_command(label='Search and Replace',
                                    accelerator='Ctrl+F',
                                    command=parent.show_find_window)
+        tools_dropdown.add_command(label='Display File Tree',
+                                   accelerator='Ctrl+T',
+                                   command=parent.show_file_tree)
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)

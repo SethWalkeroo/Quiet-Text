@@ -4,7 +4,7 @@ import tkinter.ttk as ttk
 
 class FindWindow(tk.Toplevel):
     def __init__(self, master, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(master, **kwargs)
 
         self.master = master
 

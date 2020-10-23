@@ -8,6 +8,7 @@ import re
 import platform
 
 from tkinter import (filedialog, messagebox, ttk)
+from tkfilebrowser import askopendirname, askopenfilenames, asksaveasfilename
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menubar
 from quiet_statusbar import Statusbar
@@ -16,7 +17,7 @@ from quiet_textarea import CustomText
 from quiet_find import FindWindow 
 from quiet_context import ContextMenu
 from quiet_loaders import QuietLoaders
-# from quiet_tree import TreeView
+from quiet_tree import FileTree
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -100,6 +101,8 @@ class QuietText(tk.Frame):
 
         self.master = master
         self.filename = None
+        self.dirname = os.getcwd()
+
         self.previous_file = None
                                 
         self.textarea = CustomText(self)
@@ -340,7 +343,9 @@ class QuietText(tk.Frame):
     def new_file(self, *args):
         self.textarea.delete(1.0, tk.END)
         try:
-            new_file = filedialog.asksaveasfilename(
+            new_file = asksaveasfilename(
+                parent=self.master,
+                title='New',
                 initialfile='untitled',
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
@@ -353,7 +358,7 @@ class QuietText(tk.Frame):
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
                            ('Go Files', '*.go'),
-                           ('Rust Files', '*.rs')])
+                           ('Rust Files', '*.rs')])[0]
             self.previous_file = self.filename
             self.filename = new_file
             textarea_content = self.textarea.get(1.0, tk.END)
@@ -398,23 +403,36 @@ class QuietText(tk.Frame):
     def open_file(self, *args):
         # various file types that editor can support
         self.previous_file = self.filename
-        self.filename = filedialog.askopenfilename(
-            filetypes=[('All Files', '*.*'),
-                       ('Text Files', '*.txt'),
-                       ('Python Scripts', '*.py'),
-                       ('Markdown Documents', '*.md'),
-                       ('Javascript Files', '*.js'),
-                       ('Java Files', '*.java'),
-                       ('HTML Documents', '*.html'),
-                       ('CSS Documents', '*.css'),
-                       ('C Files', '*.c'),
-                       ('C++ Files', '*.cpp'),
-                       ('Go Files', '*.go'),
-                       ('Rust Files', '*.rs')])
+        try:
+            self.filename = askopenfilenames(
+                parent=self.master,
+                filetypes=[('All Files', '*.*'),
+                           ('Text Files', '*.txt'),
+                           ('Python Scripts', '*.py'),
+                           ('Markdown Documents', '*.md'),
+                           ('Javascript Files', '*.js'),
+                           ('Java Files', '*.java'),
+                           ('HTML Documents', '*.html'),
+                           ('CSS Documents', '*.css'),
+                           ('C Files', '*.c'),
+                           ('C++ Files', '*.cpp'),
+                           ('Go Files', '*.go'),
+                           ('Rust Files', '*.rs')])[0]
 
-        self.initialize_syntax()
-        self.set_window_title(name=self.filename)
+            self.initialize_syntax()
+            self.set_window_title(name=self.filename)
+        except Exception:
+            pass
 
+    def open_dir(self):
+        self.dirname = askopendirname(
+            parent=self.master,
+            initialdir='/',
+            initialfile='tmp')
+        FileTree(self)
+
+    def show_file_tree(self):
+        FileTree(self)
 
     # opening an existing file without TK filedialog
     def open_file_without_dialog(self, path):
@@ -448,7 +466,8 @@ class QuietText(tk.Frame):
     # saving file as a particular name
     def save_as(self, *args):
         try:
-            new_file = filedialog.asksaveasfilename(
+            new_file = asksaveasfilename(
+                parent=self.master,
                 initialfile='untitled.txt',
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
@@ -459,7 +478,7 @@ class QuietText(tk.Frame):
                            ('CSS Documents', '*.css'),
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
-                           ('Go Files', '*.go')])
+                           ('Go Files', '*.go')])[0]
 
             textarea_content = self.textarea.get(1.0, tk.END)
             with open(new_file, 'w') as f:
@@ -480,7 +499,6 @@ class QuietText(tk.Frame):
             self.save_as()
         sys.exit()
                         
-
     def on_closing(self):
         message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
         if message == True:
@@ -746,6 +764,7 @@ class QuietText(tk.Frame):
         text.bind('<Control-q>', self.enter_quiet_mode)
         text.bind('<Control-f>', self.show_find_window)
         text.bind('<Control-p>', self.load_previous_file)
+        text.bind('<Control-t>', self.show_file_tree)
         text.bind('<Control-Shift-z>', self.textarea.edit_redo)
         text.bind('<Escape>', self.leave_quiet_mode)
         text.bind('<<Change>>', self._on_change)
