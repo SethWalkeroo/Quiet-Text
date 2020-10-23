@@ -431,7 +431,7 @@ class QuietText(tk.Frame):
             initialfile='tmp')
         FileTree(self)
 
-    def show_file_tree(self):
+    def show_file_tree(self, *args):
         FileTree(self)
 
     # opening an existing file without TK filedialog
