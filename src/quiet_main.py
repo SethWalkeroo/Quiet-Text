@@ -343,22 +343,40 @@ class QuietText(tk.Frame):
     def new_file(self, *args):
         self.textarea.delete(1.0, tk.END)
         try:
-            new_file = asksaveasfilename(
-                parent=self.master,
-                title='New',
-                initialfile='untitled',
-                filetypes=[('All Files', '*.*'),
-                           ('Text Files', '*.txt'),
-                           ('Python Scripts', '*.py'),
-                           ('Markdown Documents', '*.md'),
-                           ('Javascript Files', '*.js'),
-                           ('Java Files', '*.java'),
-                           ('HTML Documents', '*.js'),
-                           ('CSS Documents', '*.css'),
-                           ('C Files', '*.c'),
-                           ('C++ Files', '*.cpp'),
-                           ('Go Files', '*.go'),
-                           ('Rust Files', '*.rs')])[0]
+            if self.operating_system == 'Linux':
+                new_file = asksaveasfilename(
+                    parent=self.master,
+                    title='New',
+                    initialfile='untitled',
+                    filetypes=[('All Files', '*.*'),
+                               ('Text Files', '*.txt'),
+                               ('Python Scripts', '*.py'),
+                               ('Markdown Documents', '*.md'),
+                               ('Javascript Files', '*.js'),
+                               ('Java Files', '*.java'),
+                               ('HTML Documents', '*.js'),
+                               ('CSS Documents', '*.css'),
+                               ('C Files', '*.c'),
+                               ('C++ Files', '*.cpp'),
+                               ('Go Files', '*.go'),
+                               ('Rust Files', '*.rs')])[0]
+            else:
+                new_file = filedialog.asksaveasfilename(
+                    parent=self.master,
+                    title='New',
+                    initialfile='untitled',
+                    filetypes=[('All Files', '*.*'),
+                               ('Text Files', '*.txt'),
+                               ('Python Scripts', '*.py'),
+                               ('Markdown Documents', '*.md'),
+                               ('Javascript Files', '*.js'),
+                               ('Java Files', '*.java'),
+                               ('HTML Documents', '*.js'),
+                               ('CSS Documents', '*.css'),
+                               ('C Files', '*.c'),
+                               ('C++ Files', '*.cpp'),
+                               ('Go Files', '*.go'),
+                               ('Rust Files', '*.rs')])
             self.previous_file = self.filename
             self.filename = new_file
             textarea_content = self.textarea.get(1.0, tk.END)
@@ -404,20 +422,36 @@ class QuietText(tk.Frame):
         # various file types that editor can support
         self.previous_file = self.filename
         try:
-            self.filename = askopenfilenames(
-                parent=self.master,
-                filetypes=[('All Files', '*.*'),
-                           ('Text Files', '*.txt'),
-                           ('Python Scripts', '*.py'),
-                           ('Markdown Documents', '*.md'),
-                           ('Javascript Files', '*.js'),
-                           ('Java Files', '*.java'),
-                           ('HTML Documents', '*.html'),
-                           ('CSS Documents', '*.css'),
-                           ('C Files', '*.c'),
-                           ('C++ Files', '*.cpp'),
-                           ('Go Files', '*.go'),
-                           ('Rust Files', '*.rs')])[0]
+            if self.operating_system == 'Linux':
+                self.filename = askopenfilenames(
+                    parent=self.master,
+                    filetypes=[('All Files', '*.*'),
+                               ('Text Files', '*.txt'),
+                               ('Python Scripts', '*.py'),
+                               ('Markdown Documents', '*.md'),
+                               ('Javascript Files', '*.js'),
+                               ('Java Files', '*.java'),
+                               ('HTML Documents', '*.html'),
+                               ('CSS Documents', '*.css'),
+                               ('C Files', '*.c'),
+                               ('C++ Files', '*.cpp'),
+                               ('Go Files', '*.go'),
+                               ('Rust Files', '*.rs')])[0]
+            else:
+                self.filename = filedialog.askopenfilename(
+                    parent=self.master,
+                    filetypes=[('All Files', '*.*'),
+                               ('Text Files', '*.txt'),
+                               ('Python Scripts', '*.py'),
+                               ('Markdown Documents', '*.md'),
+                               ('Javascript Files', '*.js'),
+                               ('Java Files', '*.java'),
+                               ('HTML Documents', '*.html'),
+                               ('CSS Documents', '*.css'),
+                               ('C Files', '*.c'),
+                               ('C++ Files', '*.cpp'),
+                               ('Go Files', '*.go'),
+                               ('Rust Files', '*.rs')])[0]
 
             self.initialize_syntax()
             self.set_window_title(name=self.filename)
@@ -425,11 +459,17 @@ class QuietText(tk.Frame):
             pass
 
     def open_dir(self):
-        self.dirname = askopendirname(
-            parent=self.master,
-            initialdir='/',
-            initialfile='tmp')
-        FileTree(self)
+        try:
+            if self.operating_system == 'Linux':
+                self.dirname = askopendirname(
+                    parent=self.master)
+            else:
+                self.dirname = filedialog.askdirectory(
+                    parent=self.master)
+            if self.dirname != '':
+                FileTree(self)
+        except Exception:
+            pass
 
     def show_file_tree(self, *args):
         FileTree(self)
@@ -466,19 +506,35 @@ class QuietText(tk.Frame):
     # saving file as a particular name
     def save_as(self, *args):
         try:
-            new_file = asksaveasfilename(
-                parent=self.master,
-                initialfile='untitled.txt',
-                filetypes=[('All Files', '*.*'),
-                           ('Text Files', '*.txt'),
-                           ('Python Scripts', '*.py'),
-                           ('Markdown Documents', '*.md'),
-                           ('Javascript Files', '*.js'),
-                           ('HTML Documents', '*.js'),
-                           ('CSS Documents', '*.css'),
-                           ('C Files', '*.c'),
-                           ('C++ Files', '*.cpp'),
-                           ('Go Files', '*.go')])[0]
+            if self.operating_system == 'Linux':
+                new_file = asksaveasfilename(
+                    parent=self.master,
+                    initialfile='untitled.txt',
+                    filetypes=[('All Files', '*.*'),
+                               ('Text Files', '*.txt'),
+                               ('Python Scripts', '*.py'),
+                               ('Markdown Documents', '*.md'),
+                               ('Javascript Files', '*.js'),
+                               ('HTML Documents', '*.js'),
+                               ('CSS Documents', '*.css'),
+                               ('C Files', '*.c'),
+                               ('C++ Files', '*.cpp'),
+                               ('Go Files', '*.go')])[0]
+            else:
+                self.filename = filedialog.askopenfilename(
+                    parent=self.master,
+                    filetypes=[('All Files', '*.*'),
+                               ('Text Files', '*.txt'),
+                               ('Python Scripts', '*.py'),
+                               ('Markdown Documents', '*.md'),
+                               ('Javascript Files', '*.js'),
+                               ('Java Files', '*.java'),
+                               ('HTML Documents', '*.html'),
+                               ('CSS Documents', '*.css'),
+                               ('C Files', '*.c'),
+                               ('C++ Files', '*.cpp'),
+                               ('Go Files', '*.go'),
+                               ('Rust Files', '*.rs')])[0]
 
             textarea_content = self.textarea.get(1.0, tk.END)
             with open(new_file, 'w') as f:
