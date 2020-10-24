@@ -3,13 +3,13 @@ import math
 import yaml
 import tkinter.font as tk_font
 from pygments import lex
-from pygments.lexers import get_lexer_by_name
+from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer, MarkdownLexer, CssLexer,
+                             GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer)
 
 class SyntaxHighlighting():
 
     def __init__(self, parent, text_widget, initial_content):
         self.settings = parent.loader.load_settings_data()
-        self.syntax = parent.loader.load_default_syntax()
         self.default_theme = parent.loader.load_default_theme()
 
         self.parent = parent
@@ -17,22 +17,7 @@ class SyntaxHighlighting():
         self.font_family = parent.font_family
         self.font_size = parent.font_size
         self.previousContent = initial_content
-        self.lexer = get_lexer_by_name('python')
-
-        self.comment_tokens = self.syntax['comments']
-        self.string_tokens = self.syntax['strings']
-        self.number_tokens = self.syntax['numbers']
-        self.keyword_tokens = self.syntax['keywords']
-        self.operator_tokens = self.syntax['operators']
-        self.function_tokens = self.syntax['functions']
-        self.class_tokens = self.syntax['class_self']
-        self.namespace_tokens = self.syntax['namespace']
-        self.object_tokens = self.syntax['object_names']
-        self.text_tokens = self.syntax['text']
-        self.italic_tokens = self.syntax['italic']
-        self.bold_tokens = self.syntax['bold']
-        self.heading_tokens = self.syntax['heading']
-        self.subheading_tokens = self.syntax['subheading']
+        self.lexer = PythonLexer()
 
         self.comment_color = self.default_theme['comment_color']
         self.string_color = self.default_theme['string_color']
@@ -47,71 +32,74 @@ class SyntaxHighlighting():
 
 
     def default_highlight(self):
-        row = float(self.text.index(tk.INSERT))
-        row = str(math.trunc(row))
-        content = self.text.get("1.0", tk.END)
+        row, _ = self.text.index(tk.INSERT).split('.')
+        location = f'{row}.00'
+        content = self.text.get("1.0", "end-1c")
         lines = content.split("\n")
-
         if (self.previousContent != content):
-            self.text.mark_set("range_start", row + ".0")
-            data = self.text.get(row + ".0", row + "." + str(len(lines[int(row) - 1])))
-
+            self.text.mark_set("range_start", location)
+            word = str(len(lines[int(row) - 1]))
+            if int(word) < 10:
+                data = self.text.get(location, row + ".0" + word)
+            else:
+                data = self.text.get(location, row + "." + word)
             for token, content in lex(data, self.lexer):
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
-
-        self.previousContent = self.text.get("1.0", tk.END)
-
-    def syntax_theme_configuration(self):
-
-        def configure_tokens(tokens, token_attr, font='nope'):
-            if tokens:
-                if font == 'nope':
-                    for token in tokens:
-                        self.text.tag_configure(token, foreground=token_attr)
-                else:
-                    for token in tokens:
-                        self.text.tag_configure(token, font=token_attr)
-
-        configure_tokens(self.comment_tokens, self.comment_color)
-        configure_tokens(self.string_tokens, self.string_color)
-        configure_tokens(self.number_tokens, self.number_color)
-        configure_tokens(self.keyword_tokens, self.keyword_color)
-        configure_tokens(self.operator_tokens, self.operator_color)
-        configure_tokens(self.function_tokens, self.function_color)
-        configure_tokens(self.object_tokens, self.object_color)
-        configure_tokens(self.text_tokens, self.text_color)
-        configure_tokens(self.namespace_tokens, self.namespace_color)
-        configure_tokens(self.italic_tokens, self.parent.italics, font='yes')
-        configure_tokens(self.bold_tokens, self.parent.bold, font='yes')
-        configure_tokens(self.heading_tokens, self.parent.header1, font='yes')
-        configure_tokens(self.subheading_tokens, self.parent.header2, font='yes')
-
-        if self.class_tokens:
-            for token in self.class_tokens:
-                self.text.tag_configure(token, foreground=self.class_color, font=self.parent.italics)
+        self.previousContent = self.text.get("1.0", "end-1c")
 
 
     def initial_highlight(self, *args):
-
-        content = self.text.get("1.0", tk.END)
+        self.clear_existing_tags()
         self.text.mark_set("range_start", "1.0")
-        data = self.text.get("1.0", tk.END)
+        data = self.text.get("1.0", "end-1c")
         for token, content in lex(data, self.lexer):
             self.text.mark_set("range_end", "range_start + %dc" % len(content))
             self.text.tag_add(str(token), "range_start", "range_end")
             self.text.mark_set("range_start", "range_end")
-            
-        self.previousContent = self.text.get("1.0", tk.END)
-        self.syntax_theme_configuration()
+        self.text.tag_configure('Token.Comment.Single', foreground=self.comment_color)
+        self.text.tag_configure('Token.Comment.Multiline', foreground=self.comment_color)
+        self.text.tag_configure('Token.Literal.String', foreground=self.string_color)
+        self.text.tag_configure('Token.Literal.String.Char', foreground=self.string_color)
+        self.text.tag_configure('Token.Literal.Number.Integer', foreground=self.number_color)
+        self.text.tag_configure('Token.Literal.Number.Float', foreground=self.number_color)
+        self.text.tag_configure('Token.Keyword', foreground=self.keyword_color)
+        self.text.tag_configure('Token.Operator', foreground=self.operator_color)
+        self.text.tag_configure('Token.Keyword.Type', foreground=self.keyword_color)
+        self.text.tag_configure('Token.Keyword.Declaration', foreground=self.keyword_color)
+        self.text.tag_configure('Token.Name.Class', foreground=self.object_color)
+        self.text.tag_configure('Token.Text.Whitespace')
+        self.text.tag_configure('Token.Name.Function', foreground=self.object_color)
+        self.text.tag_configure('Token.Keyword.Namespace', foreground=self.namespace_color)
+        self.text.tag_configure('Token.Generic.Emph', font=self.parent.italics)
+        self.text.tag_configure('Token.Generic.Strong', font=self.parent.bold)
+        self.text.tag_configure('Token.Generic.Heading', font=self.parent.header1)
+        self.text.tag_configure('Token.Generic.Subheading', font=self.parent.header2)
+        self.text.tag_configure('Token.Name.Builtin.Pseudo', foreground=self.class_color)
+        self.text.tag_configure('Token.Name.Builtin', foreground=self.function_color)
+        self.text.tag_configure('Token.Punctuation.Indicator', foreground=self.function_color)
+        self.text.tag_configure('Token.Literal.Scalar.Plain', foreground=self.number_color)
+        self.text.tag_configure('Token.Literal.String.Single', foreground=self.string_color)
+        self.text.tag_configure('Token.Literal.String.Double', foreground=self.string_color)
+        self.text.tag_configure('Token.Keyword.Constant', foreground=self.number_color)
+        self.text.tag_configure('Token.Literal.String.Interpol', foreground=self.string_color)
+        self.text.tag_configure('Token.Name.Decorator', foreground=self.number_color)
+        self.text.tag_configure('Token.Operator.Word', foreground=self.operator_color)
+        self.text.tag_configure('Token.Literal.String.Affix', foreground=self.function_color)
+        self.text.tag_configure('Token.Name.Function.Magic', foreground=self.function_color)
+        self.text.tag_configure('Token.Literal.Number.Oct', foreground=self.number_color)
+        self.text.tag_configure('Token.Keyword.Reserved', foreground=self.keyword_color)
+        self.text.tag_configure('Token.Name.Attribute', foreground=self.function_color)
+        self.text.tag_configure('Token.Name.Tag', foreground=self.namespace_color)
+        self.text.tag_configure('Token.Comment.Preproc', foreground=self.comment_color)
+        self.text.tag_configure('Token.Comment.PreprocFile', forground=self.comment_color)
+        self.text.tag_configure('Token.Name.Label', foreground=self.class_color)
 
 
     def load_new_theme(self, path):
-
         with open(path) as new_theme_config:
             new_config = yaml.load(new_theme_config, Loader=yaml.FullLoader)
-
         self.comment_color = new_config['comment_color']
         self.string_color = new_config['string_color']
         self.number_color = new_config['number_color']
@@ -139,88 +127,57 @@ class SyntaxHighlighting():
         self.parent.reconfigure_settings()
         self.initial_highlight()
 
-
     def clear_existing_tags(self):
         for tag in self.text.tag_names():
             self.text.tag_delete(tag)
 
-    def load_new_tokens(self, new_syntax):
-        self.comment_tokens = new_syntax['comments']
-        self.string_tokens = new_syntax['strings']
-        self.number_tokens = new_syntax['numbers']
-        self.keyword_tokens = new_syntax['keywords']
-        self.keyword_tokens = new_syntax['operators']
-        self.function_tokens = new_syntax['functions']
-        self.class_tokens = new_syntax['class_self']
-        self.namespace_tokens = new_syntax['namespace']
-        self.object_tokens = new_syntax['object_names']
-        self.text_tokens = new_syntax['text']
-        self.italic_tokens = new_syntax['italic']
-        self.bold_tokens = new_syntax['bold']
-        self.heading_tokens = new_syntax['heading']
-        self.subheading_tokens = new_syntax['subheading']
-        self.clear_existing_tags()
+    def load_python3_syntax(self):
+        self.lexer = PythonLexer()
+        self.initial_highlight()
+        
+    def load_c_syntax(self):
+        self.lexer = CLexer()
         self.initial_highlight()
 
-    def load_python3_syntax(self):
-        new_syntax = self.parent.loader.load_python3_syntax()
-        self.lexer = get_lexer_by_name('python')
-        self.load_new_tokens(new_syntax)
-
-    def load_c_syntax(self):
-        new_syntax = self.parent.loader.load_c_syntax()
-        self.lexer = get_lexer_by_name('c')
-        self.load_new_tokens(new_syntax)
-
     def load_javascript_syntax(self):
-        new_syntax = self.parent.loader.load_javascript_syntax()
-        self.lexer = get_lexer_by_name('javascript')
-        self.load_new_tokens(new_syntax)
+        self.lexer = JavascriptLexer()
+        self.initial_highlight()
 
     def load_cpp_syntax(self):
-        new_syntax = self.parent.loader.load_cpp_syntax()
-        self.lexer = get_lexer_by_name('cpp')
-        self.load_new_tokens(new_syntax)
+        self.lexer = CppLexer()
+        self.initial_highlight()
 
     def load_html_syntax(self):
-        new_syntax = self.parent.loader.load_html_syntax()
-        self.lexer = get_lexer_by_name('html+django')
-        self.load_new_tokens(new_syntax)
+        self.lexer = HtmlDjangoLexer()
+        self.initial_highlight()
 
     def load_css_syntax(self):
-        new_syntax = self.parent.loader.load_css_syntax()
-        self.lexer = get_lexer_by_name('css')
-        self.load_new_tokens(new_syntax)
+        self.lexer = CssLexer()
+        self.initial_highlight()
 
     def load_go_syntax(self):
-        new_syntax = self.parent.loader.load_go_syntax()
-        self.lexer = get_lexer_by_name('go')
-        self.load_new_tokens(new_syntax)
+        self.lexer = GoLexer()
+        self.initial_highlight()
 
     def load_markdown_syntax(self):
-        new_syntax = self.parent.loader.load_markdown_syntax()
-        self.lexer = get_lexer_by_name('md')
-        self.load_new_tokens(new_syntax)
-
+        self.lexer = MarkdownLexer()
+        self.initial_highlight()
+        
     def load_yaml_syntax(self):
-        new_syntax = self.parent.loader.load_yaml_syntax()
-        self.lexer = get_lexer_by_name('yaml')
-        self.load_new_tokens(new_syntax)
+        self.lexer = YamlLexer()
+        self.initial_highlight()
 
     def load_java_syntax(self):
-        new_syntax = self.parent.loader.load_java_syntax()
-        self.lexer = get_lexer_by_name('java')
-        self.load_new_tokens(new_syntax)
+        self.lexer = JavaLexer()
+        self.initial_highlight()
 
     def load_rust_syntax(self):
-        new_syntax = self.parent.loader.load_rust_syntax()
-        self.lexer = get_lexer_by_name('rust')
-        self.load_new_tokens(new_syntax)
+        self.lexer = RustLexer()
+        self.initial_highlight()
 
     def load_docker_syntax(self):
-        new_syntax = self.parent.loader.load_docker_syntax()
-        self.lexer = get_lexer_by_name('docker')
-        self.load_new_tokens(new_syntax)
+        self.lexer = DockerLexer()
+        self.initial_highlight()
 
 
 

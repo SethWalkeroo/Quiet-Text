@@ -175,7 +175,6 @@ class QuietText(tk.Frame):
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
 
-        self.tags_configured = False
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
@@ -184,14 +183,14 @@ class QuietText(tk.Frame):
         self.console_toggled = False
 
     def clear_and_replace_textarea(self):
-            self.textarea.delete(1.0, tk.END)
-            try:
-                if self.filename:
-                    with open(self.filename, 'r') as f:
-                        self.textarea.insert(1.0, f.read())
-                self.syntax_highlighter.initial_highlight()
-            except TypeError:
-                pass
+        self.textarea.delete(1.0, tk.END)
+        try:
+            if self.filename:
+                with open(self.filename, 'r') as f:
+                    self.textarea.insert(1.0, f.read())
+            self.syntax_highlighter.initial_highlight()
+        except TypeError:
+            pass
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
@@ -633,9 +632,6 @@ class QuietText(tk.Frame):
 
     def syntax_highlight(self, *args):
         self.syntax_highlighter.default_highlight()
-        if not self.tags_configured:
-            self.syntax_highlighter.syntax_theme_configuration()
-            self.tags_configured = True
         self.control_key = False
         self.textarea.isControlPressed = False
 
