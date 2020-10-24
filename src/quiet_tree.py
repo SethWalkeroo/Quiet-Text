@@ -13,7 +13,7 @@ class FileTree(tk.Toplevel):
 		self.master = master
 		self.font_specs = ('Droid Sans Fallback', 12)
 		self.style = ttk.Style()
-		self.style.theme_use('clam')
+		self.style.theme_use('alt')
 		self.style.configure(
       		'Treeview',
 			font=self.font_specs,
@@ -101,3 +101,4 @@ class FileTree(tk.Toplevel):
   
 	def tree_bindings(self):
 		self.tree.bind('<Double-Button-1>', self.OnDoubleClick)
+

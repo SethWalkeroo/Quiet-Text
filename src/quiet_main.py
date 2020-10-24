@@ -17,6 +17,7 @@ from quiet_find import FindWindow
 from quiet_context import ContextMenu
 from quiet_loaders import QuietLoaders
 from quiet_tree import FileTree
+from quiet_console import QuietConsole
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -178,6 +179,9 @@ class QuietText(tk.Frame):
         #calling function to bind hotkeys.
         self.bind_shortcuts()
         self.control_key = False
+        
+        self.console = None
+        self.console_toggled = False
 
     def clear_and_replace_textarea(self):
             self.textarea.delete(1.0, tk.END)
@@ -422,6 +426,7 @@ class QuietText(tk.Frame):
 
             self.initialize_syntax()
             self.set_window_title(name=self.filename)
+            self.reload_console()
         except Exception:
             pass
 
@@ -433,6 +438,7 @@ class QuietText(tk.Frame):
             if self.dirname:
                 self.set_window_title(name=self.filename)
                 FileTree(self)
+                self.reload_console()
         except Exception:
             pass
 
@@ -756,9 +762,14 @@ class QuietText(tk.Frame):
                 index = self.textarea.index("insert linestart")
                 if self.textarea.get(index, 'end')[:1] == "\t":
                     self.textarea.delete(index)
-
         return "break"
-
+    
+    def display_console(self):
+        if not self.console_toggled:
+            self.console = QuietConsole(self.textarea)
+        else:
+            self.console.remove_console()
+        self.console_toggled = not self.console_toggled
 
     def bind_shortcuts(self, *args):
         text = self.textarea

@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.font as tk_font
 import os
+from tkinter import ttk
 
 class ContextMenu(tk.Listbox):
 

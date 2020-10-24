@@ -108,6 +108,8 @@ class Menubar():
         tools_dropdown.add_command(label='Display File Tree',
                                    accelerator='Ctrl+T',
                                    command=parent.show_file_tree)
+        tools_dropdown.add_command(label='Toggle Integrated Terminal',
+                                   command=parent.display_console)
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)

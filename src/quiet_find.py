@@ -74,6 +74,7 @@ class FindWindow(tk.Toplevel):
         self.protocol("WM_DELETE_WINDOW", self.on_cancel)
 
         self.minsize(320, 100)
+        self.maxsize(610, 100)
 
     def on_find(self):
         self.master.find(self.text_to_find.get())
@@ -84,6 +85,7 @@ class FindWindow(tk.Toplevel):
     def on_cancel(self):
         self.master.cancel_find()
         self.destroy()
+
 
 
 
