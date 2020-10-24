@@ -1,5 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+import os
+from quiet_loaders import QuietLoaders
 
 
 class FindWindow(tk.Toplevel):
@@ -7,8 +9,12 @@ class FindWindow(tk.Toplevel):
         super().__init__(master, **kwargs)
 
         self.master = master
-
+        self.loader = QuietLoaders()
         self.geometry('320x100')
+        self.quiet_icon_path = self.loader.resource_path(
+            os.path.join('data', 'q.png'))
+        self.icon = tk.PhotoImage(file=self.quiet_icon_path)
+        self.iconphoto(False, self.icon)
         self.title('Search and Replace')
         self.transient(master)
         self.configure(bg=master.bg_color)

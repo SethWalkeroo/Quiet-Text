@@ -31,9 +31,9 @@ class QuietText(tk.Frame):
         self.loader = QuietLoaders()
         self.operating_system = platform.system()
 
-        quiet_icon_path = self.loader.resource_path(os.path.join('data', 'q.png'))
-        icon = tk.PhotoImage(file = quiet_icon_path)
-        master.iconphoto(False, icon)
+        self.quiet_icon_path = self.loader.resource_path(os.path.join('data', 'q.png'))
+        self.icon = tk.PhotoImage(file = self.quiet_icon_path)
+        master.iconphoto(False, self.icon)
 
         # start editor according to defined settings in settings.yaml
         self.initial_theme_settings = self.loader.load_settings_data()

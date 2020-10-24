@@ -9,6 +9,7 @@ class FileTree(tk.Toplevel):
 			bd=0,
 			bg=master.bg_color,
 			highlightbackground=master.bg_color)
+		self.iconphoto(False, master.icon)
 		self.master = master
 		self.font_specs = ('Droid Sans Fallback', 12)
 		self.style = ttk.Style()
