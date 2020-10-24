@@ -429,6 +429,7 @@ class QuietText(tk.Frame):
                 parent=self.master)
             self.filename = self.dirname
             if self.dirname:
+                self.set_window_title(name=self.filename)
                 FileTree(self)
         except Exception:
             pass

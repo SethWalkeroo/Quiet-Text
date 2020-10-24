@@ -89,8 +89,6 @@ class FileTree(tk.Toplevel):
 				break
 		filename = self.tree.item(item)["text"]
 		file_path = folder + filename if folder else filename
-		print(folder)
-		print(file_path)
 		if '.' in file_path:
 			try:
 				self.master.filename += '/' + file_path
