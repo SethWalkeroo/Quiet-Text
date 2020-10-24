@@ -76,7 +76,7 @@ class FileTree(tk.Toplevel):
 		self.tree.pack(side=tk.TOP,fill=tk.BOTH)
   
 	def OnDoubleClick(self, event):
-		self.master.filename = os.getcwd()
+		self.master.filename = self.master.dirname
 		item = self.tree.identify("item", event.x, event.y)
 		folder_id = self.tree.parent(item)
 		folder = ''

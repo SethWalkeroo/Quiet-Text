@@ -427,6 +427,7 @@ class QuietText(tk.Frame):
         try:
             self.dirname = filedialog.askdirectory(
                 parent=self.master)
+            self.filename = self.dirname
             if self.dirname:
                 FileTree(self)
         except Exception:
