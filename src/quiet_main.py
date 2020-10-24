@@ -99,7 +99,7 @@ class QuietText(tk.Frame):
         self.header2 = tk_font.Font(family=self.font_family, weight='bold', size=self.font_size + 7)
 
         self.master = master
-        self.filename = None
+        self.filename = os.getcwd()
         self.dirname = os.getcwd()
 
         self.previous_file = None
@@ -433,7 +433,10 @@ class QuietText(tk.Frame):
             pass
 
     def show_file_tree(self, *args):
+        self.control_key = False
+        self.textarea.isControlPressed = False
         FileTree(self)
+        return 'break'
 
     # opening an existing file without TK filedialog
     def open_file_without_dialog(self, path):
