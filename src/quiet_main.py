@@ -345,6 +345,7 @@ class QuietText(tk.Frame):
             new_file = filedialog.asksaveasfilename(
                 parent=self.master,
                 title='New',
+                initialdir=self.dirname,
                 initialfile='untitled',
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
@@ -405,6 +406,7 @@ class QuietText(tk.Frame):
         try:
             self.filename = filedialog.askopenfilename(
                 parent=self.master,
+                initialdir=self.dirname,
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
@@ -474,6 +476,7 @@ class QuietText(tk.Frame):
         try:
             self.filename = filedialog.askopenfilename(
                 parent=self.master,
+                initialdir=self.dirname,
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
