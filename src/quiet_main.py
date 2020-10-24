@@ -425,8 +425,7 @@ class QuietText(tk.Frame):
 
             self.initialize_syntax()
             self.set_window_title(name=self.filename)
-            self.reload_console()
-        except Exception:
+        except Exception as e:
             pass
 
     def open_dir(self):

@@ -76,7 +76,7 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Generic.Strong', font=self.parent.bold)
         self.text.tag_configure('Token.Generic.Heading', font=self.parent.header1)
         self.text.tag_configure('Token.Generic.Subheading', font=self.parent.header2)
-        self.text.tag_configure('Token.Name.Builtin.Pseudo', foreground=self.class_color)
+        self.text.tag_configure('Token.Name.Builtin.Pseudo', foreground=self.class_color, font=self.parent.italics)
         self.text.tag_configure('Token.Name.Builtin', foreground=self.function_color)
         self.text.tag_configure('Token.Punctuation.Indicator', foreground=self.function_color)
         self.text.tag_configure('Token.Literal.Scalar.Plain', foreground=self.number_color)
