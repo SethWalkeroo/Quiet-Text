@@ -25,7 +25,6 @@
 - [Quick Start](#quick-start)
 - [Installation/Setup](#installation)
 - [Contributing](#contributing)
-- [Contributors](#contributors)
 
 ## About
 
@@ -210,9 +209,6 @@ Be aware, that the Docker container has full access to your machine! So you bett
 
 
 
-
-
-
 ## Goals
 
 - [x] Create a visually pleasing text editor! ;)
@@ -225,34 +221,3 @@ Be aware, that the Docker container has full access to your machine! So you bett
 #### suggestions are welcome!
 
 
-
-
-## Contributors
-
-Thanks goes to these wonderful people!:
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/SethWalkeroo"><img src="https://rb.gy/eaqnjk?s=100" width="100px;" alt=""/><br /><sub><b>Seth Walker</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=SethWalkeroo" title="Code">💻</a> <a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=SethWalkeroo" title="Documentation">📖</a> <a href="https://github.com/SethWalkeroo/Quiet-Text/issues?q=author%3ASethWalkeroo" title="Bug reports">🐛</a> <a href="#content-SethWalkeroo" title="Content">🖋</a> <a href="#design-SethWalkeroo" title="Design">🎨</a></td>
-    <td align="center"><a href="https://sid200026.github.io/"><img src="https://avatars0.githubusercontent.com/u/42297087?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Siddharth Singha Roy</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/issues?q=author%3ASid200026" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/thainapires"><img src="https://avatars0.githubusercontent.com/u/28638008?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thainá Pires</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=thainapires" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/Thanarathanam"><img src="https://avatars3.githubusercontent.com/u/6984902?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thanarathanam Lakshmanan</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=Thanarathanam" title="Code">💻</a></td>
-    <td align="center"><a href="https://punidramesh.tech"><img src="https://avatars3.githubusercontent.com/u/47942208?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Punid Ramesh</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=punidramesh" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Ryuno-Ki"><img src="https://rb.gy/hm88af?s=100" width="100px;" alt=""/><br /><sub><b>André Jaenisch</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=Ryuno-Ki" title="Code">💻</a> <a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=Ryuno-Ki" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/aish0007"><img src="https://avatars1.githubusercontent.com/u/45160006?v=4?s=100" width="100px;" alt=""/><br /><sub><b>aish0007</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=aish0007" title="Documentation">📖</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/hrishikesharma"><img src="https://avatars1.githubusercontent.com/u/72077890?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HRISHIKESH  SARMA</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=hrishikesharma" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/JuliusChrona"><img src="https://avatars1.githubusercontent.com/u/47902797?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kirill Vackevich</b></sub></a><br /><a href="https://github.com/SethWalkeroo/Quiet-Text/commits?author=JuliusChrona" title="Code">💻</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
