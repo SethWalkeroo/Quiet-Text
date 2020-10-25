@@ -200,6 +200,7 @@ class SyntaxHighlighting():
     def load_material(self):
         self.load_new_theme(self.material_theme_path)
         self.current_theme = 'material'
+        
 
     def load_python3_syntax(self):
         self.lexer = PythonLexer()

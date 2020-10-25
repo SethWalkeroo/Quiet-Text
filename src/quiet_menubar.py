@@ -165,6 +165,7 @@ class Menubar():
         menubar.add_cascade(label='Tools', menu=tools_dropdown)
         menubar.add_cascade(label='Syntax', menu=syntax_dropdown)
         menubar.add_cascade(label='Themes', menu=theme_dropdown)
+        menubar.add_cascade(label='Build Options', menu=build_dropdown)
         
         self.menu_fields = [field for field in (
             file_dropdown, view_dropdown, syntax_dropdown, build_dropdown,
