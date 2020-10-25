@@ -5,10 +5,10 @@ class Statusbar:
     # initialising the status bar
     def __init__(self, parent):
         self._parent = parent
-        self.save_bg = '#3dba50'
+        self.save_bg = '#FF6859'
         self.status_fg = parent.bg_color
-        self.error_bg = '#b52a2a'
-        self.hint_bg = '#438da8'
+        self.error_bg = '#B00020'
+        self.hint_bg = '#B15DFF'
         # setting up the status bar
         font_specs = ('Droid Sans Fallback', 10)
 

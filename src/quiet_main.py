@@ -474,7 +474,7 @@ class QuietText(tk.Frame):
     # saving file as a particular name
     def save_as(self, *args):
         try:
-            self.filename = filedialog.askopenfilename(
+            self.filename = filedialog.asksaveasfilename(
                 parent=self.master,
                 initialdir=self.dirname,
                 filetypes=[('All Files', '*.*'),
