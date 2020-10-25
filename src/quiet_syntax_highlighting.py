@@ -95,6 +95,7 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Comment.Preproc', foreground=self.comment_color)
         self.text.tag_configure('Token.Comment.PreprocFile', forground=self.comment_color)
         self.text.tag_configure('Token.Name.Label', foreground=self.class_color)
+        self.text.tag_configure('Token.Literal.String.Escape', foreground=self.number_color)
 
 
     def load_new_theme(self, path):
