@@ -37,19 +37,7 @@ class QuietText(tk.Frame):
         master.iconphoto(False, self.icon)
 
         # start editor according to defined settings in settings.yaml
-        self.initial_theme_settings = self.loader.load_settings_data()
-        self.default_theme = self.loader.load_default_theme()
 
-        self.initial_theme_settings['font_color'] = self.default_theme['font_color']
-        self.initial_theme_settings['textarea_background_color'] = self.default_theme['bg_color']
-        self.initial_theme_settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
-        self.initial_theme_settings['menubar_active_fg'] = self.default_theme['menu_fg_active']  
-        self.initial_theme_settings['menu_bg'] = self.default_theme['bg_color']
-        self.initial_theme_settings['font_color'] = self.default_theme['font_color']
-        self.initial_theme_settings['menu_fg'] = self.default_theme['comment_color']
-        self.initial_theme_settings['text_selection_bg'] = self.default_theme['selection_color']
-
-        self.loader.store_settings_data(self.initial_theme_settings)
         self.settings = self.loader.load_settings_data()
 
         self.browser = self.settings['web_browser']
@@ -87,8 +75,6 @@ class QuietText(tk.Frame):
         self.menu_bg = self.settings['menu_bg']
         self.current_line_symbol = self.settings['current_line_indicator_symbol']
         self.current_line_indicator = self.settings['current_line_indicator']
-
-
 
         #configuration of the file dialog text colors.
         self.font_style = tk_font.Font(family=self.font_family,
@@ -157,19 +143,16 @@ class QuietText(tk.Frame):
         self._tab_width = self._font.measure(' ' * self.tab_size_spaces)
         self.textarea.config(tabs=(self._tab_width,))
 
-        self.menu_hidden = False
         self.context_menu = ContextMenu(self)
-        self.syntax_highlighter = SyntaxHighlighting(self, self.textarea, self.initial_content)
-        self.statusbar = Statusbar(self)
         self.linenumbers = TextLineNumbers(self)
+        self.syntax_highlighter = SyntaxHighlighting(self, self.textarea, self.initial_content)
         self.menubar = Menubar(self)
-        # self.tree_view = TreeView(self.textarea)
+        self.statusbar = Statusbar(self)
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollx.pack(side=tk.BOTTOM, fill='both')
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
-        # self.tree_view.tree.pack(side=tk.BOTTOM, fill=None, expand=False)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
         
         self.textarea.find_match_index = None
@@ -177,10 +160,11 @@ class QuietText(tk.Frame):
 
         #calling function to bind hotkeys.
         self.bind_shortcuts()
+        self.syntax_highlighter.startup_theme()
         self.control_key = False
-        
-        self.console = None
+        self.menu_hidden = False
         self.console_toggled = False
+        self.console = None
 
     def clear_and_replace_textarea(self):
         self.textarea.delete(1.0, tk.END)
@@ -291,7 +275,6 @@ class QuietText(tk.Frame):
                     'Are you sure you want to reset the editor settings to their default value?',
                     icon='warning')
                 if MsgBox == 'yes':
-                    self.menubar.load_default()
                     self.loader.store_settings_data(_settings)
                 else:
                     if self.filename == self.loader.settings_path: 
@@ -536,7 +519,10 @@ class QuietText(tk.Frame):
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
         self.reconfigure_settings(overwrite_with_default=True)
-        self.clear_and_replace_textarea()
+        try:
+            self.clear_and_replace_textarea()
+        except IsADirectoryError:
+            pass
 
     # select all written text in the editor
     def select_all_text(self, *args):
@@ -600,9 +586,6 @@ class QuietText(tk.Frame):
                                     weight='bold')
 
         self.textarea.configure(font=self.font_style)
-        self.syntax_highlighter.text.tag_configure("Token.Name.Builtin.Pseudo",font=self.italics)
-        self.syntax_highlighter.text.tag_configure("Token.Keyword.Type",font=self.italics)
-        self.syntax_highlighter.text.tag_configure("Token.Name.Attribute",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Emph",font=self.italics)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Strong",font=self.bold)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Heading",font=self.header1)
@@ -817,6 +800,7 @@ if __name__ == '__main__':
         qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+
 
 
 

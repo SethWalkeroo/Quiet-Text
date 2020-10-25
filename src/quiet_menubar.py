@@ -10,27 +10,11 @@ from quiet_syntax_highlighting import SyntaxHighlighting
 class Menubar():
     # initialising the menu bar of editor
     def __init__(self, parent):
-        self.current_theme = None
         self._parent = parent
-        self.syntax = parent.syntax_highlighter
-        self.default_theme = parent.loader.load_default_theme()
         self.settings = parent.loader.load_settings_data()
-        self.settings['menubar_active_bg'] = self.default_theme['menu_bg_active']
-        self.settings['menubar_active_fg'] = self.default_theme['menu_fg_active']
-        self.settings['menu_fg'] = self.default_theme['comment_color']
-        self.settings['menu_bg'] = self.default_theme['bg_color']
+        self.syntax = parent.syntax_highlighter
         font_specs = ('Droid Sans Fallback', 12)
 
-        self.default_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/default.yaml'))
-        self.monokaipro_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai_pro.yaml'))
-        self.monokai_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/monokai.yaml'))
-        self.gruvbox_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/gruvbox.yaml'))
-        self.solarized_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/solarized.yaml'))
-        self.darkheart_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dark-heart.yaml'))
-        self.githubly_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/githubly.yaml'))
-        self.dracula_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/dracula.yaml'))
-        self.pumpkin_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/pumpkin.yaml'))
-        self.material_theme_path = self._parent.loader.resource_path(os.path.join('data', 'theme_configs/material.yaml'))
         # setting up basic features in menubar
         menubar = tk.Menu(parent.master,
                           font=font_specs,
@@ -116,29 +100,27 @@ class Menubar():
 
         #theme dropdown menu
         theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        theme_dropdown.add_command(label='Default',
-                                   command=self.load_default)
         theme_dropdown.add_command(label='Dark Heart',
-                                   command=self.load_darkheart)
+                                   command=self.syntax.load_darkheart)
         theme_dropdown.add_command(label='Dracula',
-                                   command=self.load_dracula)
+                                   command=self.syntax.load_dracula)
         theme_dropdown.add_command(label='Githubly',
-                                   command=self.load_githubly)
+                                   command=self.syntax.load_githubly)
         theme_dropdown.add_command(label='Gruvbox',
-                                   command=self.load_gruvbox)
+                                   command=self.syntax.load_gruvbox)
         theme_dropdown.add_command(label='Material',
-                                   command=self.load_material)
+                                   command=self.syntax.load_material)
         theme_dropdown.add_command(label='Monokai',
-                                   command=self.load_monokai)
+                                   command=self.syntax.load_monokai)
         theme_dropdown.add_command(label='Monokai Pro',
-                                   command=self.load_monokai_pro)
+                                   command=self.syntax.load_monokai_pro)
         theme_dropdown.add_command(label='Pumpkin',
-                                   command=self.load_pumpkin)
+                                   command=self.syntax.load_pumpkin)
         theme_dropdown.add_command(label='Solarized',
-                                   command=self.load_solarized)
+                                   command=self.syntax.load_solarized)
         theme_dropdown.add_separator()
         theme_dropdown.add_command(label='Set Current Theme as Default',
-                                   command=self.set_default_theme)
+                                   command=self.syntax.set_default_theme)
 
 
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
@@ -183,34 +165,28 @@ class Menubar():
         menubar.add_cascade(label='Tools', menu=tools_dropdown)
         menubar.add_cascade(label='Syntax', menu=syntax_dropdown)
         menubar.add_cascade(label='Themes', menu=theme_dropdown)
-        menubar.add_cascade(label='Build Options', menu=build_dropdown)
-        # menubar.add_cascade(label='About', menu=about_dropdown)
+        
+        self.menu_fields = [field for field in (
+            file_dropdown, view_dropdown, syntax_dropdown, build_dropdown,
+            settings_dropdown, tools_dropdown, theme_dropdown)]
 
-        self.menu_fields = [field for field in (file_dropdown, view_dropdown, syntax_dropdown, build_dropdown,
-                                                settings_dropdown, tools_dropdown, theme_dropdown)]
-
-        self.default_settings = parent.default_theme
-        for field in self.menu_fields:
-            field.configure(bg=parent.default_theme['bg_color'],
-                            fg=self.settings['menu_fg'],
-                            activeforeground=parent.default_theme['menu_fg_active'],
-                            activebackground=parent.default_theme['menu_bg_active'])
-
-        # Settings reconfiguration function
+    # Settings reconfiguration function
     def reconfigure_settings(self):
         settings = self._parent.loader.load_settings_data()
         for field in self.menu_fields:
-            field.configure(bg=settings['menu_bg'],
-                            fg=settings['menu_fg'],
-                            activeforeground=settings['menu_active_fg'],
-                            activebackground=settings['menu_active_bg'],
-                            background = settings['textarea_background_color'],)
+            field.configure(
+                bg=settings['menu_bg'],
+                fg=settings['menu_fg'],
+                activeforeground=settings['menu_active_fg'],
+                activebackground=settings['menu_active_bg'],
+                background = settings['textarea_background_color'],)
 
-        self._menubar.configure(bg=settings['menu_bg'],
-                                fg=settings['menu_fg'],
-                                background = settings['textarea_background_color'],
-                                activeforeground= settings['menubar_active_fg'],
-                                activebackground= settings['menubar_active_bg'],)
+        self._menubar.configure(
+            bg=settings['menu_bg'],
+            fg=settings['menu_fg'],
+            background = settings['textarea_background_color'],
+            activeforeground= settings['menubar_active_fg'],
+            activebackground= settings['menubar_active_bg'],)
 
     # color to different text tye can be set here
     def open_color_picker(self):
@@ -261,7 +237,6 @@ class Menubar():
     def show_menu(self):
         self._parent.master.config(menu=self._menubar)
 
-
     def build(self, *args):
         try:
             ptrn = r'[^\/]+$'
@@ -293,9 +268,9 @@ class Menubar():
             elif filename[-5:] == '.java':
                 compiled_name = filename[:-5]
                 if self._parent.operating_system == 'Linux':
-                      compile_cmd = f"gnome-terminal -- bash -c 'javac {filename}; read'"
+                    compile_cmd = f"gnome-terminal -- bash -c 'javac {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                      compile_cmd = f"start cmd.exe @cmd /k 'javac {filename}'"
+                    compile_cmd = f"start cmd.exe @cmd /k 'javac {filename}'"
                 os.chdir(file_path)
                 os.system(compile_cmd)
             elif filename[-3:] == '.rs':
@@ -310,8 +285,6 @@ class Menubar():
                 self._parent.statusbar.update_status('cant build')
         except TypeError:
             self._parent.statusbar.update_status('cant build')
-
-
 
     def run(self, *args):
         try:
@@ -452,62 +425,3 @@ class Menubar():
                 self._parent.statusbar.update_status('no python')
         except TypeError:
             self._parent.statusbar.update_status('no file run')
-
-
-    def set_default_theme(self):
-        themes = {
-        'default':self.default_theme_path,
-        'monokai pro':self.monokaipro_theme_path,
-        'monokai':self.monokai_theme_path,
-        'gruvbox':self.gruvbox_theme_path,
-        'solarized':self.solarized_theme_path,
-        'darkheart':self.darkheart_theme_path,
-        'githubly':self.githubly_theme_path,
-        'dracula':self.dracula_theme_path,
-        'pumpkin':self.pumpkin_theme_path,
-        'material':self.material_theme_path}
-        new_default_theme_path = themes[self.current_theme]
-        with open(new_default_theme_path, 'r') as new_theme_data:
-            new_theme = yaml.load(new_theme_data, Loader=yaml.FullLoader)
-        with open(self._parent.loader.default_theme_path, 'w') as default_theme:
-            yaml.dump(new_theme, default_theme)
-
-    def load_default(self):
-      self.syntax.load_new_theme(self.default_theme_path)
-      self.current_theme = 'default'
-
-    def load_monokai_pro(self):
-        self.syntax.load_new_theme(self.monokaipro_theme_path)
-        self.current_theme = 'monokai pro'
-
-    def load_monokai(self):
-        self.syntax.load_new_theme(self.monokai_theme_path)
-        self.current_theme = 'monokai'
-
-    def load_gruvbox(self):
-        self.syntax.load_new_theme(self.gruvbox_theme_path)
-        self.current_theme = 'gruvbox'
-
-    def load_solarized(self):
-        self.syntax.load_new_theme(self.solarized_theme_path)
-        self.current_theme = 'solarized'
-
-    def load_darkheart(self):
-        self.syntax.load_new_theme(self.darkheart_theme_path)
-        self.current_theme = 'darkheart'
-
-    def load_githubly(self):
-        self.syntax.load_new_theme(self.githubly_theme_path)
-        self.current_theme = 'githubly'
-
-    def load_dracula(self):
-        self.syntax.load_new_theme(self.dracula_theme_path)
-        self.current_theme = 'dracula'
-
-    def load_pumpkin(self):
-        self.syntax.load_new_theme(self.pumpkin_theme_path)
-        self.current_theme = 'pumpkin'
-
-    def load_material(self):
-        self.syntax.load_new_theme(self.material_theme_path)
-        self.current_theme = 'material'

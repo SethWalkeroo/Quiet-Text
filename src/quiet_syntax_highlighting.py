@@ -1,6 +1,7 @@
 import tkinter as tk
 import math
 import yaml
+import os
 import tkinter.font as tk_font
 from pygments import lex
 from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer, MarkdownLexer, CssLexer,
@@ -9,27 +10,57 @@ from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer
 class SyntaxHighlighting():
 
     def __init__(self, parent, text_widget, initial_content):
-        self.settings = parent.loader.load_settings_data()
-        self.default_theme = parent.loader.load_default_theme()
-
         self.parent = parent
+        self.settings = parent.settings
         self.text = text_widget
         self.font_family = parent.font_family
         self.font_size = parent.font_size
         self.previousContent = initial_content
+        
+        self.monokaipro_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/monokai_pro.yaml'))
+        self.monokai_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/monokai.yaml'))
+        self.gruvbox_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/gruvbox.yaml'))
+        self.solarized_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/solarized.yaml'))
+        self.darkheart_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/dark-heart.yaml'))
+        self.githubly_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/githubly.yaml'))
+        self.dracula_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/dracula.yaml'))
+        self.pumpkin_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/pumpkin.yaml'))
+        self.material_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/material.yaml'))
+        
+        self.preferred_theme = self.settings['preferred_theme']
+        self.current_theme = self.preferred_theme
+        self.themes = {
+        'monokai':self.load_monokai_pro,
+        'monokai_pro':self.load_monokai,
+        'gruvbox':self.load_gruvbox,
+        'solarized':self.load_solarized,
+        'darkheart':self.load_darkheart,
+        'githubly':self.load_githubly,
+        'dracula':self.load_dracula,
+        'pumpkin':self.load_pumpkin,
+        'material':self.load_material
+        }
         self.lexer = PythonLexer()
-
-        self.comment_color = self.default_theme['comment_color']
-        self.string_color = self.default_theme['string_color']
-        self.number_color = self.default_theme['number_color']
-        self.keyword_color = self.default_theme['keyword_color']
-        self.operator_color = self.default_theme['operator_color']
-        self.function_color = self.default_theme['function_color']
-        self.class_color = self.default_theme['class_self_color']
-        self.namespace_color = self.default_theme['namespace_color']
-        self.object_color = self.default_theme['object_color']
-        self.text_color = parent.font_color
-
+        self.startup_theme = self.themes[self.preferred_theme]
+        self.comment_color = None
+        self.string_color = None
+        self.number_color = None
+        self.keyword_color = None
+        self.operator_color = None
+        self.function_color = None
+        self.class_color = None
+        self.namespace_color = None
+        self.object_color = None
+        self.text_color = None
 
     def default_highlight(self):
         row, _ = self.text.index(tk.INSERT).split('.')
@@ -48,7 +79,6 @@ class SyntaxHighlighting():
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
         self.previousContent = self.text.get("1.0", "end-1c")
-
 
     def initial_highlight(self, *args):
         self.clear_existing_tags()
@@ -76,7 +106,7 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Generic.Strong', font=self.parent.bold)
         self.text.tag_configure('Token.Generic.Heading', font=self.parent.header1)
         self.text.tag_configure('Token.Generic.Subheading', font=self.parent.header2)
-        self.text.tag_configure('Token.Name.Builtin.Pseudo', foreground=self.class_color, font=self.parent.italics)
+        self.text.tag_configure('Token.Name.Builtin.Pseudo', foreground=self.class_color)
         self.text.tag_configure('Token.Name.Builtin', foreground=self.function_color)
         self.text.tag_configure('Token.Punctuation.Indicator', foreground=self.function_color)
         self.text.tag_configure('Token.Literal.Scalar.Plain', foreground=self.number_color)
@@ -97,7 +127,6 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Name.Label', foreground=self.class_color)
         self.text.tag_configure('Token.Literal.String.Escape', foreground=self.number_color)
 
-
     def load_new_theme(self, path):
         with open(path) as new_theme_config:
             new_config = yaml.load(new_theme_config, Loader=yaml.FullLoader)
@@ -111,7 +140,6 @@ class SyntaxHighlighting():
         self.namespace_color = new_config['namespace_color']
         self.object_color = new_config['object_color']
         self.text_color = new_config['font_color']
-        
         settings = self.parent.loader.load_settings_data()
         settings['text_selection_bg'] = new_config['selection_color']
         settings['insertion_color'] = new_config['font_color']
@@ -123,7 +151,6 @@ class SyntaxHighlighting():
         settings['menubar_active_fg'] = new_config['menu_fg_active']  
         settings['menu_active_bg'] = new_config['menu_bg_active']
         settings['menu_active_fg'] = new_config['menu_fg_active']
-
         self.parent.loader.store_settings_data(settings)
         self.parent.reconfigure_settings()
         self.initial_highlight()
@@ -131,6 +158,48 @@ class SyntaxHighlighting():
     def clear_existing_tags(self):
         for tag in self.text.tag_names():
             self.text.tag_delete(tag)
+            
+    def set_default_theme(self):
+        settings = self.parent.loader.load_settings_data()
+        settings['preferred_theme'] = self.current_theme
+        self.parent.loader.store_settings_data(settings)
+        self.parent.statusbar.update_status('saved')
+            
+    def load_monokai_pro(self):
+        self.load_new_theme(self.monokaipro_theme_path)
+        self.current_theme = 'monokai pro'
+
+    def load_monokai(self):
+        self.load_new_theme(self.monokai_theme_path)
+        self.current_theme = 'monokai'
+
+    def load_gruvbox(self):
+        self.load_new_theme(self.gruvbox_theme_path)
+        self.current_theme = 'gruvbox'
+
+    def load_solarized(self):
+        self.load_new_theme(self.solarized_theme_path)
+        self.current_theme = 'solarized'
+
+    def load_darkheart(self):
+        self.load_new_theme(self.darkheart_theme_path)
+        self.current_theme = 'darkheart'
+
+    def load_githubly(self):
+        self.load_new_theme(self.githubly_theme_path)
+        self.current_theme = 'githubly'
+
+    def load_dracula(self):
+        self.load_new_theme(self.dracula_theme_path)
+        self.current_theme = 'dracula'
+
+    def load_pumpkin(self):
+        self.load_new_theme(self.pumpkin_theme_path)
+        self.current_theme = 'pumpkin'
+
+    def load_material(self):
+        self.load_new_theme(self.material_theme_path)
+        self.current_theme = 'material'
 
     def load_python3_syntax(self):
         self.lexer = PythonLexer()

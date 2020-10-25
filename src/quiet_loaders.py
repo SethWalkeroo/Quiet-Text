@@ -11,7 +11,6 @@ class QuietLoaders:
 	def __init__(self):
 		self.settings_path = self.resource_path(os.path.join('data', 'config/settings.yaml'))
 		self.default_settings_path = self.resource_path(os.path.join('data', 'config/settings-default.yaml'))
-		self.default_theme_path = self.resource_path(os.path.join('data', 'theme_configs/default.yaml'))
 
 	def load_settings_data(self, default=False):
 		if not default:
@@ -25,9 +24,6 @@ class QuietLoaders:
 		with open(self.settings_path, 'w') as settings_config:
 			yaml.dump(new_settings, settings_config)
 
-	def load_default_theme(self):
-		with open(self.default_theme_path, 'r') as some_config:
-			return yaml.load(some_config, Loader=yaml.FullLoader)
 
 
 
