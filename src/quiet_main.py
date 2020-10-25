@@ -1,13 +1,10 @@
 import os
 import sys
-import time
-import yaml
 import tkinter as tk 
 import tkinter.font as tk_font
 import re
 import platform
-
-from tkinter import (filedialog, messagebox, ttk)
+from tkinter import (filedialog, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menubar
 from quiet_statusbar import Statusbar
@@ -21,6 +18,7 @@ from quiet_console import QuietConsole
 
 class QuietText(tk.Frame):
     def __init__(self, *args, **kwargs):
+        """The main class for bringing the whole shebang together"""
         tk.Frame.__init__(self, *args, **kwargs)
         master.title('untitled - Quiet Text')
         # defined size of the editer window
@@ -90,7 +88,6 @@ class QuietText(tk.Frame):
         self.dirname = os.getcwd()
 
         self.previous_file = None
-                                
         self.textarea = CustomText(self)
 
         self.scrolly = tk.Scrollbar(
@@ -173,8 +170,8 @@ class QuietText(tk.Frame):
                 with open(self.filename, 'r') as f:
                     self.textarea.insert(1.0, f.read())
             self.syntax_highlighter.initial_highlight()
-        except TypeError:
-            pass
+        except TypeError as e:
+            print(e)
 
     #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
@@ -210,6 +207,10 @@ class QuietText(tk.Frame):
             troughx_clr = _settings['horizontal_scrollbar_trough_color']
             scrollx_width = _settings['horizontal_scrollbar_width']
             scrollx_active_bg = _settings['horizontal_scrollbar_active_bg']
+            scrolly_clr = _settings['vertical_scrollbar_color']
+            troughy_clr = _settings['vertical_scrollbar_trough_color']
+            scrolly_width = _settings['vertical_scrollbar_width']
+            scrolly_active_bg = _settings['vertical_scrollbar_active_bg']
             menu_fg = _settings['menu_fg']
             menu_bg = _settings['menu_bg']
             self.autoclose_parentheses = _settings['autoclose_parentheses']
@@ -252,6 +253,18 @@ class QuietText(tk.Frame):
                                 activeforeground=self.menubar_active_fg,
                                 bd=0,
                                 tearoff=0)
+            
+            self.scrolly.configure(
+                bg=scrolly_clr,
+                troughcolor=troughy_clr,
+                width=scrolly_width,
+                activebackground=scrolly_active_bg)
+
+            self.scrollx.configure(
+                bg=scrollx_clr,
+                troughcolor=troughx_clr,
+                width=scrollx_width,
+                activebackground=scrollx_active_bg)
 
             self.textarea.configure(
                 font=font_style,
@@ -355,7 +368,7 @@ class QuietText(tk.Frame):
             self.statusbar.update_status('created')
             self.initialize_syntax()
         except Exception as e:
-            pass
+            print(e)
 
     def initialize_syntax(self):
         if self.filename:
@@ -409,7 +422,7 @@ class QuietText(tk.Frame):
             self.initialize_syntax()
             self.set_window_title(name=self.filename)
         except Exception as e:
-            pass
+            print(e)
 
     def open_dir(self):
         try:
@@ -478,7 +491,7 @@ class QuietText(tk.Frame):
                            ('Rust Files', '*.rs')])
 
             textarea_content = self.textarea.get(1.0, tk.END)
-            with open(new_file, 'w') as f:
+            with open(self.filename, 'w') as f:
                 f.write(textarea_content)
             self.filename = new_file
             self.set_window_title(self.filename)
@@ -491,11 +504,11 @@ class QuietText(tk.Frame):
     def quit_save(self):
         try:
             os.path.isfile(self.filename)
-            self.save()          
-        except:
+            self.save()
+        except Exception:
             self.save_as()
         sys.exit()
-                        
+
     def on_closing(self):
         message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
         if message == True:
