@@ -58,6 +58,7 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | New File | <kbd>ctrl</kbd>+<kbd>n</kbd> | Open a new empty file |
 | Load Previous File | <kbd>ctrl</kbd>+<kbd>p</kbd> | Loads the last file you had open |
 | Open File | <kbd>ctrl</kbd>+<kbd>o</kbd> | Open an existing file |
+| Open File Tree | <kbd>ctrl</kbd>+<kbd>t</kbd> | Opens file tree for seamless work inside a directory |
 | Color Menu | <kbd>ctrl</kbd>+<kbd>m</kbd> | Opens color menu |
 | Run File | <kbd>ctrl</kbd>+<kbd>r</kbd> | Run the currently active file |
 | Save | <kbd>ctrl</kbd>+<kbd>s</kbd> | Save the currently active file |
