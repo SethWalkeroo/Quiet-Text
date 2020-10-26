@@ -37,7 +37,7 @@ class FindWindow(tk.Toplevel):
         self.style.configure(
             'editor.TLabel',
              background=self.bg_color,
-             foreground=self.fg_color,)
+             foreground='#fff',)
 
         find_entry_label = ttk.Label(top_frame, text="Search: ", style="editor.TLabel")
         self.find_entry = ttk.Entry(top_frame, textvar=self.text_to_find)
@@ -47,7 +47,7 @@ class FindWindow(tk.Toplevel):
 
         self.style.configure('editor.TButton',
                 background=self.bg_color,
-                foreground=self.fg_color,
+                foreground='#fff',
                 activeforeground=self.active_fg)
 
         self.style.map('editor.TButton',

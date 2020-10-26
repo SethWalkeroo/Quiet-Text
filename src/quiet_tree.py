@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import os
+import sys
 
 class FileTree(tk.Toplevel):
 	def __init__(self, master, **kwargs):
@@ -13,12 +14,13 @@ class FileTree(tk.Toplevel):
 		self.master = master
 		self.font_specs = ('Droid Sans Fallback', 12)
 		self.style = ttk.Style()
-		self.style.theme_use('alt')
+		self.style.theme_use('classic')
 		self.style.configure(
       		'Treeview',
 			font=self.font_specs,
             foreground=master.menu_fg,
             background=master.bg_color,
+            fieldbackground=master.bg_color,
             highlightthickness=0,
             bd=0)
 		self.style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) # Remove the borders

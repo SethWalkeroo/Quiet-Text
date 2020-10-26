@@ -2,7 +2,6 @@ import tkinter as tk
 import yaml
 import os, sys
 import re
-from time import sleep
 from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting
 
@@ -92,8 +91,6 @@ class Menubar():
         tools_dropdown.add_command(label='Display File Tree',
                                    accelerator='Ctrl+T',
                                    command=parent.show_file_tree)
-        tools_dropdown.add_command(label='Toggle Integrated Terminal',
-                                   command=parent.display_console)
         tools_dropdown.add_command(label='Open Color Selector',
                                    accelerator='Ctrl+M',
                                    command=self.open_color_picker)
@@ -368,7 +365,6 @@ class Menubar():
                     run = f'start cmd.exe @cmd /k "{compiled_name}"'
                 os.chdir(file_path)
                 os.system(build)
-                sleep(1)
                 os.system(run)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
@@ -380,7 +376,6 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(1)
                 os.system(run)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
@@ -404,7 +399,6 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k 'java {compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(1)
                 os.system(run)
             elif filename[-3:] == '.rs':
                 compiled_name = filename[:-3]
@@ -416,7 +410,6 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(1)
                 os.system(run)
             else:
                 self._parent.statusbar.update_status('no python')
