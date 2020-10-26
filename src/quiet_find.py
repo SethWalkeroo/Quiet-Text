@@ -10,7 +10,9 @@ class FindWindow(tk.Toplevel):
 
         self.master = master
         self.loader = QuietLoaders()
-        self.geometry('320x100')
+        self.geometry('260x100')
+        self.minsize(260, 100)
+        self.maxsize(260, 100)
         self.quiet_icon_path = self.loader.resource_path(
             os.path.join('data', 'q.png'))
         self.icon = tk.PhotoImage(file=self.quiet_icon_path)
@@ -19,7 +21,7 @@ class FindWindow(tk.Toplevel):
         self.transient(master)
         self.configure(bg=master.bg_color)
         self.style = ttk.Style()
-        self.style.theme_use('alt')
+        self.style.theme_use('clam')
         self.bg_color = master.bg_color
         self.fg_color = master.fg_color
         self.active_fg = master.active_fg
@@ -72,9 +74,6 @@ class FindWindow(tk.Toplevel):
         self.find_entry.focus_force()
 
         self.protocol("WM_DELETE_WINDOW", self.on_cancel)
-
-        self.minsize(320, 100)
-        self.maxsize(610, 100)
 
     def on_find(self):
         self.master.find(self.text_to_find.get())

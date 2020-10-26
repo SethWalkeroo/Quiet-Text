@@ -36,7 +36,7 @@ class SyntaxHighlighting():
         self.material_theme_path = self.parent.loader.resource_path(
             os.path.join('data', 'theme_configs/material.yaml'))
         
-        self.preferred_theme = self.settings['preferred_theme']
+        self.preferred_theme = 'material'
         self.current_theme = self.preferred_theme
         self.themes = {
         'monokai':self.load_monokai_pro,

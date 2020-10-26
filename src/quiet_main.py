@@ -532,6 +532,7 @@ class QuietText(tk.Frame):
     # reset the settings set by the user to the default settings
     def reset_settings_file(self):
         self.reconfigure_settings(overwrite_with_default=True)
+        self.syntax_highlighter.load_material()
         try:
             self.clear_and_replace_textarea()
         except IsADirectoryError:

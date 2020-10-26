@@ -3,11 +3,11 @@ autoclose_doublequotes: true
 autoclose_parentheses: true
 autoclose_singlequotes: true
 autoclose_squarebrackets: true
-current_line_indicator: true
+current_line_indicator: false
 current_line_indicator_symbol: '>'
 font_color: '#FFFFFF'
 font_family: consolas
-font_size: 12
+font_size: 22
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_trough_color: '#2e2724'
@@ -20,7 +20,6 @@ menu_bg: '#212121'
 menu_fg: '#546e7a'
 menubar_active_bg: '#323232'
 menubar_active_fg: '#80cbc4'
-preferred_theme: material
 tab_size: 4
 text_bottom_lineheight: '6'
 text_selection_bg: '#353535'

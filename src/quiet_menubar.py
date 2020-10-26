@@ -118,10 +118,6 @@ class Menubar():
                                    command=self.syntax.load_pumpkin)
         theme_dropdown.add_command(label='Solarized',
                                    command=self.syntax.load_solarized)
-        theme_dropdown.add_separator()
-        theme_dropdown.add_command(label='Set Current Theme as Default',
-                                   command=self.syntax.set_default_theme)
-
 
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
         syntax_dropdown.add_command(label='C',
@@ -372,7 +368,7 @@ class Menubar():
                     run = f'start cmd.exe @cmd /k "{compiled_name}"'
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.5)
+                sleep(1)
                 os.system(run)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
@@ -384,7 +380,7 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.5)
+                sleep(1)
                 os.system(run)
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
@@ -396,7 +392,7 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.5)
+                sleep(1)
                 os.system(run)
             elif filename[-5:] == '.java':
                 compiled_name = filename[:-5]
@@ -408,7 +404,7 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k 'java {compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.5)
+                sleep(1)
                 os.system(run)
             elif filename[-3:] == '.rs':
                 compiled_name = filename[:-3]
@@ -420,7 +416,7 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(.5)
+                sleep(1)
                 os.system(run)
             else:
                 self._parent.statusbar.update_status('no python')
