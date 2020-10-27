@@ -49,6 +49,8 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | ------- | ---------- | ----------- |
 | Copy | <kbd>ctrl</kbd>+<kbd>c</kbd> | Copy selected text |
 | Cut | <kbd>ctrl</kbd>+<kbd>x</kbd> | Cut selected text |
+| Undo | <kbd>ctrl</kbd>+<kbd>z</kbd> | undo edits to the text area |
+| Redo | <kbd>ctrl</kbd>+<kbd>y</kbd> | redo edits to the text area on Windows |
 | Paste | <kbd>ctrl</kbd>+<kbd>v</kbd> | Paste text from the clipboard |
 | Bold | <kbd>ctrl</kbd>+<kbd>b</kbd> | Bold selected text |
 | Find and Replace | <kbd>ctrl</kbd>+<kbd>f</kbd> | Find and replace specified text |
