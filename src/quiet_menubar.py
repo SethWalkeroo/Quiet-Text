@@ -101,6 +101,8 @@ class Menubar():
                                    command=self.syntax.load_darkheart)
         theme_dropdown.add_command(label='Dracula',
                                    command=self.syntax.load_dracula)
+        theme_dropdown.add_command(label='Desert',
+                                   command=self.syntax.load_desert)
         theme_dropdown.add_command(label='Githubly',
                                    command=self.syntax.load_githubly)
         theme_dropdown.add_command(label='Gruvbox',

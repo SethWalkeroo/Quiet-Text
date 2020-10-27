@@ -35,7 +35,7 @@ class SyntaxHighlighting():
             os.path.join('data', 'theme_configs/pumpkin.yaml'))
         self.material_theme_path = self.parent.loader.resource_path(
             os.path.join('data', 'theme_configs/material.yaml'))
-        self.material_theme_path = self.parent.loader.resource_path(
+        self.desert_theme_path = self.parent.loader.resource_path(
             os.path.join('data', 'theme_configs/desert.yaml'))
         
         self.preferred_theme = 'material'
