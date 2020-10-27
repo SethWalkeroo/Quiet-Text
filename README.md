@@ -16,7 +16,7 @@
   Quiet Text is a simple, minimalist text editor made with Python's Tkinter GUI library. Quiet Text aims to create a calming and distraction   free text environment for writing code and taking notes.
 </p>
 
-<img src="images/picture8.png" alt="there should be an image here...">
+<img src="images/pudding.png" alt="there should be an image here...">
 (screenshot taken on Ubuntu running Gnome Desktop)
 
 ## Table of contents
