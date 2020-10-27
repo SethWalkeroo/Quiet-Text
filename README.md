@@ -17,7 +17,7 @@
 </p>
 
 <img src="images/pudding.png" alt="there should be an image here...">
-(screenshot taken on Ubuntu running Gnome Desktop)
+(screenshot taken on Windows 10) 
 
 ## Table of contents
 - [Notable Features](#notable-features)
