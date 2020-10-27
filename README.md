@@ -49,6 +49,8 @@ Quiet Text has shortcuts for most commonly performed actions. The list of all th
 | ------- | ---------- | ----------- |
 | Copy | <kbd>ctrl</kbd>+<kbd>c</kbd> | Copy selected text |
 | Cut | <kbd>ctrl</kbd>+<kbd>x</kbd> | Cut selected text |
+| Undo | <kbd>ctrl</kbd>+<kbd>z</kbd> | undo edits to the text area |
+| Redo | <kbd>ctrl</kbd>+<kbd>y</kbd> | redo edits to the text area on Windows |
 | Paste | <kbd>ctrl</kbd>+<kbd>v</kbd> | Paste text from the clipboard |
 | Bold | <kbd>ctrl</kbd>+<kbd>b</kbd> | Bold selected text |
 | Find and Replace | <kbd>ctrl</kbd>+<kbd>f</kbd> | Find and replace specified text |
@@ -99,12 +101,13 @@ pip install pyinstaller
 
 3. Cd into the src directory and use pyinstaller on quiet_main.py
 ```sh
-pyinstaller --icon=q.png --onefile quiet_main.py
+pyinstaller --onefile quiet_main.py
 ```
 
 4. Edit the quiet_main.spec file to include the projects resource tree (configs, themes, syntax, etc.)
 
 ![](https://media.giphy.com/media/ZS6SKVVCrB6UHzmY6S/giphy.gif)
+(Sorry for the low quality gif. Hopefully it works well enough.)
 
 5. Use pyinstaller again on your new quiet_main.spec file
 
@@ -113,8 +116,6 @@ pyinstaller quiet_main.spec
 ```
 
 6. Check the dist directory for your binary file and you should be good to go!
-
-(image/gif coming soon)
 
 
 ## Installation
