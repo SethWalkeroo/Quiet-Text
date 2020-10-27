@@ -35,6 +35,8 @@ class SyntaxHighlighting():
             os.path.join('data', 'theme_configs/pumpkin.yaml'))
         self.material_theme_path = self.parent.loader.resource_path(
             os.path.join('data', 'theme_configs/material.yaml'))
+        self.material_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/desert.yaml'))
         
         self.preferred_theme = 'material'
         self.current_theme = self.preferred_theme
@@ -47,7 +49,8 @@ class SyntaxHighlighting():
         'githubly':self.load_githubly,
         'dracula':self.load_dracula,
         'pumpkin':self.load_pumpkin,
-        'material':self.load_material
+        'material':self.load_material,
+        'desert':self.load_desert,
         }
         self.lexer = PythonLexer()
         self.startup_theme = self.themes[self.preferred_theme]
@@ -56,10 +59,11 @@ class SyntaxHighlighting():
         self.number_color = None
         self.keyword_color = None
         self.operator_color = None
-        self.function_color = None
+        self.bultin_function_color = None
         self.class_color = None
         self.namespace_color = None
-        self.object_color = None
+        self.class_name_color = None
+        self.function_name_color = None
         self.text_color = None
 
     def default_highlight(self):
@@ -97,18 +101,18 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Keyword', foreground=self.keyword_color)
         self.text.tag_configure('Token.Operator', foreground=self.operator_color)
         self.text.tag_configure('Token.Keyword.Type', foreground=self.keyword_color, font=self.parent.italics)
-        self.text.tag_configure('Token.Keyword.Declaration', foreground=self.function_color, font=self.parent.italics)
-        self.text.tag_configure('Token.Name.Class', foreground=self.object_color)
+        self.text.tag_configure('Token.Keyword.Declaration', foreground=self.bultin_function_color, font=self.parent.italics)
+        self.text.tag_configure('Token.Name.Class', foreground=self.class_name_color)
         self.text.tag_configure('Token.Text.Whitespace')
-        self.text.tag_configure('Token.Name.Function', foreground=self.object_color)
+        self.text.tag_configure('Token.Name.Function', foreground=self.function_name_color)
         self.text.tag_configure('Token.Keyword.Namespace', foreground=self.namespace_color)
         self.text.tag_configure('Token.Generic.Emph', font=self.parent.italics)
         self.text.tag_configure('Token.Generic.Strong', font=self.parent.bold)
         self.text.tag_configure('Token.Generic.Heading', font=self.parent.header1)
         self.text.tag_configure('Token.Generic.Subheading', font=self.parent.header2)
         self.text.tag_configure('Token.Name.Builtin.Pseudo', foreground=self.class_color, font=self.parent.italics)
-        self.text.tag_configure('Token.Name.Builtin', foreground=self.function_color)
-        self.text.tag_configure('Token.Punctuation.Indicator', foreground=self.function_color)
+        self.text.tag_configure('Token.Name.Builtin', foreground=self.bultin_function_color)
+        self.text.tag_configure('Token.Punctuation.Indicator', foreground=self.bultin_function_color)
         self.text.tag_configure('Token.Literal.Scalar.Plain', foreground=self.number_color)
         self.text.tag_configure('Token.Literal.String.Single', foreground=self.string_color)
         self.text.tag_configure('Token.Literal.String.Double', foreground=self.string_color)
@@ -116,11 +120,11 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Literal.String.Interpol', foreground=self.string_color)
         self.text.tag_configure('Token.Name.Decorator', foreground=self.number_color)
         self.text.tag_configure('Token.Operator.Word', foreground=self.operator_color)
-        self.text.tag_configure('Token.Literal.String.Affix', foreground=self.function_color)
-        self.text.tag_configure('Token.Name.Function.Magic', foreground=self.function_color)
+        self.text.tag_configure('Token.Literal.String.Affix', foreground=self.bultin_function_color)
+        self.text.tag_configure('Token.Name.Function.Magic', foreground=self.bultin_function_color)
         self.text.tag_configure('Token.Literal.Number.Oct', foreground=self.number_color)
         self.text.tag_configure('Token.Keyword.Reserved', foreground=self.keyword_color)
-        self.text.tag_configure('Token.Name.Attribute', foreground=self.function_color)
+        self.text.tag_configure('Token.Name.Attribute', foreground=self.bultin_function_color)
         self.text.tag_configure('Token.Name.Tag', foreground=self.namespace_color)
         self.text.tag_configure('Token.Comment.Preproc', foreground=self.comment_color)
         self.text.tag_configure('Token.Comment.PreprocFile', forground=self.comment_color)
@@ -135,10 +139,11 @@ class SyntaxHighlighting():
         self.number_color = new_config['number_color']
         self.keyword_color = new_config['keyword_color']
         self.operator_color = new_config['operator_color']
-        self.function_color = new_config['function_color']
+        self.bultin_function_color = new_config['bultin_function_color']
         self.class_color = new_config['class_self_color']
         self.namespace_color = new_config['namespace_color']
-        self.object_color = new_config['object_color']
+        self.class_name_color = new_config['class_name_color']
+        self.function_name_color = new_config['function_name_color']
         self.text_color = new_config['font_color']
         settings = self.parent.loader.load_settings_data()
         settings['text_selection_bg'] = new_config['selection_color']
@@ -200,6 +205,10 @@ class SyntaxHighlighting():
     def load_material(self):
         self.load_new_theme(self.material_theme_path)
         self.current_theme = 'material'
+
+    def load_desert(self):
+        self.load_new_theme(self.desert_theme_path)
+        self.current_theme = 'desert'
         
 
     def load_python3_syntax(self):
