@@ -531,7 +531,7 @@ class QuietText(tk.Frame):
 
     # opens the main setting file of the editor
     def open_settings_file(self):
-        self.syntax_highlighter.load_yaml_syntax()
+        self.syntax_highlighter.syntax_and_themes.load_yaml_syntax()
         self.previous_file = self.filename
         self.filename = self.loader.settings_path
         self.textarea.delete(1.0, tk.END)
