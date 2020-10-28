@@ -12,154 +12,209 @@ class Menubar():
         self._parent = parent
         self.settings = parent.loader.load_settings_data()
         self.syntax = parent.syntax_highlighter
+
         font_specs = ('Droid Sans Fallback', 12)
 
         # setting up basic features in menubar
-        menubar = tk.Menu(parent.master,
-                          font=font_specs,
-                          fg=self.settings['menu_fg'],
-                          bg=self.settings['menu_bg'],
-                          activeforeground= self.settings['menubar_active_fg'],
-                          activebackground= self.settings['menubar_active_bg'],
-                          activeborderwidth=0,
-                          bd=0)
+        menubar = tk.Menu(
+          parent.master,
+          font=font_specs,
+          fg=self.settings['menu_fg'],
+          bg=self.settings['menu_bg'],
+          activeforeground= self.settings['menubar_active_fg'],
+          activebackground= self.settings['menubar_active_bg'],
+          activeborderwidth=0,
+          bd=0)
 
         parent.master.config(menu=menubar)
         self._menubar = menubar
         # adding features file dropdown in menubar
         file_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        file_dropdown.add_command(label='Load Previous File',
-                                  accelerator='Ctrl+P',
-                                  command=parent.load_previous_file)
+        file_dropdown.add_command(
+          label='Load Previous File',
+          accelerator='Ctrl+P',
+          command=parent.load_previous_file)
         # new file creation feature
-        file_dropdown.add_command(label='New File',
-                                   accelerator='Ctrl+N',
-                                   command=parent.new_file)
+        file_dropdown.add_command(
+          label='New File',
+            accelerator='Ctrl+N',
+            command=parent.new_file)
         # open file feature
-        file_dropdown.add_command(label='Open File',
-                                   accelerator='Ctrl+O',
-                                   command=parent.open_file)
-        file_dropdown.add_command(label='Open Directory',
-                                  command=parent.open_dir)
+        file_dropdown.add_command(
+          label='Open File',
+            accelerator='Ctrl+O',
+            command=parent.open_file)
+        file_dropdown.add_command(
+          label='Open Directory',
+          command=parent.open_dir)
         # save file feature
-        file_dropdown.add_command(label='Save',
-                                   accelerator='Ctrl+S',
-                                   command=parent.save)
+        file_dropdown.add_command(
+          label='Save',
+            accelerator='Ctrl+S',
+            command=parent.save)
         # Save as feature
-        file_dropdown.add_command(label='Save As',
-                                   accelerator='Ctrl+Shift+S',
-                                   command=parent.save_as)
+        file_dropdown.add_command(
+          label='Save As',
+            accelerator='Ctrl+Shift+S',
+            command=parent.save_as)
         # exit feature
         file_dropdown.add_separator()
-        file_dropdown.add_command(label='Exit',
-                                  command=parent.on_closing)
+        file_dropdown.add_command(
+          label='Exit',
+          command=parent.on_closing)
 
         # adding featues to settings dropdown in menubar
         # Edit settings feature
         settings_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        settings_dropdown.add_command(label='Edit Settings',
-                                      command=parent.open_settings_file)
+        settings_dropdown.add_command(
+          label='Edit Settings',
+          command=parent.open_settings_file)
         # reset settings feature
-        settings_dropdown.add_command(label='Reset Settings to Default',
-                                      command=parent.reset_settings_file)
+        settings_dropdown.add_command(
+          label='Reset Settings to Default',
+          command=parent.reset_settings_file)
 
         #view dropdown menu
         view_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        view_dropdown.add_command(label='Toggle Menu Bar',
-                                  accelerator='Alt',
-                                  command=self.hide_menu)
-        view_dropdown.add_command(label='Hide Status Bar',
-                                  command=parent.hide_status_bar)
-        view_dropdown.add_command(label='Toggle Line Numbers',
-                                  accelerator='Ctrl+Shift+L',
-                                  command=parent.toggle_linenumbers)
-        view_dropdown.add_command(label='Toggle Text Border',
-                                  command=self.toggle_text_border)
-        view_dropdown.add_command(label='Shrink/Enlarge Horizontal Scrollbar',
-                                  command=self.toggle_scroll_x)
-        view_dropdown.add_command(label='Shrink/Enlarge Vertical Scrollbar',
-                                  command=self.toggle_scroll_y)
-        view_dropdown.add_command(label='Destroy Horizontal Scrollbar',
-                                  command=self._parent.scrollx.forget)
+        view_dropdown.add_command(
+          label='Toggle Menu Bar',
+          accelerator='Alt',
+          command=self.hide_menu)
+        view_dropdown.add_command(
+          label='Hide Status Bar',
+          command=parent.hide_status_bar)
+        view_dropdown.add_command(
+          label='Toggle Line Numbers',
+          accelerator='Ctrl+Shift+L',
+          command=parent.toggle_linenumbers)
+        view_dropdown.add_command(
+          label='Toggle Text Border',
+          command=self.toggle_text_border)
+        view_dropdown.add_command(
+          label='Shrink/Enlarge Horizontal Scrollbar',
+          command=self.toggle_scroll_x)
+        view_dropdown.add_command(
+          label='Shrink/Enlarge Vertical Scrollbar',
+          command=self.toggle_scroll_y)
+        view_dropdown.add_command(
+          label='Destroy Horizontal Scrollbar',
+          command=self._parent.scrollx.forget)
         view_dropdown.add_command(label='Destroy Vertical Scrollbar',
-                                  command=self._parent.scrolly.forget)
-        view_dropdown.add_command(label='Enter Quiet Mode',
-                                  accelerator='Ctrl+Q',
-                                  command=self.enter_quiet_mode)
+          command=self._parent.scrolly.forget)
+        view_dropdown.add_command(
+          label='Enter Quiet Mode',
+          accelerator='Ctrl+Q',
+          command=self.enter_quiet_mode)
 
         #tools dropdown menu
         tools_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        tools_dropdown.add_command(label='Search and Replace',
-                                   accelerator='Ctrl+F',
-                                   command=parent.show_find_window)
-        tools_dropdown.add_command(label='Display File Tree',
-                                   accelerator='Ctrl+T',
-                                   command=parent.show_file_tree)
-        tools_dropdown.add_command(label='Open Color Selector',
-                                   accelerator='Ctrl+M',
-                                   command=self.open_color_picker)
+        tools_dropdown.add_command(
+          label='Search and Replace',
+          accelerator='Ctrl+F',
+          command=parent.show_find_window)
+        tools_dropdown.add_command(
+          label='Display File Tree',
+          accelerator='Ctrl+T',
+          command=parent.show_file_tree)
+        tools_dropdown.add_command(
+          label='Open Color Selector',
+          accelerator='Ctrl+M',
+          command=self.open_color_picker)
 
         #theme dropdown menu
         theme_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        theme_dropdown.add_command(label='Dark Heart',
-                                   command=self.syntax.syntax_and_themes.load_darkheart)
-        theme_dropdown.add_command(label='Dracula',
-                                   command=self.syntax.syntax_and_themes.load_dracula)
-        theme_dropdown.add_command(label='Desert',
-                                   command=self.syntax.syntax_and_themes.load_desert)
-        theme_dropdown.add_command(label='Githubly',
-                                   command=self.syntax.syntax_and_themes.load_githubly)
-        theme_dropdown.add_command(label='Gruvbox',
-                                   command=self.syntax.syntax_and_themes.load_gruvbox)
-        theme_dropdown.add_command(label='Material',
-                                   command=self.syntax.syntax_and_themes.load_material)
-        theme_dropdown.add_command(label='Monokai',
-                                   command=self.syntax.syntax_and_themes.load_monokai)
-        theme_dropdown.add_command(label='Monokai Pro',
-                                   command=self.syntax.syntax_and_themes.load_monokai_pro)
-        theme_dropdown.add_command(label='Pumpkin',
-                                   command=self.syntax.syntax_and_themes.load_pumpkin)
-        theme_dropdown.add_command(label='Rust',
-                                   command=self.syntax.syntax_and_themes.load_rust)
-        theme_dropdown.add_command(label='Solarized',
-                                   command=self.syntax.syntax_and_themes.load_solarized)
+        theme_dropdown.add_command(
+          label='Dark Heart',
+          command=self.syntax.syntax_and_themes.load_darkheart)
+        theme_dropdown.add_command(
+          label='Dracula',
+          command=self.syntax.syntax_and_themes.load_dracula)
+        theme_dropdown.add_command(
+          label='Desert',
+          command=self.syntax.syntax_and_themes.load_desert)
+        theme_dropdown.add_command(
+          label='Githubly',
+          command=self.syntax.syntax_and_themes.load_githubly)
+        theme_dropdown.add_command(
+          label='Gruvbox',
+          command=self.syntax.syntax_and_themes.load_gruvbox)
+        theme_dropdown.add_command(
+          label='Material',
+          command=self.syntax.syntax_and_themes.load_material)
+        theme_dropdown.add_command(
+          label='Monokai',
+          command=self.syntax.syntax_and_themes.load_monokai)
+        theme_dropdown.add_command(
+          label='Monokai Pro',
+          command=self.syntax.syntax_and_themes.load_monokai_pro)
+        theme_dropdown.add_command(
+          label='Pumpkin',
+          command=self.syntax.syntax_and_themes.load_pumpkin)
+        theme_dropdown.add_command(
+          label='Rust',
+          command=self.syntax.syntax_and_themes.load_rust)
+        theme_dropdown.add_command(
+          label='Solarized',
+          command=self.syntax.syntax_and_themes.load_solarized)
 
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        syntax_dropdown.add_command(label='C',
-                                    command=self.syntax.syntax_and_themes.load_c_syntax)
-        syntax_dropdown.add_command(label='C++',
-                                    command=self.syntax.syntax_and_themes.load_cpp_syntax)
-        syntax_dropdown.add_command(label='CSS',
-                                    command=self.syntax.syntax_and_themes.load_css_syntax)
-        syntax_dropdown.add_command(label='Dockerfile',
-                                    command=self.syntax.syntax_and_themes.load_docker_syntax)
-        syntax_dropdown.add_command(label='HTML/Django',
-                                    command=self.syntax.syntax_and_themes.load_html_syntax)
-        syntax_dropdown.add_command(label='JavaScript',
-                                    command=self.syntax.syntax_and_themes.load_javascript_syntax)
-        syntax_dropdown.add_command(label='Java',
-                                    command=self.syntax.syntax_and_themes.load_java_syntax)
-        syntax_dropdown.add_command(label='Go',
-                                    command=self.syntax.syntax_and_themes.load_go_syntax)
-        syntax_dropdown.add_command(label='Markdown',
-                                    command=self.syntax.syntax_and_themes.load_markdown_syntax)
-        syntax_dropdown.add_command(label='Python3',
-                                    command=self.syntax.syntax_and_themes.load_python3_syntax)
-        syntax_dropdown.add_command(label='Rust',
-                                    command=self.syntax.syntax_and_themes.load_rust_syntax)
-        syntax_dropdown.add_command(label='SQL',
-                                    command=self.syntax.syntax_and_themes.load_sql_syntax)
-        syntax_dropdown.add_command(label='Yaml',
-                                    command=self.syntax.syntax_and_themes.load_yaml_syntax)
+        syntax_dropdown.add_command(
+          label='C',
+          command=self.syntax.syntax_and_themes.load_c_syntax)
+        syntax_dropdown.add_command(
+          label='C++',
+          command=self.syntax.syntax_and_themes.load_cpp_syntax)
+        syntax_dropdown.add_command(
+          label='CSS',
+          command=self.syntax.syntax_and_themes.load_css_syntax)
+        syntax_dropdown.add_command(
+          label='Dart',
+          command=self.syntax.syntax_and_themes.load_dart_syntax)
+        syntax_dropdown.add_command(
+          label='Dockerfile',
+          command=self.syntax.syntax_and_themes.load_docker_syntax)
+        syntax_dropdown.add_command(
+          label='Haskell',
+          command=self.syntax.syntax_and_themes.load_haskell_syntax)
+        syntax_dropdown.add_command(
+          label='HTML/Django',
+          command=self.syntax.syntax_and_themes.load_html_syntax)
+        syntax_dropdown.add_command(
+          label='JavaScript',
+          command=self.syntax.syntax_and_themes.load_javascript_syntax)
+        syntax_dropdown.add_command(
+          label='Java',
+          command=self.syntax.syntax_and_themes.load_java_syntax)
+        syntax_dropdown.add_command(
+          label='Go',
+          command=self.syntax.syntax_and_themes.load_go_syntax)
+        syntax_dropdown.add_command(
+          label='Markdown',
+          command=self.syntax.syntax_and_themes.load_markdown_syntax)
+        syntax_dropdown.add_command(
+          label='Python3',
+          command=self.syntax.syntax_and_themes.load_python3_syntax)
+        syntax_dropdown.add_command(
+          label='Rust',
+          command=self.syntax.syntax_and_themes.load_rust_syntax)
+        syntax_dropdown.add_command(
+          label='SQL',
+          command=self.syntax.syntax_and_themes.load_sql_syntax)
+        syntax_dropdown.add_command(
+          label='Yaml',
+          command=self.syntax.syntax_and_themes.load_yaml_syntax)
 
         build_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
-        build_dropdown.add_command(label='Build',
-                                   comman=self.build)
-        build_dropdown.add_command(label='Run',
-                                   accelerator='Ctrl+R',
-                                   command=self.run)
-        build_dropdown.add_command(label='Build+Run',
-                                   command=self.build_run)
+        build_dropdown.add_command(
+          label='Build',
+          command=self.build)
+        build_dropdown.add_command(
+          label='Run',
+          accelerator='Ctrl+R',
+          command=self.run)
+        build_dropdown.add_command(
+          label='Build+Run',
+          command=self.build_run)
 
         # menubar add buttons
         menubar.add_cascade(label='File', menu=file_dropdown)

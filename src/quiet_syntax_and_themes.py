@@ -10,27 +10,32 @@ class SyntaxAndThemes:
 			self.master = master
 
 			self.monokaipro_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/monokai_pro.yaml'))
+				os.path.join('data', 'theme_configs/monokai_pro.yaml'))
 			self.monokai_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/monokai.yaml'))
+				os.path.join('data', 'theme_configs/monokai.yaml'))
 			self.gruvbox_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/gruvbox.yaml'))
+				os.path.join('data', 'theme_configs/gruvbox.yaml'))
 			self.solarized_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/solarized.yaml'))
+				os.path.join('data', 'theme_configs/solarized.yaml'))
 			self.darkheart_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/dark-heart.yaml'))
+				os.path.join('data', 'theme_configs/dark-heart.yaml'))
 			self.githubly_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/githubly.yaml'))
+				os.path.join('data', 'theme_configs/githubly.yaml'))
 			self.dracula_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/dracula.yaml'))
+				os.path.join('data', 'theme_configs/dracula.yaml'))
 			self.pumpkin_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/pumpkin.yaml'))
+				os.path.join('data', 'theme_configs/pumpkin.yaml'))
 			self.material_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/material.yaml'))
+				os.path.join('data', 'theme_configs/material.yaml'))
 			self.desert_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/desert.yaml'))
+				os.path.join('data', 'theme_configs/desert.yaml'))
 			self.rust_theme_path = master.parent.loader.resource_path(
-			os.path.join('data', 'theme_configs/rust.yaml'))
+				os.path.join('data', 'theme_configs/rust.yaml'))
+
+			self.default_theme_path = self.material_theme_path
+
+		def load_default(self):
+			self.master.load_new_theme(self.default_theme_path)
 
 		def load_monokai_pro(self):
 			self.master.load_new_theme(self.monokaipro_theme_path)
