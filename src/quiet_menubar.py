@@ -75,10 +75,14 @@ class Menubar():
                                   command=parent.toggle_linenumbers)
         view_dropdown.add_command(label='Toggle Text Border',
                                   command=self.toggle_text_border)
-        view_dropdown.add_command(label='Toggle Horizontal Scrollbar',
+        view_dropdown.add_command(label='Shrink/Enlarge Horizontal Scrollbar',
                                   command=self.toggle_scroll_x)
-        view_dropdown.add_command(label='Toggle Vertical Scrollbar',
+        view_dropdown.add_command(label='Shrink/Enlarge Vertical Scrollbar',
                                   command=self.toggle_scroll_y)
+        view_dropdown.add_command(label='Destroy Horizontal Scrollbar',
+                                  command=self._parent.scrollx.forget)
+        view_dropdown.add_command(label='Destroy Vertical Scrollbar',
+                                  command=self._parent.scrolly.forget)
         view_dropdown.add_command(label='Enter Quiet Mode',
                                   accelerator='Ctrl+Q',
                                   command=self.enter_quiet_mode)

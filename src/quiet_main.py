@@ -22,13 +22,9 @@ class QuietText(tk.Frame):
         master.title('untitled - Quiet Text')
         # defined size of the editer window
         master.geometry('700x785')
-
-        self.style = ttk.Style()
-        self.style.theme_use('clam')
-
+        self.configure(bg='black')
         self.loader = QuietLoaders()
         self.operating_system = platform.system()
-
         self.quiet_icon_path = self.loader.resource_path(os.path.join('data', 'q.png'))
         self.icon = tk.PhotoImage(file = self.quiet_icon_path)
         master.iconphoto(False, self.icon)
