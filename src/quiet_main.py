@@ -152,7 +152,6 @@ class QuietText(tk.Frame):
 
         #calling function to bind hotkeys.
         self.bind_shortcuts()
-        self.syntax_highlighter.startup_theme()
         self.control_key = False
         self.menu_hidden = False
 
@@ -367,31 +366,31 @@ class QuietText(tk.Frame):
         if self.filename:
             self.clear_and_replace_textarea()
             if self.filename[-4:] == '.txt' or self.filename[-3:] == '.md':
-                self.syntax_highlighter.load_markdown_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_markdown_syntax()
             elif self.filename[-2:] == '.c':
-                self.syntax_highlighter.load_c_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_c_syntax()
             elif self.filename[-3:] == '.py':
-                self.syntax_highlighter.load_python3_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_python3_syntax()
             elif self.filename[-3:] == '.js':
-                self.syntax_highlighter.load_javascript_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_javascript_syntax()
             elif self.filename[-5:] == '.java':
-                self.syntax_highlighter.load_java_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_java_syntax()
             elif self.filename[-5:] == '.html':
-                self.syntax_highlighter.load_html_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_html_syntax()
             elif self.filename[-4:] == '.css':
-                self.syntax_highlighter.load_css_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_css_syntax()
             elif self.filename[-4:] == '.cpp':
-                self.syntax_highlighter.load_cpp_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_cpp_syntax()
             elif self.filename[-3:] == '.go':
-                self.syntax_highlighter.load_go_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_go_syntax()
             elif self.filename[-3:] == '.rs':
-                self.syntax_highlighter.load_rust_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_rust_syntax()
             elif self.filename[-4:] == '.sql':
-                self.syntax_highlighter.load_sql_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_sql_syntax()
             elif self.filename[-5:] == '.yaml':
-                self.syntax_highlighter.load_yaml_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_yaml_syntax()
             elif self.filename[-10:] == 'Dockerfile':
-                self.syntax_highlighter.load_docker_syntax()
+                self.syntax_highlighter.syntax_and_themes.load_docker_syntax()
 
     # opening an existing file in the editor
     def open_file(self, *args):

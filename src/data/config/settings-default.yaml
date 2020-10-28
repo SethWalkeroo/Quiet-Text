@@ -3,19 +3,20 @@ autoclose_doublequotes: true
 autoclose_parentheses: true
 autoclose_singlequotes: true
 autoclose_squarebrackets: true
-current_line_indicator: true
+current_line_indicator: false
 current_line_indicator_symbol: '>'
 font_color: '#FFFFFF'
 font_family: consolas
-font_size: 13
+font_size: 10
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
+horizontal_scrollbar_show: true
 horizontal_scrollbar_trough_color: '#2e2724'
-horizontal_scrollbar_width: 8
+horizontal_scrollbar_width: 0
 insertion_blink: false
-insertion_color: '#f8f8f2'
-menu_active_bg: '#292e2b'
-menu_active_fg: '#e6db74'
+insertion_color: '#FFFFFF'
+menu_active_bg: '#323232'
+menu_active_fg: '#80cbc4'
 menu_bg: '#212121'
 menu_fg: '#546e7a'
 menubar_active_bg: '#323232'
@@ -31,7 +32,7 @@ textarea_padding_x: '5'
 textarea_padding_y: '5'
 vertical_scrollbar_active_bg: '#8a7575'
 vertical_scrollbar_color: '#383030'
+vertical_scrollbar_show: 'true'
 vertical_scrollbar_trough_color: '#2e2724'
-vertical_scrollbar_width: 8
+vertical_scrollbar_width: 0
 web_browser: chromium
-
