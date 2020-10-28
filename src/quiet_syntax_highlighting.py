@@ -5,7 +5,7 @@ import os
 import tkinter.font as tk_font
 from pygments import lex
 from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer, MarkdownLexer, CssLexer,
-                             GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer)
+                             GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer, SqlLexer)
 
 class SyntaxHighlighting():
 
@@ -265,6 +265,10 @@ class SyntaxHighlighting():
 
     def load_docker_syntax(self):
         self.lexer = DockerLexer()
+        self.initial_highlight()
+
+    def load_sql_syntax(self):
+        self.lexer = SqlLexer()
         self.initial_highlight()
 
 

@@ -147,6 +147,8 @@ class Menubar():
                                     command=self.syntax.load_python3_syntax)
         syntax_dropdown.add_command(label='Rust',
                                     command=self.syntax.load_rust_syntax)
+        syntax_dropdown.add_command(label='SQL',
+                                    command=self.syntax.load_sql_syntax)
         syntax_dropdown.add_command(label='Yaml',
                                     command=self.syntax.load_yaml_syntax)
 

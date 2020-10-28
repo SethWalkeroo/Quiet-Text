@@ -386,6 +386,8 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.load_go_syntax()
             elif self.filename[-3:] == '.rs':
                 self.syntax_highlighter.load_rust_syntax()
+            elif self.filename[-4:] == '.sql':
+                self.syntax_highlighter.load_sql_syntax()
             elif self.filename[-5:] == '.yaml':
                 self.syntax_highlighter.load_yaml_syntax()
             elif self.filename[-10:] == 'Dockerfile':
@@ -410,7 +412,8 @@ class QuietText(tk.Frame):
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
                            ('Go Files', '*.go'),
-                           ('Rust Files', '*.rs')])
+                           ('Rust Files', '*.rs'),
+                           ('Sql Files', '*.sql')])
 
             self.initialize_syntax()
             self.set_window_title(name=self.filename)
@@ -480,7 +483,8 @@ class QuietText(tk.Frame):
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
                            ('Go Files', '*.go'),
-                           ('Rust Files', '*.rs')])
+                           ('Rust Files', '*.rs'),
+                           ('Sql Files', '*.sql')])
 
             textarea_content = self.textarea.get(1.0, tk.END)
             with open(self.filename, 'w') as f:
