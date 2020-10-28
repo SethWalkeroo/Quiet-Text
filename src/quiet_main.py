@@ -781,7 +781,6 @@ class QuietText(tk.Frame):
         text.bind('<Button-5>', self._on_linux_scroll_down)
         text.bind('<Key>', self._on_keydown)
         text.bind('<KeyRelease>', self.syntax_highlight)
-        text.bind_all('<<Paste>>', self.context_menu.paste)
         text.bind('<Shift-asciitilde>', self.syntax_highlighter.initial_highlight)
         text.bind('<Shift-parenleft>', self.autoclose_parens)
         text.bind('<bracketleft>', self.autoclose_square_brackets)

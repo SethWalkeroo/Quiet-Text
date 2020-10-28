@@ -15,10 +15,13 @@ class ContextMenu(tk.Listbox):
         self.active_fg = parent.menubar_active_fg
         self.parent = parent
 
+        self.changes = [""]
+        self.steps = int()
+
         # setting tk.RIGHT click menu bar
         self.right_click_menu = tk.Menu(
             parent,
-            font=self.font_family,
+            font='DroidSansFallback',
             fg=self.font_color,
             bg=self.bg_color,
             activebackground=self.active_bg,
@@ -28,27 +31,22 @@ class ContextMenu(tk.Listbox):
 
         self.right_click_menu.add_command(
             label='Cut',
-            accelerator='Ctrl+X',
-            command=self.cut)
+            command=self.parent.textarea.event_generate('<<Cut>>'))
 
         self.right_click_menu.add_command(
             label='Copy',
-            accelerator='Ctrl+C',
-            command=self.copy)
+            command=self.parent.textarea.event_generate('<<Copy>>'))
 
         self.right_click_menu.add_command(
             label='Paste',
-            accelerator='Ctrl+V',
-            command=self.paste)
+            command=self.parent.textarea.event_generate('<<Paste>>'))
 
         self.right_click_menu.add_command(
             label='Bold',
-            accelerator='Ctrl+B',
             command=self.bold)
 
         self.right_click_menu.add_command(
             label='Highlight',
-            accelerator='Ctrl+H',
             command=self.hightlight)
 
     def popup(self, event):
@@ -57,29 +55,22 @@ class ContextMenu(tk.Listbox):
         finally:
             self.right_click_menu.grab_release()
 
-            # shortcut keys that the editor supports
-    def copy(self, event=None):
-        try:
-            self.parent.textarea.clipboard_clear()
-            text=self.parent.textarea.get("sel.first", "sel.last")
-            self.parent.textarea.clipboard_append(text)
-        except tk.TclError:
-            pass
+    def undo(self, event=None):
+        if self.steps != 0:
+            self.steps -= 1
+            self.parent.textarea.delete(0, tk.END)
+            self.parent.textarea.insert(tk.END, self.changes[self.steps])
 
-    def cut(self,event=None):
-        try:
-            self.copy()
-            self.parent.textarea.delete("sel.first", "sel.last")
-        except tk.TclError:
-            pass
+    def redo(self, event=None):
+        if self.steps < len(self.changes):
+            self.parent.textarea.delete(0, tk.END)
+            self.parent.textarea.insert(tk.END, self.changes[self.steps])
+            self.steps += 1
 
-    def paste(self, *args):
-        try:
-            text = self.parent.textarea.selection_get(selection='CLIPBOARD')
-            self.parent.syntax_highlighter.initial_highlight()
-        except tk.TclError:
-            pass
-        return 'break'
+    def add_changes(self, event=None):
+        if self.parent.textarea.get() != self.changes[-1]:
+            self.changes.append(self.parent.textarea.get())
+            self.steps += 1
 
     # Setting the selected text to be bold
     def bold(self, event=None):
@@ -91,7 +82,7 @@ class ContextMenu(tk.Listbox):
                     bold_font.configure(weight = "bold")
                     self.parent.textarea.tag_config("bold", font = bold_font)
                     if "bold" in current_tags:
-                        self.textarea.tag_remove("bold", "sel.first", "sel.last")
+                        self.parent.textarea.tag_remove("bold", "sel.first", "sel.last")
                     else:
                         self.parent.textarea.tag_add("bold", "sel.first", "sel.last")
                 else: 
