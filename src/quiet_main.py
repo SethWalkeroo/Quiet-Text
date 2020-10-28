@@ -688,7 +688,7 @@ class QuietText(tk.Frame):
             new_indent = current_indent + 1
             text.insert('insert', '\n' + '\t' * new_indent)
             return 'break'
-        elif prev_char == '{' and second_char == '}' or prev_char == '(' and second_char == ')' or prev_char ==  '[' and second_char == ']':
+        elif prev_char in '{[(' and second_char in '}])':
             current_indent = self.get_indent_level()
             new_indent = current_indent + 1
             text.insert('insert', '\n\n')
@@ -770,7 +770,8 @@ class QuietText(tk.Frame):
         text.bind('<Control-f>', self.show_find_window)
         text.bind('<Control-p>', self.load_previous_file)
         text.bind('<Control-t>', self.show_file_tree)
-        text.bind('<Control-Shift-z>', self.textarea.edit_redo)
+        text.bind('<Control-z>', self.syntax_highlighter.initial_highlight)
+        text.bind('<Control-y>', self.syntax_highlighter.initial_highlight)
         text.bind('<Escape>', self.leave_quiet_mode)
         text.bind('<<Change>>', self._on_change)
         text.bind('<Configure>', self._on_change)
