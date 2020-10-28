@@ -34,9 +34,9 @@ Quiet Text aims to give you a **clean and simple** text editor experience. Every
 
 - Autocompletion for parenthesis, brackets (square and curly), single quotes, and double quotes.
 - Auto indentation for code blocks and brackets (when creating lists or creating functions).
-- Syntax highlighting for 11 different languages and more to come (Go, Python, C, C++, Rust, Java, JavaScript, HTML, CSS, Yaml, Markdown).
+- Syntax highlighting for 15 different languages and more to come (Go, Python, C, C++, Dart, CoffeeScript, Haskell, Rust, Java, JavaScript, HTML, Sql, CSS, Yaml, Markdown).
 - Ability to compile and run your code from the editor. 
-- 9 different themes and color schemes to chose from (and more to come).
+- 11 different themes and color schemes to chose from (and more to come).
 - Customization options like font, text color, line height, and many more. 
 
 
