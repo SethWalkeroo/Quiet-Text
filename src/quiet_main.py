@@ -343,12 +343,15 @@ class QuietText(tk.Frame):
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
                            ('Markdown Documents', '*.md'),
-                           ('Javascript Files', '*.js'),
+                           ('JavaScript Files', '*.js'),
                            ('Java Files', '*.java'),
+                           ('Haskell Files', '*.hs'),
                            ('HTML Documents', '*.js'),
                            ('CSS Documents', '*.css'),
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
+                           ('CoffeeScript Files', '*.coffee'),
+                           ('Dart Files', '*.dart'),
                            ('Go Files', '*.go'),
                            ('Rust Files', '*.rs')])
             self.previous_file = self.filename
@@ -370,12 +373,18 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.syntax_and_themes.load_markdown_syntax()
             elif self.filename[-2:] == '.c':
                 self.syntax_highlighter.syntax_and_themes.load_c_syntax()
+            elif self.filename[-2:] == '.coffee':
+                self.syntax_highlighter.syntax_and_themes.load_coffeescript_syntax()
+            elif self.filename[-5:] == '.dart':
+                self.syntax_highlighter.syntax_and_themes.load_dart_syntax()
             elif self.filename[-3:] == '.py':
                 self.syntax_highlighter.syntax_and_themes.load_python3_syntax()
             elif self.filename[-3:] == '.js':
                 self.syntax_highlighter.syntax_and_themes.load_javascript_syntax()
             elif self.filename[-5:] == '.java':
                 self.syntax_highlighter.syntax_and_themes.load_java_syntax()
+            elif self.filename[-5:] == '.hs':
+                self.syntax_highlighter.syntax_and_themes.load_haskell_syntax()
             elif self.filename[-5:] == '.html':
                 self.syntax_highlighter.syntax_and_themes.load_html_syntax()
             elif self.filename[-4:] == '.css':
@@ -405,12 +414,15 @@ class QuietText(tk.Frame):
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
                            ('Markdown Documents', '*.md'),
-                           ('Javascript Files', '*.js'),
+                           ('JavaScript Files', '*.js'),
                            ('Java Files', '*.java'),
+                           ('Haskell Files', '*.hs'),
                            ('HTML Documents', '*.html'),
                            ('CSS Documents', '*.css'),
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
+                           ('CoffeeScript Files', '*.coffee'),
+                           ('Dart Files', '*.dart'),
                            ('Go Files', '*.go'),
                            ('Rust Files', '*.rs'),
                            ('Sql Files', '*.sql')])
@@ -478,10 +490,13 @@ class QuietText(tk.Frame):
                            ('Markdown Documents', '*.md'),
                            ('Javascript Files', '*.js'),
                            ('Java Files', '*.java'),
+                           ('Haskell Files', '*.hs'),
                            ('HTML Documents', '*.html'),
                            ('CSS Documents', '*.css'),
                            ('C Files', '*.c'),
                            ('C++ Files', '*.cpp'),
+                           ('CoffeeScript Files', '*.coffee'),
+                           ('Dart Files', '*.dart'),
                            ('Go Files', '*.go'),
                            ('Rust Files', '*.rs'),
                            ('Sql Files', '*.sql')])

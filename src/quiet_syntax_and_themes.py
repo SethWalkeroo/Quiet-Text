@@ -32,7 +32,7 @@ class SyntaxAndThemes:
 			self.rust_theme_path = master.parent.loader.resource_path(
 				os.path.join('data', 'theme_configs/rust.yaml'))
 
-			self.default_theme_path = self.material_theme_path
+			self.default_theme_path = self.rust_theme_path
 
 		def load_default(self):
 			self.master.load_new_theme(self.default_theme_path)

@@ -165,6 +165,9 @@ class Menubar():
           label='C++',
           command=self.syntax.syntax_and_themes.load_cpp_syntax)
         syntax_dropdown.add_command(
+          label='CoffeeScript',
+          command=self.syntax.syntax_and_themes.load_coffeescript_syntax)
+        syntax_dropdown.add_command(
           label='CSS',
           command=self.syntax.syntax_and_themes.load_css_syntax)
         syntax_dropdown.add_command(
