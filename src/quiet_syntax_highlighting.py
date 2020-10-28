@@ -17,6 +17,7 @@ class SyntaxHighlighting():
         self.font_size = parent.font_size
         self.previousContent = initial_content
         
+
         self.monokaipro_theme_path = self.parent.loader.resource_path(
             os.path.join('data', 'theme_configs/monokai_pro.yaml'))
         self.monokai_theme_path = self.parent.loader.resource_path(
@@ -37,6 +38,9 @@ class SyntaxHighlighting():
             os.path.join('data', 'theme_configs/material.yaml'))
         self.desert_theme_path = self.parent.loader.resource_path(
             os.path.join('data', 'theme_configs/desert.yaml'))
+        self.rust_theme_path = self.parent.loader.resource_path(
+            os.path.join('data', 'theme_configs/rust.yaml'))
+        
         
         self.preferred_theme = 'material'
         self.current_theme = self.preferred_theme
@@ -181,6 +185,10 @@ class SyntaxHighlighting():
     def load_gruvbox(self):
         self.load_new_theme(self.gruvbox_theme_path)
         self.current_theme = 'gruvbox'
+
+    def load_rust(self):
+        self.load_new_theme(self.rust_theme_path)
+        self.current_theme = 'rust'
 
     def load_solarized(self):
         self.load_new_theme(self.solarized_theme_path)

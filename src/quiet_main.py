@@ -797,7 +797,6 @@ class QuietText(tk.Frame):
         else:
             text.bind('<Shift-ISO_Left_Tab>', self.tab_text)
 
-
 if __name__ == '__main__':
     master = tk.Tk()
     qt = QuietText(master)
@@ -806,22 +805,3 @@ if __name__ == '__main__':
         qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

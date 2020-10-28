@@ -49,7 +49,10 @@ class CustomText(tk.Text):
 
     def find(self, text_to_find):
         length = tk.IntVar()
-        index = self.search(text_to_find, self.find_search_starting_index, stopindex=tk.END, count=length)
+        index = self.search(
+            text_to_find,
+            self.find_search_starting_index,
+            stopindex=tk.END, count=length)
 
         if index:
             self.tag_remove('find_match', 1.0, tk.END)

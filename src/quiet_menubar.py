@@ -115,6 +115,8 @@ class Menubar():
                                    command=self.syntax.load_monokai_pro)
         theme_dropdown.add_command(label='Pumpkin',
                                    command=self.syntax.load_pumpkin)
+        theme_dropdown.add_command(label='Rust',
+                                   command=self.syntax.load_rust)
         theme_dropdown.add_command(label='Solarized',
                                    command=self.syntax.load_solarized)
 
