@@ -458,7 +458,6 @@ class Menubar():
                     run = f"start cmd.exe @cmd /k '{compiled_name}'"
                 os.chdir(file_path)
                 os.system(build)
-                sleep(1)
                 os.system(run)
             elif filename[-5:] == '.java':
                 compiled_name = filename[:-5]

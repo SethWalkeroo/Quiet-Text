@@ -91,8 +91,7 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Keyword.Reserved', foreground=self.keyword_color)
         self.text.tag_configure('Token.Name.Attribute', foreground=self.bultin_function_color)
         self.text.tag_configure('Token.Name.Tag', foreground=self.namespace_color)
-        self.text.tag_configure('Token.Comment.Preproc', foreground=self.comment_color)
-        self.text.tag_configure('Token.Comment.PreprocFile', forground=self.comment_color)
+        self.text.tag_configure('Token.Comment.PreprocFile', forground=self.namespace_color)
         self.text.tag_configure('Token.Name.Label', foreground=self.class_color)
         self.text.tag_configure('Token.Literal.String.Escape', foreground=self.number_color)
 
