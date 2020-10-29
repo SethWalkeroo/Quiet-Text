@@ -322,12 +322,15 @@ class QuietText(tk.Frame):
 
     def load_previous_file(self, *args):
         if self.previous_file:
-            previous = self.filename
-            self.filename = self.previous_file
-            self.previous_file = previous
-            self.set_window_title(name=self.filename)
-            self.initialize_syntax()
-            self.clear_and_replace_textarea()
+            try:
+                previous = self.filename
+                self.filename = self.previous_file
+                self.previous_file = previous
+                self.set_window_title(name=self.filename)
+                self.initialize_syntax()
+                self.clear_and_replace_textarea()
+            except PermissionError as e:
+                print(e)
 
     # new file creating in the editor feature
     #Deletes all of the text in the current area and sets window title to default.
@@ -353,7 +356,8 @@ class QuietText(tk.Frame):
                            ('CoffeeScript Files', '*.coffee'),
                            ('Dart Files', '*.dart'),
                            ('Go Files', '*.go'),
-                           ('Rust Files', '*.rs')])
+                           ('Rust Files', '*.rs'),
+                           ('Swift Files', '*.swift')])
             self.previous_file = self.filename
             self.filename = new_file
             textarea_content = self.textarea.get(1.0, tk.END)
@@ -399,6 +403,8 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.syntax_and_themes.load_sql_syntax()
             elif self.filename[-5:] == '.yaml':
                 self.syntax_highlighter.syntax_and_themes.load_yaml_syntax()
+            elif self.filename[-6:] == '.swift':
+                self.syntax_highlighter.syntax_and_themes.load_swift_syntax()
             elif self.filename[-10:] == 'Dockerfile':
                 self.syntax_highlighter.syntax_and_themes.load_docker_syntax()
 
@@ -425,7 +431,8 @@ class QuietText(tk.Frame):
                            ('Dart Files', '*.dart'),
                            ('Go Files', '*.go'),
                            ('Rust Files', '*.rs'),
-                           ('Sql Files', '*.sql')])
+                           ('Sql Files', '*.sql'),
+                           ('Swift Files', '*.swift')])
 
             self.initialize_syntax()
             self.set_window_title(name=self.filename)
@@ -499,7 +506,8 @@ class QuietText(tk.Frame):
                            ('Dart Files', '*.dart'),
                            ('Go Files', '*.go'),
                            ('Rust Files', '*.rs'),
-                           ('Sql Files', '*.sql')])
+                           ('Sql Files', '*.sql'),
+                           ('Swift Files', '*.swift')])
 
             textarea_content = self.textarea.get(1.0, tk.END)
             with open(self.filename, 'w') as f:

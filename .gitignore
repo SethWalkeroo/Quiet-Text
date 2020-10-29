@@ -155,4 +155,8 @@ learn.js
 test.md
 test.rs
 test.sql
+test.swift
+test.hs
+test.coffee
+test.dart
 .vscode

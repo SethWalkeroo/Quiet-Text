@@ -204,6 +204,9 @@ class Menubar():
           label='SQL',
           command=self.syntax.syntax_and_themes.load_sql_syntax)
         syntax_dropdown.add_command(
+          label='Swift',
+          command=self.syntax.syntax_and_themes.load_swift_syntax)
+        syntax_dropdown.add_command(
           label='Yaml',
           command=self.syntax.syntax_and_themes.load_yaml_syntax)
 

@@ -1,6 +1,6 @@
 import os
 from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer, MarkdownLexer, CssLexer,
-         GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer, SqlLexer,
+         GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer, SqlLexer, SwiftLexer,
          CoffeeScriptLexer, DartLexer, HaskellLexer)
 
 class SyntaxAndThemes:
@@ -132,4 +132,8 @@ class SyntaxAndThemes:
 
 		def load_haskell_syntax(self):
 			self.master.lexer = HaskellLexer()
+			self.master.initial_highlight()
+
+		def load_swift_syntax(self):
+			self.master.lexer = SwiftLexer()
 			self.master.initial_highlight()
