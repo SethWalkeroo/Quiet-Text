@@ -1,6 +1,7 @@
 comment_color: '#8c7d64'
 string_color: '#ebc88d'
 number_color: '#ebc88d'
+type_color: '#ebc88d'
 keyword_color: '#e38f00'
 operator_color: '#e38f00'
 bultin_function_color: '#e38f00'

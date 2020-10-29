@@ -23,6 +23,7 @@ class SyntaxHighlighting():
         self.string_color = None
         self.number_color = None
         self.keyword_color = None
+        self.type_color = None
         self.operator_color = None
         self.bultin_function_color = None
         self.class_color = None
@@ -65,7 +66,7 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Literal.Number.Float', foreground=self.number_color)
         self.text.tag_configure('Token.Keyword', foreground=self.keyword_color)
         self.text.tag_configure('Token.Operator', foreground=self.operator_color)
-        self.text.tag_configure('Token.Keyword.Type', foreground=self.number_color, font=self.parent.italics)
+        self.text.tag_configure('Token.Keyword.Type', foreground=self.type_color, font=self.parent.italics)
         self.text.tag_configure('Token.Keyword.Declaration', foreground=self.bultin_function_color, font=self.parent.italics)
         self.text.tag_configure('Token.Name.Class', foreground=self.class_name_color)
         self.text.tag_configure('Token.Text.Whitespace')
@@ -109,6 +110,7 @@ class SyntaxHighlighting():
         self.class_name_color = new_config['class_name_color']
         self.function_name_color = new_config['function_name_color']
         self.text_color = new_config['font_color']
+        self.type_color = new_config['type_color']
         settings = self.parent.loader.load_settings_data()
         settings['text_selection_bg'] = new_config['selection_color']
         settings['insertion_color'] = new_config['font_color']
