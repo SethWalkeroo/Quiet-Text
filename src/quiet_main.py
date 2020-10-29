@@ -672,23 +672,28 @@ class QuietText(tk.Frame):
         self.textarea.mark_set(tk.INSERT, index)
 
     def autoclose_parens(self, event):
-        if self.autoclose_parentheses:
+        _, second_char, _, _ = self.get_chars_in_front_and_back()
+        if self.autoclose_parentheses and not second_char.isalnum():
             self.autoclose_base(')')
 
     def autoclose_curly_brackets(self, event):
-        if self.autoclose_curlybraces:
+        _, second_char, _, _ = self.get_chars_in_front_and_back()
+        if self.autoclose_curlybraces and not second_char.isalnum():
             self.autoclose_base('}')
 
     def autoclose_square_brackets(self, event):
-        if self.autoclose_squarebrackets:
+        _, second_char, _, _ = self.get_chars_in_front_and_back()
+        if self.autoclose_squarebrackets and not second_char.isalnum():
             self.autoclose_base(']')
 
     def autoclose_double_quotes(self, event):
-        if self.autoclose_doublequotes:
+        _, second_char, _, _ = self.get_chars_in_front_and_back()
+        if self.autoclose_doublequotes and not second_char.isalnum():
             self.autoclose_base('"')
 
     def autoclose_single_quotes(self, event):
-        if self.autoclose_singlequotes:
+        _, second_char, _, _ = self.get_chars_in_front_and_back()
+        if self.autoclose_singlequotes and not second_char.isalnum():
             self.autoclose_base("'")
 
     def get_indent_level(self):
