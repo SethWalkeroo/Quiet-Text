@@ -65,7 +65,7 @@ class SyntaxHighlighting():
         self.text.tag_configure('Token.Literal.Number.Float', foreground=self.number_color)
         self.text.tag_configure('Token.Keyword', foreground=self.keyword_color)
         self.text.tag_configure('Token.Operator', foreground=self.operator_color)
-        self.text.tag_configure('Token.Keyword.Type', foreground=self.keyword_color, font=self.parent.italics)
+        self.text.tag_configure('Token.Keyword.Type', foreground=self.number_color, font=self.parent.italics)
         self.text.tag_configure('Token.Keyword.Declaration', foreground=self.bultin_function_color, font=self.parent.italics)
         self.text.tag_configure('Token.Name.Class', foreground=self.class_name_color)
         self.text.tag_configure('Token.Text.Whitespace')
