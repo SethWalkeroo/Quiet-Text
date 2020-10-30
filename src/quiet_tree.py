@@ -1,7 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import os
-import sys
 
 class FileTree(tk.Toplevel):
 	def __init__(self, master, **kwargs):

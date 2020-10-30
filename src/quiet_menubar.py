@@ -1,6 +1,5 @@
 import tkinter as tk
-import yaml
-import os, sys
+import os
 import re
 from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting

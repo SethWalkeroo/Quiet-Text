@@ -1,4 +1,4 @@
-import yaml
+from yaml import load, dump, FullLoader
 import sys, os
 
 class QuietLoaders:
@@ -15,14 +15,14 @@ class QuietLoaders:
 	def load_settings_data(self, default=False):
 		if not default:
 			with open(self.settings_path, 'r') as some_config:
-				return yaml.load(some_config, Loader=yaml.FullLoader)
+				return load(some_config, Loader=FullLoader)
 		else:
 			with open(self.default_settings_path, 'r') as some_config:
-				return yaml.load(some_config, Loader=yaml.FullLoader)
+				return load(some_config, Loader=FullLoader)
 
 	def store_settings_data(self, new_settings):
 		with open(self.settings_path, 'w') as settings_config:
-			yaml.dump(new_settings, settings_config)
+			dump(new_settings, settings_config)
 
 
 

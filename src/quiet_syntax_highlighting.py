@@ -1,8 +1,6 @@
 import tkinter as tk
-import math
-import yaml
-import os
 import tkinter.font as tk_font
+from yaml import load, FullLoader
 from pygments import lex
 from quiet_syntax_and_themes import SyntaxAndThemes
 from pygments.lexers import MarkdownLexer
@@ -98,7 +96,7 @@ class SyntaxHighlighting():
 
     def load_new_theme(self, path):
         with open(path) as new_theme_config:
-            new_config = yaml.load(new_theme_config, Loader=yaml.FullLoader)
+            new_config = load(new_theme_config, Loader=FullLoader)
         self.comment_color = new_config['comment_color']
         self.string_color = new_config['string_color']
         self.number_color = new_config['number_color']

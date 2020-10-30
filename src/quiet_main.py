@@ -1,9 +1,9 @@
 import os
-import sys
 import tkinter as tk 
 import tkinter.font as tk_font
-import re
-import platform
+from sys import exit
+from platform import system
+from re import match
 from tkinter import (filedialog, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menubar
@@ -24,7 +24,7 @@ class QuietText(tk.Frame):
         master.geometry('700x785')
         self.configure(bg='black')
         self.loader = QuietLoaders()
-        self.operating_system = platform.system()
+        self.operating_system = system()
         self.quiet_icon_path = self.loader.resource_path(os.path.join('data', 'q.png'))
         self.icon = tk.PhotoImage(file = self.quiet_icon_path)
         master.iconphoto(False, self.icon)
@@ -459,19 +459,6 @@ class QuietText(tk.Frame):
         FileTree(self)
         return 'break'
 
-    # opening an existing file without TK filedialog
-    def open_file_without_dialog(self, path):
-        if os.path.isdir(path):
-            self.statusbar.update_status('Unable to open directory.')
-            return
-
-        if not os.path.exists(path):
-            self.statusbar.update_status('File does not exists.')
-            return
-
-        self.filename = path
-        self.clear_and_replace_textarea()
-
     # saving changes made in the file
     def save(self,*args):
         if self.filename:
@@ -529,14 +516,14 @@ class QuietText(tk.Frame):
             self.save()
         except Exception:
             self.save_as()
-        sys.exit()
+        exit()
 
     def on_closing(self):
         message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
         if message == True:
             self.quit_save()
         elif message == False:
-            sys.exit()
+            exit()
         else:
             return
 
@@ -705,7 +692,7 @@ class QuietText(tk.Frame):
     def get_indent_level(self):
         text = self.textarea
         line = text.get('insert linestart', 'insert lineend')
-        match = re.match(r'^(\s+)', line)
+        match = match(r'^(\s+)', line)
         current_indent = len(match.group(0)) if match else 0
         return current_indent
 
@@ -835,7 +822,5 @@ if __name__ == '__main__':
     master = tk.Tk()
     qt = QuietText(master)
     qt.pack(side='top', fill='both', expand=True)
-    if len(sys.argv) > 1:
-        qt.open_file_without_dialog(sys.argv[-1])
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
