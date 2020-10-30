@@ -4,6 +4,7 @@ import os, sys
 import re
 from tkinter.colorchooser import askcolor
 from quiet_syntax_highlighting import SyntaxHighlighting
+from time import sleep
 
 
 class Menubar():
@@ -367,4 +368,5 @@ class Menubar():
 
     def build_run(self):
         self.build()
+        sleep(.5)
         self.run()
