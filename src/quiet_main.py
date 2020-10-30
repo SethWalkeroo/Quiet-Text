@@ -388,7 +388,7 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.syntax_and_themes.load_javascript_syntax()
             elif self.filename[-5:] == '.java':
                 self.syntax_highlighter.syntax_and_themes.load_java_syntax()
-            elif self.filename[-5:] == '.hs':
+            elif self.filename[-3:] == '.hs':
                 self.syntax_highlighter.syntax_and_themes.load_haskell_syntax()
             elif self.filename[-5:] == '.html':
                 self.syntax_highlighter.syntax_and_themes.load_html_syntax()

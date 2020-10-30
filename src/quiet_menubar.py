@@ -333,6 +333,9 @@ class Menubar():
                 self.base_cmd(f'javac {filename}')
             elif filename[-3:] == '.rs':
                 self.base_cmd(f'rustc {filename}')
+            elif filename[-3:] == '.hs':
+                compiled_name = filename[:-3]
+                self.base_cmd(f'ghc -o {compiled_name} {filename}')
             else:
                 self._parent.statusbar.update_status('cant build')
         except TypeError:
@@ -364,6 +367,9 @@ class Menubar():
                 self.base_cmd(f'{compiled_name}')
             elif filename[-4:] == '.nim':
                 self.base_cmd(f'nim c -r {filename}')
+            elif filename[-3:] == '.hs':
+                compiled_name = filename[:-3]
+                self.base_cmd(f'{compiled_name}')
             else:
                 self._parent.statusbar.update_status('no python')
         except TypeError as e:
