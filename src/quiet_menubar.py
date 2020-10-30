@@ -12,7 +12,7 @@ class Menubar():
         self._parent = parent
         self.settings = parent.loader.load_settings_data()
         self.syntax = parent.syntax_highlighter
-
+        self.ptrn = r'[^\/]+$'
         font_specs = ('Droid Sans Fallback', 12)
 
         # setting up basic features in menubar
@@ -302,50 +302,34 @@ class Menubar():
     def show_menu(self):
         self._parent.master.config(menu=self._menubar)
 
-    def build(self, *args):
+    def base_cmd(self, command):
+        if self._parent.operating_system == 'Windows':
+            cmd = f'start cmd.exe @cmd /k {command}'
+        elif self._parent.operating_system == 'Linux':
+            cmd = f"gnome-terminal -- bash -c '{command}; read'"
+        file_from_path = re.search(self.ptrn, self._parent.filename)
+        filename = file_from_path.group(0)
+        file_path = self._parent.filename[:-len(filename)]
+        os.chdir(file_path)
+        os.system(cmd)
+
+    def build(self):
         try:
-            ptrn = r'[^\/]+$'
-            file_from_path = re.search(ptrn, self._parent.filename)
+            file_from_path = re.search(self.ptrn, self._parent.filename)
             filename = file_from_path.group(0)
-            file_path = self._parent.filename[:-len(filename)]
             if filename[-3:] == '.go':
-                if self._parent.operating_system == 'Linux':
-                    build = f"gnome-terminal -- bash -c 'go build {self._parent.filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    build = f'start cmd.exe @cmd /k go build {self._parent.filename}'
-                os.system(build)
+                self.base_cmd(f'go build {self._parent.filename}')
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
-                if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f'start cmd.exe @cmd /k cc {filename} -o {compiled_name}'
-                os.chdir(file_path)
-                os.system(compile_cmd)
+                self.base_cmd(f'cc {filename} -o {compiled_name}')
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
-                if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k g++ -o {compiled_name} {filename}"
-                os.chdir(file_path)
-                os.system(compile_cmd)
+                self.base_cmd(f'g++ -o {compiled_name} {filename}')
             elif filename[-5:] == '.java':
                 compiled_name = filename[:-5]
-                if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'javac {filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k javac {filename}"
-                os.chdir(file_path)
-                os.system(compile_cmd)
+                self.base_cmd(f'javac {filename}')
             elif filename[-3:] == '.rs':
-                compiled_name = filename[:-3]
-                if self._parent.operating_system == 'Linux':
-                    compile_cmd = f"gnome-terminal -- bash -c 'rustc {filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k rustc {filename}"
-                os.chdir(file_path)
-                os.system(compile_cmd)
+                self.base_cmd(f'rustc {filename}')
             else:
                 self._parent.statusbar.update_status('cant build')
         except TypeError:
@@ -353,135 +337,34 @@ class Menubar():
 
     def run(self, *args):
         try:
-            ptrn = r'[^\/]+$'
-            file_from_path = re.search(ptrn, self._parent.filename)
+            file_from_path = re.search(self.ptrn, self._parent.filename)
             filename = file_from_path.group(0)
-            file_path = self._parent.filename[:-len(filename)]
             if filename[-3:] == '.py':
-                #run separate commands for different os
-                if self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k python {self._parent.filename}'
-                elif self._parent.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c 'python3 {self._parent.filename}; read'"
-                os.system(cmd)
+                self.base_cmd(f'python {self._parent.filename}')
             elif filename[-5:] == '.html':
-                if self._parent.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c '{self._parent.browser} {filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k {self._parent.browser} {filename}'
-                os.system(cmd)
+                self.base_cmd(f'{self._parent.browser} {filename}')
             elif filename[-3:] == '.js':
-                if self._parent.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c 'node {self._parent.filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k " node {self._parent.filename}"'
-                os.system(cmd)
+                self.base_cmd(f'node {self._parent.filename}')
             elif filename[-3:] == '.go':
-                if self._parent.operating_system == 'Linux':
-                    cmd = f"gnome-terminal -- bash -c 'go run {self._parent.filename}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k go run {self._parent.filename}'
-                os.system(cmd)
+                self.base_cmd(f'go run {self._parent.filename}')
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
-                if self._parent.operating_system == 'Linux':
-                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k {compiled_name}"
-                os.chdir(file_path)
-                os.system(run_cmd)
+                self.base_cmd(f'{compiled_name}')
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
-                if self._parent.operating_system == 'Linux':
-                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k {compiled_name}"
-                os.chdir(file_path)
-                os.system(run_cmd)
+                self.base_cmd(f'{compiled_name}')
             elif filename[-5:] == '.java':
                 compiled_name = filename[:-5]
-                if self._parent.operating_system == 'Linux':
-                    run_cmd = f"gnome-terminal -- bash -c 'java {compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k java {compiled_name}"
-                os.chdir(file_path)
-                os.system(run_cmd)
+                self.base_cmd(f'java {compiled_name}')
             elif filename[-3:] == '.rs':
                 compiled_name = filename[:-3]
-                if self._parent.operating_system == 'Linux':
-                    run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k {compiled_name}"
-                os.chdir(file_path)
-                os.system(run_cmd)
+                self.base_cmd(f'{compiled_name}')
             else:
                 self._parent.statusbar.update_status('no python')
-        except TypeError:
+        except TypeError as e:
+            print(e)
             self._parent.statusbar.update_status('no file run')
 
-    # running the python file
-    def build_run(self, *args):
-        try:
-            ptrn = r'[^\/]+$'
-            file_from_path = re.search(ptrn, self._parent.filename)
-            filename = file_from_path.group(0)
-            file_path = self._parent.filename[:-len(filename)]
-            if filename[-3:] == '.go':
-                compiled_name = filename[:-3]
-                if self._parent.operating_system == 'Linux':
-                    build = f"gnome-terminal -- bash -c 'go build {self._parent.filename}; read'"
-                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
-                    run = f'start cmd.exe @cmd /k {compiled_name}'
-                os.chdir(file_path)
-                os.system(build)
-                os.system(run)
-            elif filename[-2:] == '.c':
-                compiled_name = filename[:-2]
-                if self._parent.operating_system == 'Linux':
-                    build = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
-                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    build = f'start cmd.exe @cmd /k cc {filename} -o {compiled_name}'
-                    run = f"start cmd.exe @cmd /k {compiled_name}"
-                os.chdir(file_path)
-                os.system(build)
-                os.system(run)
-            elif filename[-4:] == '.cpp':
-                compiled_name = filename[:-4]
-                if self._parent.operating_system == 'Linux':
-                    build = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
-                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    build = f"start cmd.exe @cmd /k g++ -o {compiled_name} {filename}"
-                    run = f"start cmd.exe @cmd /k {compiled_name}"
-                os.chdir(file_path)
-                os.system(build)
-                os.system(run)
-            elif filename[-5:] == '.java':
-                compiled_name = filename[:-5]
-                if self._parent.operating_system == 'Linux':
-                    build = f"gnome-terminal -- bash -c 'javac {filename}; read'"
-                    run = f"gnome-terminal -- bash -c 'java {compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    build = f"start cmd.exe @cmd /k javac {filename}"
-                    run = f"start cmd.exe @cmd /k java {compiled_name}"
-                os.chdir(file_path)
-                os.system(build)
-                os.system(run)
-            elif filename[-3:] == '.rs':
-                compiled_name = filename[:-3]
-                if self._parent.operating_system == 'Linux':
-                    build = f"gnome-terminal -- bash -c 'rustc {filename}; read'"
-                    run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
-                elif self._parent.operating_system == 'Windows':
-                    build = f"start cmd.exe @cmd /k rustc {filename}"
-                    run = f"start cmd.exe @cmd /k {compiled_name}"
-                os.chdir(file_path)
-                os.system(build)
-                os.system(run)
-            else:
-                self._parent.statusbar.update_status('no python')
-        except TypeError:
-            self._parent.statusbar.update_status('no file run')
+    def build_run(self):
+        self.build()
+        self.run()
