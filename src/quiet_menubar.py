@@ -312,14 +312,14 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     build = f"gnome-terminal -- bash -c 'go build {self._parent.filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
+                    build = f'start cmd.exe @cmd /k go build {self._parent.filename}'
                 os.system(build)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
                     compile_cmd = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
+                    compile_cmd = f'start cmd.exe @cmd /k cc {filename} -o {compiled_name}'
                 os.chdir(file_path)
                 os.system(compile_cmd)
             elif filename[-4:] == '.cpp':
@@ -327,7 +327,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     compile_cmd = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
+                    compile_cmd = f"start cmd.exe @cmd /k g++ -o {compiled_name} {filename}"
                 os.chdir(file_path)
                 os.system(compile_cmd)
             elif filename[-5:] == '.java':
@@ -335,7 +335,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     compile_cmd = f"gnome-terminal -- bash -c 'javac {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'javac {filename}'"
+                    compile_cmd = f"start cmd.exe @cmd /k javac {filename}"
                 os.chdir(file_path)
                 os.system(compile_cmd)
             elif filename[-3:] == '.rs':
@@ -343,7 +343,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     compile_cmd = f"gnome-terminal -- bash -c 'rustc {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    compile_cmd = f"start cmd.exe @cmd /k 'rustc {filename}'"
+                    compile_cmd = f"start cmd.exe @cmd /k rustc {filename}"
                 os.chdir(file_path)
                 os.system(compile_cmd)
             else:
@@ -360,7 +360,7 @@ class Menubar():
             if filename[-3:] == '.py':
                 #run separate commands for different os
                 if self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "python {self._parent.filename}"'
+                    cmd = f'start cmd.exe @cmd /k python {self._parent.filename}'
                 elif self._parent.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c 'python3 {self._parent.filename}; read'"
                 os.system(cmd)
@@ -368,7 +368,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c '{self._parent.browser} {filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "{self._parent.browser} {filename}"'
+                    cmd = f'start cmd.exe @cmd /k {self._parent.browser} {filename}'
                 os.system(cmd)
             elif filename[-3:] == '.js':
                 if self._parent.operating_system == 'Linux':
@@ -380,14 +380,14 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     cmd = f"gnome-terminal -- bash -c 'go run {self._parent.filename}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    cmd = f'start cmd.exe @cmd /k "go run {self._parent.filename}"'
+                    cmd = f'start cmd.exe @cmd /k go run {self._parent.filename}'
                 os.system(cmd)
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k {compiled_name}"
                 os.chdir(file_path)
                 os.system(run_cmd)
             elif filename[-4:] == '.cpp':
@@ -395,7 +395,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k {compiled_name}"
                 os.chdir(file_path)
                 os.system(run_cmd)
             elif filename[-5:] == '.java':
@@ -403,7 +403,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c 'java {compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k 'java {compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k java {compiled_name}"
                 os.chdir(file_path)
                 os.system(run_cmd)
             elif filename[-3:] == '.rs':
@@ -411,7 +411,7 @@ class Menubar():
                 if self._parent.operating_system == 'Linux':
                     run_cmd = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    run_cmd = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    run_cmd = f"start cmd.exe @cmd /k {compiled_name}"
                 os.chdir(file_path)
                 os.system(run_cmd)
             else:
@@ -433,7 +433,7 @@ class Menubar():
                     run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
                     build = f'start cmd.exe @cmd /k "go build {self._parent.filename}"'
-                    run = f'start cmd.exe @cmd /k "{compiled_name}"'
+                    run = f'start cmd.exe @cmd /k {compiled_name}'
                 os.chdir(file_path)
                 os.system(build)
                 os.system(run)
@@ -443,8 +443,8 @@ class Menubar():
                     build = f"gnome-terminal -- bash -c 'cc {filename} -o {compiled_name}; read'"
                     run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    build = f'start cmd.exe @cmd /k "cc {filename} -o {compiled_name}"'
-                    run = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    build = f'start cmd.exe @cmd /k cc {filename} -o {compiled_name}'
+                    run = f"start cmd.exe @cmd /k {compiled_name}"
                 os.chdir(file_path)
                 os.system(build)
                 os.system(run)
@@ -454,8 +454,8 @@ class Menubar():
                     build = f"gnome-terminal -- bash -c 'g++ -o {compiled_name} {filename}; read'"
                     run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    build = f"start cmd.exe @cmd /k 'g++ -o {compiled_name} {filename}'"
-                    run = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    build = f"start cmd.exe @cmd /k g++ -o {compiled_name} {filename}"
+                    run = f"start cmd.exe @cmd /k {compiled_name}"
                 os.chdir(file_path)
                 os.system(build)
                 os.system(run)
@@ -465,8 +465,8 @@ class Menubar():
                     build = f"gnome-terminal -- bash -c 'javac {filename}; read'"
                     run = f"gnome-terminal -- bash -c 'java {compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    build = f"start cmd.exe @cmd /k 'javac {filename}'"
-                    run = f"start cmd.exe @cmd /k 'java {compiled_name}'"
+                    build = f"start cmd.exe @cmd /k javac {filename}"
+                    run = f"start cmd.exe @cmd /k java {compiled_name}"
                 os.chdir(file_path)
                 os.system(build)
                 os.system(run)
@@ -476,8 +476,8 @@ class Menubar():
                     build = f"gnome-terminal -- bash -c 'rustc {filename}; read'"
                     run = f"gnome-terminal -- bash -c './{compiled_name}; read'"
                 elif self._parent.operating_system == 'Windows':
-                    build = f"start cmd.exe @cmd /k 'rustc {filename}'"
-                    run = f"start cmd.exe @cmd /k '{compiled_name}'"
+                    build = f"start cmd.exe @cmd /k rustc {filename}"
+                    run = f"start cmd.exe @cmd /k {compiled_name}"
                 os.chdir(file_path)
                 os.system(build)
                 os.system(run)

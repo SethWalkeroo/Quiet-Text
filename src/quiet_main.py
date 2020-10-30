@@ -436,6 +436,8 @@ class QuietText(tk.Frame):
                            ('Swift Files', '*.swift')])
 
             self.initialize_syntax()
+            if not self.filename:
+                self.filename = self.previous_file
             self.set_window_title(name=self.filename)
         except Exception as e:
             print(e)
