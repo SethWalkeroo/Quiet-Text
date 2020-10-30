@@ -34,7 +34,7 @@ class SyntaxHighlighting():
 
     def default_highlight(self):
         row, _ = self.text.index(tk.INSERT).split('.')
-        location = f'{row}.00'
+        location = f'{row}.0'
         content = self.text.get("1.0", "end-1c")
         lines = content.split("\n")
         if (self.previousContent != content):

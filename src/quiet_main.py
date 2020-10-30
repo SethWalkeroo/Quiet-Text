@@ -155,6 +155,7 @@ class QuietText(tk.Frame):
         self.bind_shortcuts()
         self.control_key = False
         self.menu_hidden = False
+        self.first_word = True
 
     def clear_and_replace_textarea(self):
         self.textarea.delete(1.0, tk.END)
@@ -649,6 +650,9 @@ class QuietText(tk.Frame):
             self.statusbar.update_status('hide')
 
     def syntax_highlight(self, *args):
+        if self.first_word:
+            self.syntax_highlighter.initial_highlight()
+            self.first_word = not self.first_word
         self.syntax_highlighter.default_highlight()
         self.control_key = False
         self.textarea.isControlPressed = False
