@@ -1,9 +1,9 @@
 import os
 import tkinter as tk 
 import tkinter.font as tk_font
-from sys import exit
+import re
+import sys
 from platform import system
-from re import match
 from tkinter import (filedialog, ttk)
 from quiet_syntax_highlighting import SyntaxHighlighting
 from quiet_menubar import Menubar
@@ -408,6 +408,8 @@ class QuietText(tk.Frame):
                 self.syntax_highlighter.syntax_and_themes.load_swift_syntax()
             elif self.filename[-10:] == 'Dockerfile':
                 self.syntax_highlighter.syntax_and_themes.load_docker_syntax()
+            elif self.filename[-4:] == '.nim':
+                self.syntax_highlighter.syntax_and_themes.load_nim_syntax()
 
     # opening an existing file in the editor
     def open_file(self, *args):
@@ -516,14 +518,14 @@ class QuietText(tk.Frame):
             self.save()
         except Exception:
             self.save_as()
-        exit()
+        sys.exit()
 
     def on_closing(self):
         message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
         if message == True:
             self.quit_save()
         elif message == False:
-            exit()
+            sys.exit()
         else:
             return
 
@@ -692,7 +694,7 @@ class QuietText(tk.Frame):
     def get_indent_level(self):
         text = self.textarea
         line = text.get('insert linestart', 'insert lineend')
-        match = match(r'^(\s+)', line)
+        match = re.match(r'^(\s+)', line)
         current_indent = len(match.group(0)) if match else 0
         return current_indent
 

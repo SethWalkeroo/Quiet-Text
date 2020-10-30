@@ -1,7 +1,7 @@
 import os
 from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer, MarkdownLexer, CssLexer,
          GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer, SqlLexer, SwiftLexer,
-         CoffeeScriptLexer, DartLexer, HaskellLexer)
+         CoffeeScriptLexer, DartLexer, HaskellLexer, NimrodLexer)
 
 class SyntaxAndThemes:
 
@@ -136,4 +136,8 @@ class SyntaxAndThemes:
 
 		def load_swift_syntax(self):
 			self.master.lexer = SwiftLexer()
+			self.master.initial_highlight()
+
+		def load_nim_syntax(self):
+			self.master.lexer = NimrodLexer()
 			self.master.initial_highlight()

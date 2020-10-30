@@ -195,6 +195,9 @@ class Menubar():
           label='Markdown',
           command=self.syntax.syntax_and_themes.load_markdown_syntax)
         syntax_dropdown.add_command(
+          label='Nim',
+          command=self.syntax.syntax_and_themes.load_nim_syntax)
+        syntax_dropdown.add_command(
           label='Python3',
           command=self.syntax.syntax_and_themes.load_python3_syntax)
         syntax_dropdown.add_command(
@@ -359,6 +362,8 @@ class Menubar():
             elif filename[-3:] == '.rs':
                 compiled_name = filename[:-3]
                 self.base_cmd(f'{compiled_name}')
+            elif filename[-4:] == '.nim':
+                self.base_cmd(f'nim c -r {filename}')
             else:
                 self._parent.statusbar.update_status('no python')
         except TypeError as e:
