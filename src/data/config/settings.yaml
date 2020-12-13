@@ -7,7 +7,7 @@ current_line_indicator: false
 current_line_indicator_symbol: '>'
 font_color: '#e6d6ba'
 font_family: consolas
-font_size: 16
+font_size: 12
 horizontal_scrollbar_active_bg: '#8a7575'
 horizontal_scrollbar_color: '#383030'
 horizontal_scrollbar_show: true

@@ -16,7 +16,6 @@ class TextLineNumbers(tk.Canvas):
         self.textwidget = text_widget
 
     def redraw(self, *args):
-        '''redraw line numbers'''
         if not self.visible:
             return
 

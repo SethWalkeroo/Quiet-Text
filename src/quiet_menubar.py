@@ -324,7 +324,7 @@ class Menubar():
                 self.base_cmd(f'go build {self._parent.filename}')
             elif filename[-2:] == '.c':
                 compiled_name = filename[:-2]
-                self.base_cmd(f'cc {filename} -o {compiled_name}')
+                self.base_cmd(f'gcc {filename} -o {compiled_name}')
             elif filename[-4:] == '.cpp':
                 compiled_name = filename[:-4]
                 self.base_cmd(f'g++ -o {compiled_name} {filename}')

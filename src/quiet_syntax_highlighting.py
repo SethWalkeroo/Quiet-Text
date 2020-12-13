@@ -43,7 +43,6 @@ class SyntaxHighlighting():
             else:
                 data = self.text.get(location, row + "." + word)
             for token, content in lex(data, self.lexer):
-                print(token)
                 self.text.mark_set("range_end", "range_start + %dc" % len(content))
                 self.text.tag_add(str(token), "range_start", "range_end")
                 self.text.mark_set("range_start", "range_end")
