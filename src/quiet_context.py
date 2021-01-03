@@ -11,8 +11,8 @@ class ContextMenu(tk.Listbox):
         self.font_family = parent.font_family
         self.font_color = parent.menu_fg
         self.bg_color = parent.bg_color
-        self.active_bg = parent.menubar_active_bg
-        self.active_fg = parent.menubar_active_fg
+        self.active_bg = parent.menubar_bg_active
+        self.active_fg = parent.menubar_fg_active
         self.parent = parent
 
         self.changes = [""]

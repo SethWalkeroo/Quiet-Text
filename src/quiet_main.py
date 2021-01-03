@@ -21,7 +21,7 @@ class QuietText(tk.Frame):
         tk.Frame.__init__(self, *args, **kwargs)
         master.title('untitled - Quiet Text')
         # defined size of the editer window
-        master.geometry('700x785')
+        master.geometry('1280x720')
         self.configure(bg='black')
         self.loader = QuietLoaders()
         self.operating_system = system()
@@ -30,13 +30,11 @@ class QuietText(tk.Frame):
         master.iconphoto(False, self.icon)
 
         # start editor according to defined settings in settings.yaml
-
         self.settings = self.loader.load_settings_data()
 
+        #editable settings variables
         self.browser = self.settings['web_browser']
         self.font_family = self.settings['font_family']
-        self.bg_color = self.settings['textarea_background_color']
-        self.font_color = self.settings['font_color']
         self.tab_size = self.settings['tab_size']
         self.font_size = int(self.settings['font_size'])
         self.top_spacing = self.settings['text_top_lineheight']
@@ -44,7 +42,6 @@ class QuietText(tk.Frame):
         self.padding_x = self.settings['textarea_padding_x']
         self.padding_y = self.settings['textarea_padding_y']
         self.insertion_blink = 300 if self.settings['insertion_blink'] else 0
-        self.insertion_color = self.settings['insertion_color']
         self.tab_size_spaces = self.settings['tab_size']
         self.text_wrap = self.settings['text_wrap']
         self.autoclose_parentheses = self.settings['autoclose_parentheses']
@@ -52,22 +49,27 @@ class QuietText(tk.Frame):
         self.autoclose_squarebrackets = self.settings['autoclose_squarebrackets']
         self.autoclose_singlequotes = self.settings['autoclose_singlequotes']
         self.autoclose_doublequotes = self.settings['autoclose_doublequotes']
-        self.border = self.settings['textarea_border']
-        self.text_selection_bg = self.settings['text_selection_bg']
-        self.scrollx_clr = self.settings['horizontal_scrollbar_color']
-        self.troughx_clr = self.settings['horizontal_scrollbar_trough_color']
         self.scrollx_width = self.settings['horizontal_scrollbar_width']
-        self.scrollx_active_bg = self.settings['horizontal_scrollbar_active_bg']
-        self.scrolly_clr = self.settings['vertical_scrollbar_color']
-        self.troughy_clr = self.settings['vertical_scrollbar_trough_color']
         self.scrolly_width = self.settings['vertical_scrollbar_width']
-        self.scrolly_active_bg = self.settings['vertical_scrollbar_active_bg']
-        self.menubar_active_fg = self.settings['menubar_active_fg']
-        self.menubar_active_bg = self.settings['menubar_active_bg']
-        self.menu_fg = self.settings['menu_fg']
-        self.menu_bg = self.settings['menu_bg']
         self.current_line_symbol = self.settings['current_line_indicator_symbol']
         self.current_line_indicator = self.settings['current_line_indicator']
+        self.border = self.settings['textarea_border']
+
+        # Editor color scheme variables
+        self.insertion_color = '#eb4034'
+        self.bg_color = '#eb4034'
+        self.font_color = '#eb4034'
+        self.text_selection_bg_clr = '#eb4034'
+        self.scrollx_clr = '#eb4034'
+        self.troughx_clr = '#eb4034'
+        self.scrollx_active_bg = '#eb4034'
+        self.scrolly_clr = '#eb4034'
+        self.troughy_clr = '#eb4034'
+        self.scrolly_active_bg = '#eb4034'
+        self.menubar_bg_active = '#eb4034'
+        self.menubar_fg_active = '#eb4034'
+        self.menu_fg = '#eb4034'
+        self.menu_bg = '#eb4034'
 
         #configuration of the file dialog text colors.
         self.font_style = tk_font.Font(family=self.font_family,
@@ -115,7 +117,7 @@ class QuietText(tk.Frame):
             wrap= self.text_wrap,
             spacing1=self.top_spacing, 
             spacing3=self.bottom_spacing,
-            selectbackground= self.text_selection_bg,
+            selectbackground= self.text_selection_bg_clr,
             insertbackground=self.insertion_color,
             insertofftime=self.insertion_blink,
             bd=self.border,
@@ -185,28 +187,16 @@ class QuietText(tk.Frame):
             else:
                 _settings = self.loader.load_settings_data()
             font_family = _settings['font_family']
-            bg_color = _settings['textarea_background_color']
-            font_color = _settings['font_color']
             top_spacing = _settings['text_top_lineheight']
             bottom_spacing = _settings['text_bottom_lineheight']
             insertion_blink = 300 if _settings['insertion_blink'] else 0
-            insertion_color = _settings['insertion_color']
             tab_size_spaces = _settings['tab_size']
             padding_x = _settings['textarea_padding_x']
             padding_y = _settings['textarea_padding_y']
             text_wrap = _settings['text_wrap']
             border = _settings['textarea_border']
-            text_selection_bg = _settings['text_selection_bg']
-            scrollx_clr = _settings['horizontal_scrollbar_color']
-            troughx_clr = _settings['horizontal_scrollbar_trough_color']
             scrollx_width = _settings['horizontal_scrollbar_width']
-            scrollx_active_bg = _settings['horizontal_scrollbar_active_bg']
-            scrolly_clr = _settings['vertical_scrollbar_color']
-            troughy_clr = _settings['vertical_scrollbar_trough_color']
             scrolly_width = _settings['vertical_scrollbar_width']
-            scrolly_active_bg = _settings['vertical_scrollbar_active_bg']
-            menu_fg = _settings['menu_fg']
-            menu_bg = _settings['menu_bg']
             self.autoclose_parentheses = _settings['autoclose_parentheses']
             self.autoclose_curlybraces = _settings['autoclose_curlybraces']
             self.autoclose_squarebrackets = _settings['autoclose_squarebrackets']
@@ -215,16 +205,9 @@ class QuietText(tk.Frame):
             self.linenumbers.current_line_symbol = _settings['current_line_indicator_symbol']
             self.linenumbers.indicator_on = _settings['current_line_indicator']
             self.browser = _settings['web_browser']
-            self.text_selection_bg = text_selection_bg
             self.textarea.reload_text_settings()
             self.set_new_tab_width(tab_size_spaces)
             self.menubar.reconfigure_settings()
-            self.bg_color = bg_color
-            self.menu_fg = menu_fg
-            self.menubar_active_bg = _settings['menubar_active_bg']
-            self.menubar_active_fg = _settings['menubar_active_fg']
-            self.linenumbers.font_color = menu_fg
-            self.linenumbers.bg_color = bg_color
             self.linenumbers._text_font = font_family
             self.linenumbers.redraw()
 
@@ -232,44 +215,44 @@ class QuietText(tk.Frame):
                                       size=_settings['font_size'])
 
             self.menubar._menubar.configure(
-                          fg=menu_fg,
-                          bg=menu_bg,
-                          activeforeground=self.menubar_active_fg,
-                          activebackground=self.menubar_active_bg,
-                          activeborderwidth=0,
-                          bd=0)
+                fg=self.menu_fg,
+                bg=self.menu_bg,
+                activeforeground=self.menubar_fg_active,
+                activebackground=self.menubar_bg_active,
+                activeborderwidth=0,
+                bd=0)
 
             self.context_menu.right_click_menu.configure(
-                                font=font_family,
-                                fg=menu_fg,
-                                bg=bg_color,
-                                activebackground=self.menubar_active_bg,
-                                activeforeground=self.menubar_active_fg,
-                                bd=0,
-                                tearoff=0)
+                font=font_family,
+                fg=self.menu_fg,
+                bg=self.bg_color,
+                activebackground=self.menubar_bg_active,
+                activeforeground=self.menubar_fg_active,
+                bd=0,
+                tearoff=0)
             
             self.scrolly.configure(
-                bg=scrolly_clr,
-                troughcolor=troughy_clr,
+                bg=self.scrolly_clr,
+                troughcolor=self.troughy_clr,
                 width=scrolly_width,
-                activebackground=scrolly_active_bg)
+                activebackground=self.scrolly_active_bg)
 
             self.scrollx.configure(
-                bg=scrollx_clr,
-                troughcolor=troughx_clr,
+                bg=self.scrollx_clr,
+                troughcolor=self.troughx_clr,
                 width=scrollx_width,
-                activebackground=scrollx_active_bg)
+                activebackground=self.scrolly_active_bg)
 
             self.textarea.configure(
                 font=font_style,
-                bg=bg_color,
+                bg=self.bg_color,
                 pady=padding_y,
                 padx=padding_x,
-                fg=font_color,
+                fg=self.font_color,
                 spacing1=top_spacing,
                 spacing3=bottom_spacing,
-                insertbackground=insertion_color,
-                selectbackground= text_selection_bg,
+                insertbackground=self.insertion_color,
+                selectbackground= self.text_selection_bg_clr,
                 insertofftime=insertion_blink,
                 bd=border,
                 highlightthickness=border,
@@ -649,11 +632,11 @@ class QuietText(tk.Frame):
         self.textarea.isControlPressed = False
 
     def show_find_window(self, event=None):
-        self.textarea.tag_configure('find_match', background=self.text_selection_bg)
+        self.textarea.tag_configure('find_match', background=self.text_selection_bg_clr)
         self.textarea.bg_color = self.bg_color
         self.textarea.fg_color = self.menu_fg
-        self.textarea.active_fg = self.menubar_active_fg
-        self.textarea.active_bg = self.menubar_active_bg
+        self.textarea.active_fg = self.menubar_fg_active
+        self.textarea.active_bg = self.menubar_bg_active
         FindWindow(self.textarea)
         self.control_key = False
         self.textarea.isControlPressed = False
@@ -826,3 +809,4 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
+

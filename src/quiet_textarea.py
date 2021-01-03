@@ -6,13 +6,11 @@ class CustomText(tk.Text):
     def __init__(self, *args, **kwargs):
         tk.Text.__init__(self, *args, **kwargs)
 
-        self.loader = QuietLoaders()
         # create a proxy for the underlying widget
-        self.settings = self.loader.load_settings_data()
-        self.bg_color = self.settings['textarea_background_color']
-        self.fg_color = self.settings['menu_fg']
-        self.active_fg = self.settings['menu_active_fg']
-        self.active_bg = self.settings['menu_active_bg']
+        self.bg_color ='#eb4034'
+        self.fg_color = '#eb4034'
+        self.active_fg = '#eb4034'
+        self.active_bg = '#eb4034'
         self.isControlPressed = False
         self._orig = self._w + '_orig'
         self.tk.call('rename', self._w, self._orig)
@@ -86,11 +84,9 @@ class CustomText(tk.Text):
         self.find_match_index = None
         self.tag_remove('find_match', 1.0, tk.END)
 
-
     def reload_text_settings(self):
-        settings = self.loader.load_settings_data()
-        self.bg_color = settings['textarea_background_color']
-        self.bg_color = settings['textarea_background_color']
-        self.fg_color = settings['menu_fg']
-        self.active_fg = settings['menu_active_fg']
-        self.active_bg = settings['menu_active_bg']
+        self.bg_color = '#eb4034'
+        self.bg_color = '#eb4034'
+        self.fg_color = '#eb4034'
+        self.active_fg = '#eb4034'
+        self.active_bg = '#eb4034'

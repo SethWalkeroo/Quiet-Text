@@ -6,7 +6,7 @@ class Statusbar:
     def __init__(self, parent):
         self._parent = parent
         self.save_bg = '#FF6859'
-        self.status_fg = parent.bg_color
+        self.status_fg = '#000000'
         self.error_bg = '#B00020'
         self.hint_bg = '#B15DFF'
         # setting up the status bar
@@ -17,7 +17,7 @@ class Statusbar:
         label = tk.Label(
             parent.textarea,
             textvariable=self.status,
-            fg=self._parent.font_color,
+            fg=parent.font_color,
             bg='#fff',
             anchor='se',
             font=font_specs)

@@ -10,7 +10,6 @@ class Menubar():
     # initialising the menu bar of editor
     def __init__(self, parent):
         self._parent = parent
-        self.settings = parent.loader.load_settings_data()
         self.syntax = parent.syntax_highlighter
         self.ptrn = r'[^\/]+$'
         font_specs = ('Droid Sans Fallback', 12)
@@ -19,10 +18,10 @@ class Menubar():
         menubar = tk.Menu(
           parent.master,
           font=font_specs,
-          fg=self.settings['menu_fg'],
-          bg=self.settings['menu_bg'],
-          activeforeground= self.settings['menubar_active_fg'],
-          activebackground= self.settings['menubar_active_bg'],
+          fg=parent.menu_fg,
+          bg=parent.menu_bg,
+          activeforeground= parent.menubar_fg_active,
+          activebackground= parent.menubar_bg_active,
           activeborderwidth=0,
           bd=0)
 
@@ -243,18 +242,20 @@ class Menubar():
         settings = self._parent.loader.load_settings_data()
         for field in self.menu_fields:
             field.configure(
-                bg=settings['menu_bg'],
-                fg=settings['menu_fg'],
-                activeforeground=settings['menu_active_fg'],
-                activebackground=settings['menu_active_bg'],
-                background = settings['textarea_background_color'],)
+                bg=self._parent.menu_bg,
+                fg=self._parent.menu_fg,
+                activeforeground=self._parent.menubar_fg_active,
+                activebackground=self._parent.menubar_bg_active,
+                background = self._parent.bg_color,
+            )
 
         self._menubar.configure(
-            bg=settings['menu_bg'],
-            fg=settings['menu_fg'],
-            background = settings['textarea_background_color'],
-            activeforeground= settings['menubar_active_fg'],
-            activebackground= settings['menubar_active_bg'],)
+            bg=self._parent.menu_bg,
+            fg=self._parent.menu_fg,
+            background = self._parent.bg_color,
+            activeforeground= self._parent.menubar_fg_active,
+            activebackground = self._parent.menubar_bg_active,
+          )
 
     # color to different text tye can be set here
     def open_color_picker(self):
@@ -306,15 +307,19 @@ class Menubar():
         self._parent.master.config(menu=self._menubar)
 
     def base_cmd(self, command):
-        if self._parent.operating_system == 'Windows':
-            cmd = f'start cmd.exe @cmd /k {command}'
-        elif self._parent.operating_system == 'Linux':
-            cmd = f"gnome-terminal -- bash -c '{command}; read'"
-        file_from_path = re.search(self.ptrn, self._parent.filename)
-        filename = file_from_path.group(0)
-        file_path = self._parent.filename[:-len(filename)]
-        os.chdir(file_path)
+      cmd = None
+      if self._parent.operating_system == 'Windows':
+          cmd = f'start cmd.exe @cmd /k {command}'
+      elif self._parent.operating_system == 'Linux':
+          cmd = f"gnome-terminal -- bash -c '{command}; read'"
+      file_from_path = re.search(self.ptrn, self._parent.filename)
+      filename = file_from_path.group(0)
+      file_path = self._parent.filename[:-len(filename)]
+      os.chdir(file_path)
+      if cmd:
         os.system(cmd)
+      else:
+        print('cmd went unassigned!')
 
     def build(self):
         try:

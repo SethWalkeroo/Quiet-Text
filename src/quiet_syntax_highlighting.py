@@ -109,18 +109,16 @@ class SyntaxHighlighting():
         self.function_name_color = new_config['function_name_color']
         self.text_color = new_config['font_color']
         self.type_color = new_config['type_color']
-        settings = self.parent.loader.load_settings_data()
-        settings['text_selection_bg'] = new_config['selection_color']
-        settings['insertion_color'] = new_config['font_color']
-        settings['menu_fg'] = new_config['comment_color']
-        settings['menu_bg'] = new_config['bg_color']
-        settings['font_color'] = new_config['font_color']
-        settings['textarea_background_color'] = new_config['bg_color']
-        settings['menubar_active_bg'] = new_config['menu_bg_active']
-        settings['menubar_active_fg'] = new_config['menu_fg_active']  
-        settings['menu_active_bg'] = new_config['menu_bg_active']
-        settings['menu_active_fg'] = new_config['menu_fg_active']
-        self.parent.loader.store_settings_data(settings)
+        self.parent.text_selection_bg_clr = new_config['selection_color']
+        self.parent.insertion_color = new_config['font_color']
+        self.parent.menu_fg = new_config['comment_color']
+        self.parent.menu_bg = new_config['bg_color']
+        self.parent.font_color = new_config['font_color']
+        self.parent.bg_color = new_config['bg_color']
+        self.parent.menubar_bg_active = new_config['menu_bg_active']
+        self.parent.menubar_fg_active = new_config['menu_fg_active']  
+        self.menu_bg = new_config['menu_bg_active']
+        self.menu_fg = new_config['menu_fg_active']
         self.parent.reconfigure_settings()
         self.initial_highlight()
 
