@@ -6,7 +6,7 @@ autoclose_squarebrackets: true
 current_line_indicator: false
 current_line_indicator_symbol: '>'
 font_family: consolas
-font_size: 12
+font_size: 11
 horizontal_scrollbar_show: true
 horizontal_scrollbar_width: 8
 insertion_blink: false
