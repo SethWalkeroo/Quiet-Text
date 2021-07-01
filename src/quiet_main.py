@@ -142,7 +142,7 @@ class QuietText(tk.Frame):
         self.syntax_highlighter = SyntaxHighlighting(self, self.textarea, self.initial_content)
         self.menubar = Menubar(self)
         self.statusbar = Statusbar(self)
-        self.syntax_highlighter.syntax_and_themes.load_default()
+        self.syntax_highlighter.syntax_and_themes.load_theme_from_config()
 
         self.linenumbers.attach(self.textarea)
         self.scrolly.pack(side=tk.RIGHT, fill=tk.Y)

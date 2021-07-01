@@ -1,7 +1,7 @@
 import os
 from pygments.lexers import (PythonLexer, RustLexer, CLexer, CppLexer, JavaLexer, MarkdownLexer, CssLexer,
          GoLexer, DockerLexer, YamlLexer, JavascriptLexer, HtmlDjangoLexer, SqlLexer, SwiftLexer,
-         CoffeeScriptLexer, DartLexer, HaskellLexer, NimrodLexer)
+         CoffeeScriptLexer, DartLexer, HaskellLexer, NimrodLexer, BatchLexer, CSharpLexer)
 
 class SyntaxAndThemes:
 
@@ -70,10 +70,18 @@ class SyntaxAndThemes:
 		def load_desert(self):
 			self.master.load_new_theme(self.desert_theme_path)
 
+		def load_batch_syntax(self):
+			self.master.lexer = BatchLexer()
+			self.master.initial_highlight()
+
+		def load_csharp_syntax(self):
+			self.master.lexer = CSharpLexer()
+			self.master.initial_highlight()
+
 		def load_python3_syntax(self):
 			self.master.lexer = PythonLexer()
 			self.master.initial_highlight()
-
+            
 		def load_c_syntax(self):
 			self.master.lexer = CLexer()
 			self.master.initial_highlight()
@@ -141,3 +149,16 @@ class SyntaxAndThemes:
 		def load_nim_syntax(self):
 			self.master.lexer = NimrodLexer()
 			self.master.initial_highlight()
+
+
+		# pt: loading themes from settings file
+		def load_theme_from_config(self):
+			theme = self.master.parent.loader.load_settings_data()["theme"]
+			self.master.load_new_theme(theme)
+
+		def save_theme_to_config(self, path):
+			loader = self.master.parent.loader
+			data = loader.load_settings_data()
+			data["theme"] = path
+
+			loader.store_settings_data(data)
