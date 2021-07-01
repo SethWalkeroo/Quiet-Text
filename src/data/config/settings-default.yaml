@@ -20,3 +20,4 @@ textarea_padding_y: '5'
 vertical_scrollbar_show: 'true'
 vertical_scrollbar_width: 8
 web_browser: chromium
+theme: './data/theme_configs/dark-heart.yaml'

@@ -97,6 +97,8 @@ class SyntaxHighlighting():
     def load_new_theme(self, path):
         with open(path) as new_theme_config:
             new_config = load(new_theme_config, Loader=FullLoader)
+            self.syntax_and_themes.save_theme_to_config(path)
+
         self.comment_color = new_config['comment_color']
         self.string_color = new_config['string_color']
         self.number_color = new_config['number_color']

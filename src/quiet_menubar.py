@@ -157,12 +157,19 @@ class Menubar():
           command=self.syntax.syntax_and_themes.load_solarized)
 
         syntax_dropdown = tk.Menu(menubar, font=font_specs, tearoff=0)
+        
+        syntax_dropdown.add_command(
+          label='Batch',
+          command=self.syntax.syntax_and_themes.load_batch_syntax)   
         syntax_dropdown.add_command(
           label='C',
           command=self.syntax.syntax_and_themes.load_c_syntax)
         syntax_dropdown.add_command(
           label='C++',
           command=self.syntax.syntax_and_themes.load_cpp_syntax)
+        syntax_dropdown.add_command(
+          label="C#",
+          command=self.syntax.syntax_and_themes.load_csharp_syntax)
         syntax_dropdown.add_command(
           label='CoffeeScript',
           command=self.syntax.syntax_and_themes.load_coffeescript_syntax)
