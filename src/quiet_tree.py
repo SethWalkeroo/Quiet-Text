@@ -34,8 +34,8 @@ class FileTree(tk.Toplevel):
 			style='Treeview')
 		self.minsize(200,125)
 		self.maxsize(1000, 1000)
-		#This may look like a horrible mess to you, but I am so f***ing proud of this function.
-		#I understand this is kind of inefficient because it generates files for folders the user hasn't opened.
+		
+		#This somehow kind of works. There is probably a better way to search the file system.
 		def folder_mania(path, location=""):
 			try:
 				starting_content = os.listdir(master.dirname)
