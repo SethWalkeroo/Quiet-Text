@@ -4,7 +4,7 @@ import os
 from tkinter import ttk
 
 class ContextMenu(tk.Listbox):
-
+    #init function
     def __init__(self, parent, *args, **kwargs):
         tk.Listbox.__init__(self, parent, *args, **kwargs)
 
