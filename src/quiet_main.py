@@ -329,6 +329,7 @@ class QuietText(tk.Frame):
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
+                           ('Python No Terminal Scripts', '*.py'),
                            ('Markdown Documents', '*.md'),
                            ('JavaScript Files', '*.js'),
                            ('Java Files', '*.java'),
@@ -366,6 +367,8 @@ class QuietText(tk.Frame):
             elif self.filename[-5:] == '.dart':
                 self.syntax_highlighter.syntax_and_themes.load_dart_syntax()
             elif self.filename[-3:] == '.py':
+                self.syntax_highlighter.syntax_and_themes.load_python3_syntax()
+            elif self.filename[-4:] == '.pyw':
                 self.syntax_highlighter.syntax_and_themes.load_python3_syntax()
             elif self.filename[-3:] == '.js':
                 self.syntax_highlighter.syntax_and_themes.load_javascript_syntax()
@@ -405,6 +408,7 @@ class QuietText(tk.Frame):
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
+                           ('Python No Terminal Scripts', '*.py'),
                            ('Markdown Documents', '*.md'),
                            ('JavaScript Files', '*.js'),
                            ('Java Files', '*.java'),
@@ -469,6 +473,7 @@ class QuietText(tk.Frame):
                 filetypes=[('All Files', '*.*'),
                            ('Text Files', '*.txt'),
                            ('Python Scripts', '*.py'),
+                           ('Python No Terminal Scripts', '*.pyw'),
                            ('Markdown Documents', '*.md'),
                            ('Javascript Files', '*.js'),
                            ('Java Files', '*.java'),
