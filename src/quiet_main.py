@@ -169,8 +169,8 @@ class QuietText(tk.Frame):
         except TypeError as e:
             print(e)
 
-    #reconfigure the tab_width depending on changes.
     def set_new_tab_width(self, tab_spaces = 'default'):
+        """Reconfigure the tab_width depending on changes."""
         if tab_spaces == 'default':
             space_count = self.tab_size_spaces
         else:
@@ -179,9 +179,11 @@ class QuietText(tk.Frame):
         _tab_width = _font.measure(' ' * int(space_count))
         self.textarea.config(tabs=(_tab_width,))
 
-    # editor basic settings can be altered here
-    #function used to reload settings after the user changes in settings.yaml
     def reconfigure_settings(self, overwrite_with_default=False):
+            """
+            Editor basic settings can be altered here
+            Function used to reload settings after the user changes in settings.yaml
+            """
             if overwrite_with_default:
                 _settings = self.loader.load_settings_data(default=True)
             else:
@@ -271,33 +273,35 @@ class QuietText(tk.Frame):
                         self.save(self.loader.settings_path)
                     self.reconfigure_settings()
 
-    # editor quiet mode calling which removes status bar and menu bar
     def enter_quiet_mode(self, *args):
+        """Editor quiet mode calling which removes status bar and menu bar"""
         self.statusbar.hide_status_bar()
         self.menubar.hide_menu()
         self.scrollx.configure(width=0)
         self.scrolly.configure(width=0)
         self.statusbar.update_status('quiet')
 
-    # editor leaving quite enu to bring back status bar and menu bar
     def leave_quiet_mode(self, *args):
+        """Editor leaving quite enu to bring back status bar and menu bar"""
         self.statusbar.show_status_bar()
         self.menubar.show_menu()
         self.scrollx.configure(width=8)
         self.scrolly.configure(width=8)
         self.statusbar.update_status('hide')
 
-    #hide status bar for text class so it can be used in menu class
     def hide_status_bar(self, *args):
+        """Hides status bar for text class for use in the menu class"""
         self.statusbar.hide_status_bar()
 
-    # toggle the visibility of line numbers
     def toggle_linenumbers(self, *args):
+        """Toggles the visibility of line numbers"""
         self.linenumbers.visible = not self.linenumbers.visible
 
-    # setting up the editor title
-    #Renames the window title bar to the name of the current file.
     def set_window_title(self, name=None):
+        """
+        Sets up the editor title
+        Renames the window title bar to the name of the current file.
+        """
         if name:
             self.master.title(f'{name} - Quiet Text')
         else:
@@ -316,9 +320,11 @@ class QuietText(tk.Frame):
             except PermissionError as e:
                 print(e)
 
-    # new file creating in the editor feature
-    #Deletes all of the text in the current area and sets window title to default.
     def new_file(self, *args):
+        """
+        Creates new file in the editor feature
+        Deletes all of the text in the current area and sets window title to default
+        """
         self.textarea.delete(1.0, tk.END)
         try:
             new_file = filedialog.asksaveasfilename(
@@ -397,9 +403,8 @@ class QuietText(tk.Frame):
             elif self.filename[-4:] == '.nim':
                 self.syntax_highlighter.syntax_and_themes.load_nim_syntax()
 
-    # opening an existing file in the editor
     def open_file(self, *args):
-        # various file types that editor can support
+        """Opens an existing file from supported file types"""
         self.previous_file = self.filename
         try:
             self.filename = filedialog.askopenfilename(
@@ -448,8 +453,8 @@ class QuietText(tk.Frame):
         FileTree(self)
         return 'break'
 
-    # saving changes made in the file
     def save(self,*args):
+        """Saves changes made to the file"""
         if self.filename:
             try:
                 textarea_content = self.textarea.get(1.0, tk.END)
@@ -464,8 +469,8 @@ class QuietText(tk.Frame):
         else:
             self.save_as()
 
-    # saving file as a particular name
     def save_as(self, *args):
+        """Saves a file with a particular name"""
         try:
             self.filename = filedialog.asksaveasfilename(
                 parent=self.master,
@@ -499,8 +504,8 @@ class QuietText(tk.Frame):
         except Exception as e:
             pass
             
-    #On exiting the Program
     def quit_save(self):
+        """On exit for the editor"""
         try:
             os.path.isfile(self.filename)
             self.save()
@@ -517,8 +522,8 @@ class QuietText(tk.Frame):
         else:
             return
 
-    # opens the main setting file of the editor
     def open_settings_file(self):
+        """Opens the main setting file of the editor"""
         self.syntax_highlighter.syntax_and_themes.load_yaml_syntax()
         self.previous_file = self.filename
         self.filename = self.loader.settings_path
@@ -528,8 +533,8 @@ class QuietText(tk.Frame):
         self.syntax_highlighter.initial_highlight()
         self.set_window_title(name=self.filename)
 
-    # reset the settings set by the user to the default settings
     def reset_settings_file(self):
+        """Resets user defined settings to the default settings"""
         self.reconfigure_settings(overwrite_with_default=True)
         self.syntax_highlighter.syntax_and_themes.load_material()
         try:
@@ -537,15 +542,15 @@ class QuietText(tk.Frame):
         except IsADirectoryError:
             pass
 
-    # select all written text in the editor
     def select_all_text(self, *args):
+        """Selects all written text in the editor"""
         self.textarea.tag_add(tk.SEL, '1.0', tk.END)
         self.textarea.mark_set(tk.INSERT, '1.0')
         self.textarea.see(tk.INSERT)
         return 'break'
 
-    # give hex colors to the file content for better understanding
     def apply_hex_color(self, key_event):
+        """Applies hex colors to the file content for better understanding"""
         new_color = self.menubar.open_color_picker()
         try:
             sel_start = self.textarea.index(tk.SEL_FIRST)
@@ -615,14 +620,16 @@ class QuietText(tk.Frame):
         if self.filename == self.loader.settings_path:
             self.clear_and_replace_textarea()
 
-
-    # control_l = 37
-    # control_r = 109
-    # mac_control = 262401 #control key in mac keyboard
-    # mac_control_l = 270336 #tk.LEFT control key in mac os with normal keyboard
-    # mac_control_r = 262145 #tk.RIGHT control key in mac os with normal keyboard
     def _on_keydown(self, event):
-        if event.keycode in [17, 37, 109, 262401, 270336, 262145]:
+        keycodes = (
+            17,
+            37,  # control_l
+            109,  # control_r
+            262401,  # mac_control (control key in mac keyboard)
+            270336,  # mac_control_l (tk.left control key in mac os with normal keyboard)
+            262145,  # mac_control_r (tk.right control key in mac os with normal keyboard)
+        )
+        if event.keycode in keycodes:
             self.control_key = True
             self.textarea.isControlPressed = True
         else:
