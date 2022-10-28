@@ -149,7 +149,7 @@ class QuietText(tk.Frame):
         self.scrollx.pack(side=tk.BOTTOM, fill=tk.X)
         self.linenumbers.pack(side=tk.LEFT, fill=tk.Y)
         self.textarea.pack(side=tk.RIGHT, fill='both', expand=True)
-        
+
         self.textarea.find_match_index = None
         self.textarea.find_search_starting_index = 1.0
 
@@ -503,7 +503,7 @@ class QuietText(tk.Frame):
             self.initialize_syntax()
         except Exception as e:
             pass
-            
+
     def quit_save(self):
         """On exit for the editor"""
         try:
@@ -612,7 +612,7 @@ class QuietText(tk.Frame):
         self.syntax_highlighter.text.tag_configure("Token.Generic.Heading",font=self.header1)
         self.syntax_highlighter.text.tag_configure("Token.Generic.Subheading",font=self.header2)
         self.set_new_tab_width()
-        
+
         _settings = self.loader.load_settings_data()
         _settings['font_size'] = self.font_size
         self.loader.store_settings_data(_settings)
@@ -726,7 +726,7 @@ class QuietText(tk.Frame):
         first_char = self.textarea.get(first_pos, index)
         second_char = self.textarea.get(index, end_second_pos)
         return (first_char, second_char, index, end_second_pos)
-        
+
     def backspace_situations(self, event):
         first_char, second_char, index, end_second_pos = self.get_chars_in_front_and_back()
 
@@ -821,4 +821,3 @@ if __name__ == '__main__':
     qt.pack(side='top', fill='both', expand=True)
     master.protocol("WM_DELETE_WINDOW", qt.on_closing)
     master.mainloop()
-
