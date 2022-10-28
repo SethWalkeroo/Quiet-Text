@@ -180,98 +180,98 @@ class QuietText(tk.Frame):
         self.textarea.config(tabs=(_tab_width,))
 
     def reconfigure_settings(self, overwrite_with_default=False):
-            """
-            Editor basic settings can be altered here
-            Function used to reload settings after the user changes in settings.yaml
-            """
-            if overwrite_with_default:
-                _settings = self.loader.load_settings_data(default=True)
+        """
+        Editor basic settings can be altered here
+        Function used to reload settings after the user changes in settings.yaml
+        """
+        if overwrite_with_default:
+            _settings = self.loader.load_settings_data(default=True)
+        else:
+            _settings = self.loader.load_settings_data()
+        font_family = _settings['font_family']
+        top_spacing = _settings['text_top_lineheight']
+        bottom_spacing = _settings['text_bottom_lineheight']
+        insertion_blink = 300 if _settings['insertion_blink'] else 0
+        tab_size_spaces = _settings['tab_size']
+        padding_x = _settings['textarea_padding_x']
+        padding_y = _settings['textarea_padding_y']
+        text_wrap = _settings['text_wrap']
+        border = _settings['textarea_border']
+        scrollx_width = _settings['horizontal_scrollbar_width']
+        scrolly_width = _settings['vertical_scrollbar_width']
+        self.autoclose_parentheses = _settings['autoclose_parentheses']
+        self.autoclose_curlybraces = _settings['autoclose_curlybraces']
+        self.autoclose_squarebrackets = _settings['autoclose_squarebrackets']
+        self.autoclose_singlequotes = _settings['autoclose_singlequotes']
+        self.autoclose_doublequotes = _settings['autoclose_doublequotes']
+        self.linenumbers.current_line_symbol = _settings['current_line_indicator_symbol']
+        self.linenumbers.indicator_on = _settings['current_line_indicator']
+        self.browser = _settings['web_browser']
+        self.textarea.reload_text_settings()
+        self.set_new_tab_width(tab_size_spaces)
+        self.menubar.reconfigure_settings()
+        self.linenumbers._text_font = font_family
+        self.linenumbers.redraw()
+
+        font_style = tk_font.Font(family=font_family,
+                                    size=_settings['font_size'])
+
+        self.menubar._menubar.configure(
+            fg=self.menu_fg,
+            bg=self.menu_bg,
+            activeforeground=self.menubar_fg_active,
+            activebackground=self.menubar_bg_active,
+            activeborderwidth=0,
+            bd=0)
+
+        self.context_menu.right_click_menu.configure(
+            font=font_family,
+            fg=self.menu_fg,
+            bg=self.bg_color,
+            activebackground=self.menubar_bg_active,
+            activeforeground=self.menubar_fg_active,
+            bd=0,
+            tearoff=0)
+
+        self.scrolly.configure(
+            bg=self.scrolly_clr,
+            troughcolor=self.troughy_clr,
+            width=scrolly_width,
+            activebackground=self.scrolly_active_bg)
+
+        self.scrollx.configure(
+            bg=self.scrollx_clr,
+            troughcolor=self.troughx_clr,
+            width=scrollx_width,
+            activebackground=self.scrolly_active_bg)
+
+        self.textarea.configure(
+            font=font_style,
+            bg=self.bg_color,
+            pady=padding_y,
+            padx=padding_x,
+            fg=self.font_color,
+            spacing1=top_spacing,
+            spacing3=bottom_spacing,
+            insertbackground=self.insertion_color,
+            selectbackground= self.text_selection_bg_clr,
+            insertofftime=insertion_blink,
+            bd=border,
+            highlightthickness=border,
+            wrap=text_wrap)
+
+
+        if overwrite_with_default:
+            MsgBox = tk.messagebox.askquestion(
+                'Reset Settings?',
+                'Are you sure you want to reset the editor settings to their default value?',
+                icon='warning')
+            if MsgBox == 'yes':
+                self.loader.store_settings_data(_settings)
             else:
-                _settings = self.loader.load_settings_data()
-            font_family = _settings['font_family']
-            top_spacing = _settings['text_top_lineheight']
-            bottom_spacing = _settings['text_bottom_lineheight']
-            insertion_blink = 300 if _settings['insertion_blink'] else 0
-            tab_size_spaces = _settings['tab_size']
-            padding_x = _settings['textarea_padding_x']
-            padding_y = _settings['textarea_padding_y']
-            text_wrap = _settings['text_wrap']
-            border = _settings['textarea_border']
-            scrollx_width = _settings['horizontal_scrollbar_width']
-            scrolly_width = _settings['vertical_scrollbar_width']
-            self.autoclose_parentheses = _settings['autoclose_parentheses']
-            self.autoclose_curlybraces = _settings['autoclose_curlybraces']
-            self.autoclose_squarebrackets = _settings['autoclose_squarebrackets']
-            self.autoclose_singlequotes = _settings['autoclose_singlequotes']
-            self.autoclose_doublequotes = _settings['autoclose_doublequotes']
-            self.linenumbers.current_line_symbol = _settings['current_line_indicator_symbol']
-            self.linenumbers.indicator_on = _settings['current_line_indicator']
-            self.browser = _settings['web_browser']
-            self.textarea.reload_text_settings()
-            self.set_new_tab_width(tab_size_spaces)
-            self.menubar.reconfigure_settings()
-            self.linenumbers._text_font = font_family
-            self.linenumbers.redraw()
-
-            font_style = tk_font.Font(family=font_family,
-                                      size=_settings['font_size'])
-
-            self.menubar._menubar.configure(
-                fg=self.menu_fg,
-                bg=self.menu_bg,
-                activeforeground=self.menubar_fg_active,
-                activebackground=self.menubar_bg_active,
-                activeborderwidth=0,
-                bd=0)
-
-            self.context_menu.right_click_menu.configure(
-                font=font_family,
-                fg=self.menu_fg,
-                bg=self.bg_color,
-                activebackground=self.menubar_bg_active,
-                activeforeground=self.menubar_fg_active,
-                bd=0,
-                tearoff=0)
-            
-            self.scrolly.configure(
-                bg=self.scrolly_clr,
-                troughcolor=self.troughy_clr,
-                width=scrolly_width,
-                activebackground=self.scrolly_active_bg)
-
-            self.scrollx.configure(
-                bg=self.scrollx_clr,
-                troughcolor=self.troughx_clr,
-                width=scrollx_width,
-                activebackground=self.scrolly_active_bg)
-
-            self.textarea.configure(
-                font=font_style,
-                bg=self.bg_color,
-                pady=padding_y,
-                padx=padding_x,
-                fg=self.font_color,
-                spacing1=top_spacing,
-                spacing3=bottom_spacing,
-                insertbackground=self.insertion_color,
-                selectbackground= self.text_selection_bg_clr,
-                insertofftime=insertion_blink,
-                bd=border,
-                highlightthickness=border,
-                wrap=text_wrap)
-
-
-            if overwrite_with_default:
-                MsgBox = tk.messagebox.askquestion(
-                    'Reset Settings?',
-                    'Are you sure you want to reset the editor settings to their default value?',
-                    icon='warning')
-                if MsgBox == 'yes':
-                    self.loader.store_settings_data(_settings)
-                else:
-                    if self.filename == self.loader.settings_path: 
-                        self.save(self.loader.settings_path)
-                    self.reconfigure_settings()
+                if self.filename == self.loader.settings_path:
+                    self.save(self.loader.settings_path)
+                self.reconfigure_settings()
 
     def enter_quiet_mode(self, *args):
         """Editor quiet mode calling which removes status bar and menu bar"""
