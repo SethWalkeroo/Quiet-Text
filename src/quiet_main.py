@@ -302,10 +302,9 @@ class QuietText(tk.Frame):
         Sets up the editor title
         Renames the window title bar to the name of the current file.
         """
-        if name:
-            self.master.title(f'{name} - Quiet Text')
-        else:
-            self.master.title('untitled - Quiet Text')
+        if name is None:
+            name = 'untitled'
+        self.master.title(f'{name} - Quiet Text')
 
 
     def load_previous_file(self, *args):
@@ -364,43 +363,41 @@ class QuietText(tk.Frame):
     def initialize_syntax(self):
         if self.filename:
             self.clear_and_replace_textarea()
-            if self.filename[-4:] == '.txt' or self.filename[-3:] == '.md':
+            if self.filename.endswith(('.txt', '.md')):
                 self.syntax_highlighter.syntax_and_themes.load_markdown_syntax()
-            elif self.filename[-2:] == '.c':
+            elif self.filename.endswith('.c'):
                 self.syntax_highlighter.syntax_and_themes.load_c_syntax()
-            elif self.filename[-2:] == '.coffee':
+            elif self.filename.endswith('.coffee'):
                 self.syntax_highlighter.syntax_and_themes.load_coffeescript_syntax()
-            elif self.filename[-5:] == '.dart':
+            elif self.filename.endswith('.dart'):
                 self.syntax_highlighter.syntax_and_themes.load_dart_syntax()
-            elif self.filename[-3:] == '.py':
+            elif self.filename.endswith(('.py', '.pyw')):
                 self.syntax_highlighter.syntax_and_themes.load_python3_syntax()
-            elif self.filename[-4:] == '.pyw':
-                self.syntax_highlighter.syntax_and_themes.load_python3_syntax()
-            elif self.filename[-3:] == '.js':
+            elif self.filename.endswith('.js'):
                 self.syntax_highlighter.syntax_and_themes.load_javascript_syntax()
-            elif self.filename[-5:] == '.java':
+            elif self.filename.endswith('.java'):
                 self.syntax_highlighter.syntax_and_themes.load_java_syntax()
-            elif self.filename[-3:] == '.hs':
+            elif self.filename.endswith('.hs'):
                 self.syntax_highlighter.syntax_and_themes.load_haskell_syntax()
-            elif self.filename[-5:] == '.html':
+            elif self.filename.endswith('.html'):
                 self.syntax_highlighter.syntax_and_themes.load_html_syntax()
-            elif self.filename[-4:] == '.css':
+            elif self.filename.endswith('.css'):
                 self.syntax_highlighter.syntax_and_themes.load_css_syntax()
-            elif self.filename[-4:] == '.cpp':
+            elif self.filename.endswith('.cpp'):
                 self.syntax_highlighter.syntax_and_themes.load_cpp_syntax()
-            elif self.filename[-3:] == '.go':
+            elif self.filename.endswith('.go'):
                 self.syntax_highlighter.syntax_and_themes.load_go_syntax()
-            elif self.filename[-3:] == '.rs':
+            elif self.filename.endswith('.rs'):
                 self.syntax_highlighter.syntax_and_themes.load_rust_syntax()
-            elif self.filename[-4:] == '.sql':
+            elif self.filename.endswith('.sql'):
                 self.syntax_highlighter.syntax_and_themes.load_sql_syntax()
-            elif self.filename[-5:] == '.yaml':
+            elif self.filename.endswith('.yaml'):
                 self.syntax_highlighter.syntax_and_themes.load_yaml_syntax()
-            elif self.filename[-6:] == '.swift':
+            elif self.filename.endswith('.swift'):
                 self.syntax_highlighter.syntax_and_themes.load_swift_syntax()
-            elif self.filename[-10:] == 'Dockerfile':
+            elif self.filename.endswith('Dockerfile'):
                 self.syntax_highlighter.syntax_and_themes.load_docker_syntax()
-            elif self.filename[-4:] == '.nim':
+            elif self.filename.endswith('.nim'):
                 self.syntax_highlighter.syntax_and_themes.load_nim_syntax()
 
     def open_file(self, *args):
@@ -515,12 +512,9 @@ class QuietText(tk.Frame):
 
     def on_closing(self):
         message = tk.messagebox.askyesnocancel("Save On Close", "Do you want to save the changes before closing?")
-        if message == True:
+        if message:
             self.quit_save()
-        elif message == False:
-            sys.exit()
-        else:
-            return
+        sys.exit()
 
     def open_settings_file(self):
         """Opens the main setting file of the editor"""
@@ -705,7 +699,6 @@ class QuietText(tk.Frame):
             current_indent = self.get_indent_level()
             new_indent = current_indent + 1
             text.insert('insert', '\n' + '\t' * new_indent)
-            return 'break'
         elif prev_char in '{[(' and second_char in '}])':
             current_indent = self.get_indent_level()
             new_indent = current_indent + 1
@@ -714,10 +707,9 @@ class QuietText(tk.Frame):
             index = text.index(tk.INSERT)
             text.mark_set('insert', str(round(float(index) - 1, 1)))
             text.insert('insert', '\t' * new_indent)
-            return 'break'
         else:
             self.auto_indentation()
-            return 'break'
+        return 'break'
 
     def get_chars_in_front_and_back(self):
         index = self.textarea.index(tk.INSERT)
@@ -753,24 +745,21 @@ class QuietText(tk.Frame):
         last = self.textarea.index("sel.last linestart")
 
         if last != index:
-            if event.state == 0:
-                while self.textarea.compare(index,"<=", last):
-                    if len(self.textarea.get(index, 'end')) != 0:
-                        self.textarea.insert(index, '\t')
-                    index = self.textarea.index("%s + 1 line" % index)
-            else:
-                while self.textarea.compare(index,"<=", last):
-                    if self.textarea.get(index, 'end')[:1] == "\t":
-                        self.textarea.delete(index)
-                    index = self.textarea.index("%s + 1 line" % index)
-        else:
-            if event.state == 0:
-                index = self.textarea.index(tk.INSERT)
-                self.textarea.insert(index, '\t')
-            else:
-                index = self.textarea.index("insert linestart")
-                if self.textarea.get(index, 'end')[:1] == "\t":
+            while self.textarea.compare(index,"<=", last):
+                index = self.textarea.get(index, 'end')
+                if event.state == 0 and index:
+                    self.textarea.insert(index, '\t')
+                    index = self.textarea.index(f"{index} + 1 line")
+                elif index.startswith("\t"):
                     self.textarea.delete(index)
+                    index = self.textarea.index(f"{index} + 1 line")
+        elif event.state == 0:
+            index = self.textarea.index(tk.INSERT)
+            self.textarea.insert(index, '\t')
+        else:
+            index = self.textarea.index("insert linestart")
+            if self.textarea.get(index, 'end').startswith("\t"):
+                self.textarea.delete(index)
         return "break"
 
     def bind_shortcuts(self, *args):
